@@ -11,9 +11,9 @@ const _inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "huzlr",
+  description: "AI powered project Manager for all your projects.",
+  generator: "huzlr v1.0.0",
 }
 
 export default function RootLayout({
