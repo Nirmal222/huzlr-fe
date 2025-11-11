@@ -71,6 +71,11 @@ function Navbar({ className }: { className?: string }) {
               </div>
             </MenuItem>
           </div>
+            <Link href="/signup">
+              <button className="bg-black text-white px-4 py-2 rounded-3xl">
+                Get started
+              </button>
+            </Link>
         </div>
       </Menu>
     </div>

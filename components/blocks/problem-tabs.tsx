@@ -27,9 +27,9 @@ interface Feature108Props {
   tabs?: Tab[];
 }
 
-const Feature108 = ({
-  badge = "shadcnblocks.com",
-  heading = "A Collection of Components Built With Shadcn & Tailwind",
+const ProblemTabs = ({
+  badge = "huzlr",
+  heading = "A Collection of Components Built With Huzlr & Tailwind",
   description = "Join us to build flawless web solutions.",
   tabs = [
     {
@@ -43,7 +43,7 @@ const Feature108 = ({
           "Discover new web trends that help you craft sleek, highly functional sites that drive traffic and convert leads into customers.",
         buttonText: "See Plans",
         imageSrc:
-          "https://shadcnblocks.com/images/block/placeholder-dark-1.svg",
+          "/huzlr-no-bg.png",
         imageAlt: "placeholder",
       },
     },
@@ -58,7 +58,7 @@ const Feature108 = ({
           "Use stellar design to easily engage users and strengthen their loyalty. Create a seamless experience that keeps them coming back for more.",
         buttonText: "See Tools",
         imageSrc:
-          "https://shadcnblocks.com/images/block/placeholder-dark-2.svg",
+          "/huzlr-no-bg.png",
         imageAlt: "placeholder",
       },
     },
@@ -73,7 +73,7 @@ const Feature108 = ({
           "Lift your brand with modern tech that grabs attention and drives action. Create a digital experience that stands out from the crowd.",
         buttonText: "See Options",
         imageSrc:
-          "https://shadcnblocks.com/images/block/placeholder-dark-3.svg",
+          "/huzlr-no-bg.png",
         imageAlt: "placeholder",
       },
     },
@@ -136,4 +136,4 @@ const Feature108 = ({
   );
 };
 
-export { Feature108 };
+export { ProblemTabs };

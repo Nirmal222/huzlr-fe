@@ -11,8 +11,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
   IconReport,
   IconSearch,
   IconSettings,
@@ -32,12 +30,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Brain } from "lucide-react"
 
 const data = {
   user: {
-    name: "shadcn",
+    name: "huzlr",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/huzlr-no-bg.png",
   },
   navMain: [
     {
@@ -46,19 +45,19 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
+      title: "Projects",
+      url: "/projects",
+      icon: IconFolder,
+    },
+    {
+      title: "Brainstorms",
       url: "#",
-      icon: IconListDetails,
+      icon: Brain,
     },
     {
       title: "Analytics",
       url: "#",
       icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
     },
     {
       title: "Team",
@@ -161,8 +160,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-xl font-semibold">huzlr.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

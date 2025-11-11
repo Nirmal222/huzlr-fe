@@ -1,5 +1,5 @@
 import { AlertCircle, Clock, TrendingDown } from "lucide-react";
-import { Feature108 } from "@/components/blocks/shadcnblocks-com-feature108";
+import { ProblemTabs } from "@/components/blocks/problem-tabs";
 
 const demoData = {
   badge: "The Problem",
@@ -56,5 +56,5 @@ const demoData = {
 };
 
 export function ProblemSection() {
-  return <Feature108 {...demoData} />;
+  return <ProblemTabs {...demoData} />;
 }
