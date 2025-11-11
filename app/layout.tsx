@@ -14,7 +14,7 @@ const _inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "huzlr",
+  title: "huzlr.",
   description: "AI powered project Manager for all your projects.",
   generator: "huzlr v1.0.0",
   icons: {
