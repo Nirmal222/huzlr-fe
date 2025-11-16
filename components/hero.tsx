@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <HeroWithMockup
       title="Your AI Project Manager That Delivers 10X Faster"
-      description="Autonomous project intelligence that predicts risks, prevents delays, and accelerates delivery—without the management overhead."
+      description="Autonomous project intelligence that predicts risks, prevents delays, and accelerates delivery without the management overhead."
       primaryCta={{
         text: "Start Your Free Trial",
         href: "/signup",

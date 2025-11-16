@@ -15,11 +15,11 @@ export function IdealCustomers() {
         "Executive dashboards",
         "Enterprise integrations",
       ],
-      usedBy: "Used by: Microsoft, Salesforce, Adobe",
+      usedBy: "For teams that demand excellence.",
     },
     {
       icon: <Rocket className="h-6 w-6" />,
-      title: "Startups &amp; Agencies",
+      title: "Startups & Agencies",
       description: "Move fast without breaking things.",
       features: [
         "Rapid sprint planning",
@@ -27,19 +27,19 @@ export function IdealCustomers() {
         "Resource optimization",
         "Budget forecasting",
       ],
-      usedBy: "Used by: Y Combinator startups, agencies",
+      usedBy: "For builders of the future.",
     },
     {
       icon: <User className="h-6 w-6" />,
-      title: "D2C Creators &amp; Solopreneurs",
+      title: "D2C Creators & Solopreneurs",
       description: "Your personal AI project assistant.",
       features: [
         "Solo project management",
         "Content calendar planning",
-        "Goal tracking &amp; accountability",
+        "Goal tracking & accountability",
         "Time optimization",
       ],
-      usedBy: "Perfect for: Creators, consultants, freelancers",
+      usedBy: "For the ambitious individual.",
     },
   ]
 
@@ -49,10 +49,10 @@ export function IdealCustomers() {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
             <h2 className="text-lg font-semibold leading-8 text-primary">
-              Trusted by Teams at Leading Companies
+              Built for the Next Generation of Innovators
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              From Fortune 500 enterprises to fast-growing startups
+              The tools you need to build the future, faster.
             </p>
           </div>
           <div className="mt-16">
