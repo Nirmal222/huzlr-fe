@@ -46,9 +46,9 @@ export default function Page() {
             </Button>
           </Link>
         </SiteHeader>
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+        <div className="flex flex-1 flex-col gap-4 px-2 py-4">
+          <div className="mx-auto w-full max-w-6xl flex flex-1 flex-col gap-2">
+            <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
               {isLoading && <DataTableSkeleton />}
 
               {isError && (
@@ -67,16 +67,16 @@ export default function Page() {
                 />
               ) : (
                 data && (
-                  <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-dashed shadow-sm py-16">
+                  <div className="flex flex-1 flex-col items-center justify-center rounded-xl shadow-sm">
                     <div className="flex flex-col items-center gap-1 text-center">
-                      <h3 className="text-2xl font-bold tracking-tight">
+                      <h3 className="text-base font-medium tracking-tight">
                         You have no projects
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         You can start brainstorming a new project now.
                       </p>
                       <a href="/projects/new" className="mt-4">
-                        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
                           Create Project
                         </button>
                       </a>

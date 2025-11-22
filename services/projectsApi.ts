@@ -19,7 +19,7 @@ export const projectsApi = createApi({
                 await delay(800)
 
                 // Return mock data
-                return { data: data as ProjectData[] }
+                return { data: [] as ProjectData[] }
             },
             providesTags: ['Projects'],
         }),

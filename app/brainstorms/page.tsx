@@ -22,8 +22,8 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader title="Brainstorms" />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-4 px-2 py-4">
+          <div className="mx-auto w-full max-w-6xl flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <DataTable<ProjectData>
                 data={data as ProjectData[]}

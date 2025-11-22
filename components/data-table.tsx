@@ -89,7 +89,7 @@ export function DragHandle({ id }: { id: number | string }) {
       {...listeners}
       variant="ghost"
       size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
+      className="text-muted-foreground size-7 hover:bg-transparent rounded-full"
     >
       <IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Drag to reorder</span>
@@ -221,7 +221,7 @@ export function DataTable<TData extends { id: number | string }>({
           <>
             <Select defaultValue={tabs[0].value}>
               <SelectTrigger
-                className="flex w-fit @4xl/main:hidden"
+                className="flex w-fit @4xl/main:hidden rounded-full"
                 size="sm"
                 id="view-selector"
               >
@@ -250,7 +250,7 @@ export function DataTable<TData extends { id: number | string }>({
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="rounded-full">
                 <IconLayoutColumns />
                 <span className="hidden lg:inline">Customize Columns</span>
                 <span className="lg:hidden">Columns</span>
@@ -281,7 +281,7 @@ export function DataTable<TData extends { id: number | string }>({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="rounded-full">
             <IconPlus />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
@@ -291,7 +291,7 @@ export function DataTable<TData extends { id: number | string }>({
         value={tabs?.[0]?.value || "outline"}
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <div className="overflow-hidden rounded-lg border">
+        <div className="overflow-hidden rounded-2xl shadow-sm">
           <DndContext
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis]}
@@ -358,7 +358,7 @@ export function DataTable<TData extends { id: number | string }>({
                   table.setPageSize(Number(value))
                 }}
               >
-                <SelectTrigger size="sm" className="w-20" id="rows-per-page">
+                <SelectTrigger size="sm" className="w-20 rounded-full" id="rows-per-page">
                   <SelectValue
                     placeholder={table.getState().pagination.pageSize}
                   />
@@ -379,7 +379,7 @@ export function DataTable<TData extends { id: number | string }>({
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
                 variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
+                className="hidden h-8 w-8 p-0 lg:flex rounded-full"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
               >
@@ -388,7 +388,7 @@ export function DataTable<TData extends { id: number | string }>({
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
+                className="size-8 rounded-full"
                 size="icon"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
@@ -398,7 +398,7 @@ export function DataTable<TData extends { id: number | string }>({
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
+                className="size-8 rounded-full"
                 size="icon"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
@@ -408,7 +408,7 @@ export function DataTable<TData extends { id: number | string }>({
               </Button>
               <Button
                 variant="outline"
-                className="hidden size-8 lg:flex"
+                className="hidden size-8 lg:flex rounded-full"
                 size="icon"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
@@ -427,7 +427,7 @@ export function DataTable<TData extends { id: number | string }>({
           className="flex flex-col px-4 lg:px-6"
         >
           {tab.content || (
-            <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+            <div className="aspect-video w-full flex-1 rounded-lg bg-muted/20"></div>
           )}
         </TabsContent>
       ))}
