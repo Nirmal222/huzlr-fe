@@ -1,3 +1,4 @@
+'use client'
 import { GalleryVerticalEnd } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -10,11 +11,13 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter()
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form>
@@ -44,7 +47,7 @@ export function SignupForm({
             />
           </Field>
           <Field>
-            <Button type="submit">Create Account</Button>
+            <Button type="submit" onClick={() => router.push("/dashboard")}>Create Account</Button>
           </Field>
           <FieldSeparator>Or</FieldSeparator>
           <Field className="grid gap-4 sm:grid-cols-2">

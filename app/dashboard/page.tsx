@@ -8,6 +8,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import data from "../../constants/data.json"
+import { projectColumns, type ProjectData } from "../projects/columns"
 
 export default function Page() {
   return (
@@ -29,7 +30,10 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable data={data} />
+              <DataTable<ProjectData>
+                data={data as ProjectData[]}
+                columns={projectColumns}
+              />
             </div>
           </div>
         </div>
