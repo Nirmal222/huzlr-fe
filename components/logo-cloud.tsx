@@ -1,36 +1,38 @@
-import {
-  IconBrandApple,
-  IconBrandGoogle,
-  IconBrandWindows,
-  IconBrandStripe,
-  IconBrandSlack,
-  IconBrandGithub,
-  IconBrandNetflix,
-  IconBrandVercel,
-} from "@tabler/icons-react"
+import Image from "next/image"
+
+type Company = {
+  name: string
+  src: string
+}
 
 export function LogoCloud() {
-  const companies = [
-    { name: "Microsoft", icon: <IconBrandWindows className="h-8 w-8" /> },
-    { name: "Google", icon: <IconBrandGoogle className="h-8 w-8" /> },
-    { name: "Apple", icon: <IconBrandApple className="h-8 w-8" /> },
-    { name: "Stripe", icon: <IconBrandStripe className="h-8 w-8" /> },
-    { name: "Slack", icon: <IconBrandSlack className="h-8 w-8" /> },
-    { name: "GitHub", icon: <IconBrandGithub className="h-8 w-8" /> },
-    { name: "Netflix", icon: <IconBrandNetflix className="h-8 w-8" /> },
-    { name: "Vercel", icon: <IconBrandVercel className="h-8 w-8" /> },
+  const companies: Company[] = [
+    { name: "Microsoft", src: "/microsoft.png" },
+    { name: "Google", src: "/google.png" },
+    { name: "Stripe", src: "/stripe.jpeg" },
+    { name: "Slack", src: "/slack.png" },
+    { name: "GitHub", src: "/github.png" },
+    { name: "Netflix", src: "/netflix.webp" },
+    { name: "Vercel", src: "/vercel.svg" },
   ]
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="grid grid-cols-4 gap-8 md:grid-cols-8 md:gap-12">
+    <div className="w-full py-12">
+      <div className="grid w-full grid-cols-7 gap-2 md:gap-8">
         {companies.map((company) => (
           <div
             key={company.name}
-            className="flex h-16 w-16 items-center justify-center text-muted-foreground/40 transition-colors duration-300 hover:text-muted-foreground/80"
+            className="flex h-12 w-full items-center justify-center rounded-lg border border-border/50 bg-muted/10 p-2 transition-all duration-300 hover:scale-105 hover:border-border hover:bg-muted/20 sm:h-24 sm:rounded-2xl sm:p-6"
             title={company.name}
           >
-            {company.icon}
+            <div className="relative h-full w-full">
+              <Image
+                src={company.src}
+                alt={company.name}
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -123,6 +123,7 @@
       opacity: 0;
       transform: scale(0.98);
     }
+
     100% {
       opacity: 1;
       transform: scale(1);
@@ -134,30 +135,54 @@
       opacity: 0;
       transform: translateY(10px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
   @keyframes appear-zoom {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
+    0% {
+      opacity: 0;
+      transform: scale(0.98);
     }
-  100% {
-    opacity: 1;
-    transform: scale(1);
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
+
   @keyframes appear {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
     }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
+
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+}
+
+@layer utilities {
+  .pause-on-hover:hover {
+    animation-play-state: paused;
   }
 }
 
@@ -165,6 +190,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

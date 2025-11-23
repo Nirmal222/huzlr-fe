@@ -1,47 +1,67 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check } from "lucide-react"
+import Image from "next/image"
+import { ArrowRight, Calendar, Clock } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
 interface CustomerSegmentCardProps {
-  icon: React.ReactNode
+  imageSrc: string
+  category: string
   title: string
   description: string
-  features: string[]
-  usedBy: string
+  time: string
+  readTime: string
 }
 
 export function CustomerSegmentCard({
-  icon,
+  imageSrc,
+  category,
   title,
   description,
-  features,
-  usedBy,
+  time,
+  readTime,
 }: CustomerSegmentCardProps) {
   return (
-    <Card className="flex h-full flex-col rounded-2xl border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <CardHeader className="flex flex-col items-start gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-transform group-hover:scale-110">
-          {icon}
+    <Card className="flex flex-col overflow-hidden rounded-3xl border-border/50 bg-card shadow-sm transition-all duration-300 hover:shadow-lg md:flex-row h-full">
+      <div className="relative h-48 w-full p-4 md:h-auto md:w-2/5">
+        <div className="relative h-full w-full overflow-hidden rounded-2xl">
+          <Image
+            src={imageSrc}
+            alt={title}
+            fill
+            className="object-cover"
+          />
         </div>
-        <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-1 flex-col justify-between">
+      </div>
+      <CardContent className="flex flex-1 flex-col justify-between p-6 md:p-8">
         <div className="space-y-4">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {description}
-          </p>
-          <ul className="space-y-2">
-            {features.map((feature, idx) => (
-              <li key={idx} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-accent" />
-                <span className="text-sm">{feature}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center justify-between">
+            <span className="rounded-lg bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+              {category}
+            </span>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Calendar className="h-3 w-3" />
+              <span>{time}</span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold leading-tight tracking-tight text-foreground">
+              {title}
+            </h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+          </div>
         </div>
-        <div className="mt-6 border-t border-border/50 pt-4">
-          <p className="text-xs font-medium tracking-wide text-accent">
-            {usedBy}
-          </p>
+        <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-4">
+          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+            <Clock className="h-3 w-3" />
+            <span>{readTime}</span>
+          </div>
+          <Button variant="ghost" size="sm" className="group gap-2 text-xs font-medium">
+            Explore {category}
+            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </Button>
         </div>
       </CardContent>
     </Card>

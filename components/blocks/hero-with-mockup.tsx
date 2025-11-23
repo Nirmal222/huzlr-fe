@@ -90,6 +90,7 @@ export function HeroWithMockup({
                 "hover:from-brand/95 hover:to-brand/85 dark:hover:from-brand/80 dark:hover:to-brand/70",
                 "text-white shadow-lg",
                 "transition-all duration-300",
+                "rounded-full"
               )}
             >
               <a href={primaryCta.href}>{primaryCta.text}</a>
@@ -102,6 +103,7 @@ export function HeroWithMockup({
               className={cn(
                 "text-foreground/80 dark:text-foreground/70",
                 "transition-all duration-300",
+                "rounded-full"
               )}
             >
               <a href={secondaryCta.href}>

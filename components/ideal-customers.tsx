@@ -1,66 +1,72 @@
-import { Building, Rocket, User } from "lucide-react"
+
 import { CustomerSegmentCard } from "@/components/customer-segment-card"
 import { LogoCloud } from "@/components/logo-cloud"
 
 export function IdealCustomers() {
   const segments = [
     {
-      icon: <Building className="h-6 w-6" />,
-      title: "Enterprise Teams",
+      imageSrc: "/placeholder.jpg",
+      category: "Enterprise",
+      title: "Scale Governance & Security",
       description:
-        "Scale project delivery across multiple teams and departments.",
-      features: [
-        "Portfolio management",
-        "Cross-team dependencies",
-        "Executive dashboards",
-        "Enterprise integrations",
-      ],
-      usedBy: "For teams that demand excellence.",
+        "Empower your organization with unified portfolio management, advanced security controls, and cross-team dependency tracking. Ensure compliance and alignment at scale.",
+      time: "2 hours ago",
+      readTime: "5 min read",
     },
     {
-      icon: <Rocket className="h-6 w-6" />,
-      title: "Startups & Agencies",
-      description: "Move fast without breaking things.",
-      features: [
-        "Rapid sprint planning",
-        "Client project tracking",
-        "Resource optimization",
-        "Budget forecasting",
-      ],
-      usedBy: "For builders of the future.",
+      imageSrc: "/placeholder.jpg",
+      category: "Startups",
+      title: "Move Fast & Iterate",
+      description:
+        "Accelerate your product cycles with rapid planning tools and resource optimization. Keep your team focused on shipping features while maintaining code quality and velocity.",
+      time: "4 hours ago",
+      readTime: "4 min read",
     },
     {
-      icon: <User className="h-6 w-6" />,
-      title: "D2C Creators & Solopreneurs",
-      description: "Your personal AI project assistant.",
-      features: [
-        "Solo project management",
-        "Content calendar planning",
-        "Goal tracking & accountability",
-        "Time optimization",
-      ],
-      usedBy: "For the ambitious individual.",
+      imageSrc: "/placeholder.jpg",
+      category: "Agencies",
+      title: "Manage Multiple Clients",
+      description:
+        "Streamline client communication and project delivery. Switch contexts effortlessly between different client workspaces while maintaining a unified view of your agency's performance.",
+      time: "6 hours ago",
+      readTime: "3 min read",
+    },
+    {
+      imageSrc: "/placeholder.jpg",
+      category: "Solopreneurs",
+      title: "Your AI Co-founder",
+      description:
+        "Manage your entire business with an AI partner. From content calendars to product roadmaps, stay accountable and productive without the overhead of a large team.",
+      time: "1 day ago",
+      readTime: "3 min read",
     },
   ]
 
   return (
     <section className="border-t border-border bg-background py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-none">
+      <div className="w-full">
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-lg font-semibold leading-8 text-primary">
-              Built for the Next Generation of Innovators
+              Our Focus for the Next 6 Months
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              The tools you need to build the future, faster.
+              Building for the Modern Workforce
             </p>
           </div>
           <div className="mt-16">
             <LogoCloud />
           </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {segments.map((segment, idx) => (
-              <CustomerSegmentCard key={idx} {...segment} />
+        </div>
+        <div className="mt-16 flex w-full overflow-hidden py-10">
+          <div className="pause-on-hover flex animate-marquee gap-8 pl-8">
+            {[...segments, ...segments].map((segment, idx) => (
+              <div
+                key={idx}
+                className="w-[400px] flex-shrink-0 md:w-[800px] h-full"
+              >
+                <CustomerSegmentCard {...segment} />
+              </div>
             ))}
           </div>
         </div>
