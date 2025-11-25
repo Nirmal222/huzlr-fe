@@ -124,7 +124,7 @@ export function HeroWithMockup({
             >
               <img
                 {...mockupImage}
-                className="w-full h-auto"
+                className="w-full h-auto rounded-lg"
                 loading="lazy"
                 decoding="async"
               />

@@ -17,7 +17,7 @@ export default function Hero() {
         alt: "AI Project Manager Dashboard",
         width: 1248,
         height: 765,
-        src: "https://www.launchuicomponents.com/app-light.png",
+        src: "/hero.png",
       }}
     />
   )
