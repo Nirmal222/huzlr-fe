@@ -17,6 +17,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 export function Navigation() {
   return (
@@ -32,7 +33,7 @@ function Navbar({ className }: { className?: string }) {
 
   return (
     <div
-      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50 px-4", className)}
+      className={cn("fixed top-10 inset-x-0 max-w-3xl mx-auto z-50 px-4", className)}
     >
       <Menu setActive={setActive}>
         <div className="w-full flex items-center justify-between">
@@ -78,11 +79,14 @@ function Navbar({ className }: { className?: string }) {
           </div>
 
           {/* Desktop CTA Button */}
-          <Link href="/signup" className="hidden lg:block">
-            <button className="bg-secondary text-primary font-semibold px-4 py-2 rounded-3xl">
-              Get started
-            </button>
-          </Link>
+          <div className="hidden lg:flex items-center gap-4">
+            <Link href="/signup">
+              <button className="bg-secondary text-primary font-semibold px-4 py-2 rounded-3xl">
+                Get started
+              </button>
+            </Link>
+            <AnimatedThemeToggler className="h-8 w-8 rounded-full border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground p-1.5 flex items-center justify-center" />
+          </div>
 
           {/* Mobile Menu - Sheet Component */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -95,11 +99,14 @@ function Navbar({ className }: { className?: string }) {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
               <SheetHeader className="pb-6 border-b">
-                <SheetTitle className="text-left">
-                  <span className="text-xl font-bold">huzlr.</span>
-                </SheetTitle>
+                <div className="flex items-center justify-between w-full">
+                  <SheetTitle className="text-left">
+                    <span className="text-xl font-bold">huzlr.</span>
+                  </SheetTitle>
+                  <AnimatedThemeToggler className="h-8 w-8 rounded-full border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground p-1.5" />
+                </div>
               </SheetHeader>
-              
+
               <div className="mt-6 flex flex-col space-y-2">
                 <Accordion type="single" collapsible className="w-full space-y-2">
                   {/* Solutions Accordion */}

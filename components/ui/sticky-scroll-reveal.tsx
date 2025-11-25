@@ -54,7 +54,15 @@ export const StickyScroll = ({
 
     return (
         <motion.div
-            className="h-[40rem] overflow-y-auto scroll-smooth flex justify-center relative space-x-16 rounded-md p-10 bg-background"
+            className="h-[40rem] overflow-y-auto scroll-smooth flex justify-center relative space-x-16 rounded-md p-10 bg-background
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:bg-transparent
+                [&::-webkit-scrollbar-thumb]:bg-foreground/20
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:border-2
+                [&::-webkit-scrollbar-thumb]:border-transparent
+                hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30
+                [&::-webkit-scrollbar-thumb]:transition-colors"
             ref={ref}
         >
             <div className="div relative flex items-start">
