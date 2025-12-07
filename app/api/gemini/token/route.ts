@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -25,7 +25,7 @@ export async function GET() {
             config: {
                 sessionResumption: {},
                 temperature: 0.7,
-                responseModalities: ['AUDIO']
+                responseModalities: [Modality.AUDIO]
             }
         },
         httpOptions: {

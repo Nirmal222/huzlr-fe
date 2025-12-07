@@ -65,6 +65,35 @@ export const fetchCurrentUser = createAsyncThunk(
   }
 );
 
+export const verifyAccessCode = createAsyncThunk(
+  'auth/verifyAccessCode',
+  async (code: string, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const state = getState() as { auth: AuthState };
+      const token = state.auth.token || localStorage.getItem('token');
+      if (!token) return rejectWithValue('No token found');
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-access-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Verification failed');
+      
+      // Refresh user data to get updated has_access
+      dispatch(fetchCurrentUser());
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,

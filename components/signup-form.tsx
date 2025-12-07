@@ -37,7 +37,11 @@ export function SignupForm({
     try {
       const resultAction = await dispatch(signupUser(formData))
       if (signupUser.fulfilled.match(resultAction)) {
-        router.push("/dashboard")
+        // Set cookie for middleware
+        const token = resultAction.payload.access_token
+        document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`
+        
+        router.push("/onboarding")
       }
     } catch (err) {
       // Error handled in slice

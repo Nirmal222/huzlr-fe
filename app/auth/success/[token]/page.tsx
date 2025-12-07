@@ -21,11 +21,14 @@ export default function AuthSuccessPage({
       // Store in localStorage
       localStorage.setItem('token', token)
       
+      // Store in cookie for middleware
+      document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`
+
       // Update Redux state
       dispatch(setToken(token))
       
-      // Redirect to dashboard
-      router.replace('/dashboard')
+      // Redirect to onboarding to check access status
+      router.replace('/onboarding')
     } else {
         // Should not happen if route matches
         router.replace('/signup?error=no_token')
