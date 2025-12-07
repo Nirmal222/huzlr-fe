@@ -67,7 +67,7 @@ export default function Page() {
                 />
               ) : (
                 data && (
-                  <div className="flex flex-1 flex-col items-center justify-center rounded-xl shadow-sm">
+                  <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-col items-center gap-1 text-center">
                       <h3 className="text-base font-medium tracking-tight">
                         You have no projects
