@@ -75,7 +75,7 @@
 @theme inline {
   /* Updated font-sans to Inter */
   --font-sans: "Inter", sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-caveat: var(--font-caveat);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

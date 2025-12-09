@@ -53,7 +53,7 @@ export function WaitlistDialog({ open = true }: { open?: boolean }) {
     <Dialog open={open}>
       <DialogContent showCloseButton={false} onInteractOutside={(e) => e.preventDefault()} className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Welcome to Huzlr</DialogTitle>
+          <DialogTitle>Welcome to huzlr.</DialogTitle>
           <DialogDescription>
             We are currently in early access. Please enter your access code or join the waitlist.
           </DialogDescription>

@@ -1,0 +1,28 @@
+{
+  "steps": [
+    {
+      "number": "1.",
+      "title": "Initiation",
+      "description": "Simply voice or type your idea or you can even plug your existing project management platforms to huzlr. Your AI agent instantly analyzes intent, clarifies requirements, and structures a complete project definition for your approval.",
+      "image": "/step1.png"
+    },
+    {
+      "number": "2.",
+      "title": "Agent driven planning",
+      "description": "Agents autonomously generate a comprehensive execution plan with priorities, dependencies, and milestones. You simply review the blueprint no manual planning required.",
+      "image": "/step2.png"
+    },
+    {
+      "number": "3.",
+      "title": "Continuous Execution and Monitoring",
+      "description": "AI co-pilots drive the workflow, generating assets while predicting risks in real time. The system self corrects and keeps you informed, requiring only strategic oversight.",
+      "image": "/step3.png"
+    },
+    {
+      "number": "4.",
+      "title": "Deliver and feedback",
+      "description": "Your agent verifies all requirements, packages final artifacts, and ensures delivery standards are met. You receive a completed project ready for final sign-off.",
+      "image": "/step4.png"
+    }
+  ]
+}

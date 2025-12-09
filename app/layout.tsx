@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Caveat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -12,6 +12,11 @@ const _inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
+})
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
 })
 
 export const metadata: Metadata = {
@@ -67,7 +72,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`font-sans antialiased`}>
+      <body className={`font-sans antialiased ${caveat.variable}`}>
         <ReduxProvider>
           <ThemeProvider
             attribute="class"
