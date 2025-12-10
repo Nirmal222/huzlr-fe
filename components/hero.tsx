@@ -6,12 +6,12 @@ export default function Hero() {
       title="Your AI Project Manager That Delivers 10X Faster"
       description="Autonomous project intelligence that predicts risks, prevents delays, and accelerates delivery without the management overhead."
       primaryCta={{
-        text: "Start Your Free Trial",
+        text: "Access huzlr.",
         href: "/signup",
       }}
       secondaryCta={{
         text: "See How It Works",
-        href: "#how-it-works",
+        href: "/signup",
       }}
       mockupImage={{
         alt: "AI Project Manager Dashboard",

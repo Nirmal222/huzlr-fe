@@ -29,7 +29,15 @@ export const signupUser = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.detail || 'Signup failed');
+        let errorMessage = 'Signup failed';
+        if (data.detail) {
+          if (Array.isArray(data.detail)) {
+            errorMessage = data.detail.map((err: any) => err.msg).join(', ');
+          } else {
+            errorMessage = data.detail;
+          }
+        }
+        return rejectWithValue(errorMessage);
       }
 
       localStorage.setItem('token', data.access_token);
