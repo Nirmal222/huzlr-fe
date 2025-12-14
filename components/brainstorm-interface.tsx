@@ -50,19 +50,13 @@ export function BrainstormInterface() {
                             },
                         })
                     } catch (e) {
-                        console.error("Error sending audio:", e)
+                        console.error("Error ending audio:", e)
                     }
                 }
             })
 
-            // 4. Connect Session
-            const config = {
-                responseModalities: [Modality.AUDIO], // Cast to avoid type issues if SDK types are strict
-            }
-
             sessionRef.current = await client.live.connect({
-                model: "gemini-2.5-flash-native-audio-preview-09-2025",
-                config,
+                model: "gemini-2.5-flash-native-audio-preview-12-2025",
                 callbacks: {
                     onopen: () => {
                         console.log("Connected to Gemini Live")
