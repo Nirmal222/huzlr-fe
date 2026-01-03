@@ -38,8 +38,17 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
     const agentScale = useTransform(smoothAgentVolume, [0, 0.1], [1, 1.3]) // Expands when agent speaks
     const listeningScale = useTransform(smoothUserVolume, [0, 0.1], [1, 0.9]) // Contracts when user speaks
 
-    const userGlowScale = useTransform(smoothUserVolume, [0, 0.1], [0.8, 1.4]) // Scale up when hearing user
-    const userGlowOpacity = useTransform(smoothUserVolume, [0, 0.05], [0, 0.6]) // Fade in when hearing user
+    // Ripple 1 (Largest)
+    const ripple1Scale = useTransform(smoothUserVolume, [0, 0.2], [0.8, 2.5])
+    const ripple1Opacity = useTransform(smoothUserVolume, [0, 0.1], [0, 0.5]) // Increased from 0.2 to 0.5
+
+    // Ripple 2 (Medium)
+    const ripple2Scale = useTransform(smoothUserVolume, [0, 0.2], [0.8, 2.0])
+    const ripple2Opacity = useTransform(smoothUserVolume, [0, 0.1], [0, 0.6]) // Increased from 0.3 to 0.6
+
+    // Ripple 3 (Closest) / Glow
+    const userGlowScale = useTransform(smoothUserVolume, [0, 0.1], [0.8, 1.4])
+    const userGlowOpacity = useTransform(smoothUserVolume, [0, 0.05], [0, 0.8]) // Increased from 0.6 to 0.8
 
     // Unified pastel palette (Periwinkle/Lavender/Blue) for all states as requested
     const commonGradient = "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, rgba(186,230,253,1) 20%, rgba(165,180,252,1) 50%, rgba(192,132,252,0.8) 100%)"
@@ -115,14 +124,33 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                             className="absolute -bottom-6 -left-10 w-16 h-16 rounded-full backdrop-blur-md bg-purple-100/30 border border-white/40 shadow-sm z-0"
                         />
 
-                        {/* Listening Aura - Reacts to User Volume */}
-                        <motion.div
-                            style={{
-                                scale: userGlowScale,
-                                opacity: userGlowOpacity,
-                            }}
-                            className="absolute w-40 h-40 rounded-full bg-white/40 blur-xl z-10"
-                        />
+                        {/* Listening Ripples / Background Spread */}
+                        <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
+                            {/* Ripple 1 (Largest) - Darker in light mode */}
+                            <motion.div
+                                style={{
+                                    scale: ripple1Scale,
+                                    opacity: ripple1Opacity,
+                                }}
+                                className="absolute w-40 h-40 rounded-full bg-[#d7bd7c]/40 dark:bg-[#d7bd7c]/20 blur-2xl"
+                            />
+                            {/* Ripple 2 (Medium) */}
+                            <motion.div
+                                style={{
+                                    scale: ripple2Scale,
+                                    opacity: ripple2Opacity,
+                                }}
+                                className="absolute w-40 h-40 rounded-full bg-[#d7bd7c]/40 dark:bg-[#d7bd7c]/20 blur-xl"
+                            />
+                            {/* Ripple 3 (Closest) */}
+                            <motion.div
+                                style={{
+                                    scale: userGlowScale,
+                                    opacity: userGlowOpacity,
+                                }}
+                                className="absolute w-40 h-40 rounded-full bg-[#d7bd7c]/30 dark:bg-[#d7bd7c]/20 blur-lg"
+                            />
+                        </div>
 
                         {/* Main Agent Orb - Wrappers for composed scaling */}
                         <motion.div

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Mic, PhoneOff, Loader2 } from "lucide-react"
+import { Mic, PhoneOff, Loader2, Plus, Paperclip, ChevronDown, AudioLines, ArrowUp } from "lucide-react"
 import { Orb } from "@/components/orb"
 
 import { Button } from "@/components/ui/button"
@@ -217,9 +217,15 @@ export function BrainstormInterface() {
 
     const handleSendMessage = () => {
         if (!inputValue.trim()) return
-        console.log("Sending message:", inputValue)
-        // If we want text input to also work with the live session, we could send it here
-        // sessionRef.current?.send({ parts: [{ text: inputValue }] })
+
+        // Add to transcripts immediately
+        const text = inputValue
+        setTranscripts(prev => [...prev, { role: "user", text, isComplete: true }])
+
+        if (sessionRef.current) {
+            sessionRef.current.sendClientContent({ turns: [text] })
+        }
+
         setInputValue("")
     }
 
@@ -231,7 +237,7 @@ export function BrainstormInterface() {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] relative bg-background">
+        <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] relative bg-background font-sans">
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col items-center justify-center relative bg-background">
 
@@ -269,46 +275,79 @@ export function BrainstormInterface() {
                 </div>
 
                 {/* Bottom Input Area */}
-                <div className="absolute bottom-8 w-full max-w-3xl px-4">
-                    <div className="bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50 shadow-lg p-4 flex flex-col gap-4">
-                        <Textarea
-                            placeholder="Send a message to start the conversation"
-                            className="min-h-[60px] border-0 focus-visible:ring-0 resize-none shadow-none p-2 text-base bg-transparent placeholder:text-muted-foreground/50"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                        <div className="flex items-center justify-between px-2">
-                            <Button
-                                variant="ghost"
-                                className="text-destructive hover:text-destructive hover:bg-destructive/10 gap-2 px-2 h-auto py-2"
-                                onClick={disconnect}
-                                disabled={status === "idle"}
-                            >
-                                <PhoneOff className="h-4 w-4" />
-                                End call
-                            </Button>
-                            <div className="flex items-center gap-3">
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    className={`rounded-full hover:bg-muted ${isListening ? "bg-red-100 text-red-600 hover:bg-red-200" : "text-muted-foreground"
-                                        }`}
-                                    onClick={toggleMic}
-                                >
-                                    {status === "connecting" ? (
-                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                    ) : (
-                                        <Mic className={`h-5 w-5 ${isListening ? "fill-current" : ""}`} />
-                                    )}
-                                </Button>
-                                <Button
-                                    onClick={handleSendMessage}
-                                    disabled={!inputValue.trim()}
-                                    className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
-                                >
-                                    Send
-                                </Button>
+                <div className="absolute bottom-10 w-full max-w-3xl px-4">
+                    <div className="relative rounded-[32px] p-[8px] bg-gradient-to-r from-sky-300 via-indigo-300 to-purple-300 shadow-[0_0_15px_rgba(167,139,250,0.3)] hover:shadow-[0_0_20px_rgba(167,139,250,0.5)] transition-all duration-300">
+                        <div className="relative bg-card rounded-[29px] p-2 flex flex-col">
+                            {/* Upper Section: Text Input */}
+                            <div className="px-2 pt-2 pb-0">
+                                <Textarea
+                                    placeholder="Talk to standmate and get things done effortlessly..."
+                                    className="min-h-[50px] border-0 focus-visible:ring-0 resize-none shadow-none p-2 text-base bg-transparent dark:bg-transparent placeholder:text-muted-foreground/60 w-full"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                />
+                            </div>
+
+                            {/* Lower Section: Actions */}
+                            <div className="flex items-center justify-between p-2">
+                                {/* Left Actions */}
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="rounded-full h-10 w-10 text-muted-foreground hover:bg-muted/50"
+                                    >
+                                        <Plus className="h-5 w-5" />
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-full h-10 px-4 text-muted-foreground border-border/40 hover:bg-muted/50 font-normal gap-2"
+                                    >
+                                        <Paperclip className="h-4 w-4" />
+                                        Attach
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-full h-10 px-4 text-muted-foreground border-border/40 hover:bg-muted/50 font-normal gap-2"
+                                    >
+                                        Gemini 2.0
+                                        <ChevronDown className="h-3 w-3 opacity-50" />
+                                    </Button>
+                                </div>
+
+                                {/* Right Actions */}
+                                <div className="flex items-center gap-3">
+                                    {/* Voice Trigger */}
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        className={`rounded-full h-12 w-12 transition-all duration-300 ${isListening
+                                            ? "bg-red-100 text-red-600 hover:bg-red-200 ring-2 ring-red-100 ring-offset-2"
+                                            : "hover:bg-muted/50 text-muted-foreground"
+                                            }`}
+                                        onClick={toggleMic}
+                                    >
+                                        {status === "connecting" ? (
+                                            <Loader2 className="h-6 w-6 animate-spin" />
+                                        ) : (
+                                            <AudioLines className="h-6 w-6" />
+                                        )}
+                                    </Button>
+
+                                    {/* Send Button */}
+                                    <Button
+                                        size="icon"
+                                        className={`rounded-full h-12 w-12 transition-all duration-200 ${inputValue.trim()
+                                            ? "bg-primary text-primary-foreground shadow-md hover:translate-y-[-1px]"
+                                            : "bg-muted text-muted-foreground"
+                                            }`}
+                                        onClick={handleSendMessage}
+                                        disabled={!inputValue.trim()}
+                                    >
+                                        <ArrowUp className="h-6 w-6" />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
