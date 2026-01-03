@@ -4,6 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 import { DynamicBreadcrumb } from "@/components/dynamic-breadcrumb"
+import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 
 interface SiteHeaderProps {
   title?: string
@@ -22,7 +23,7 @@ export function SiteHeader({ title, children }: SiteHeaderProps) {
         <DynamicBreadcrumb />
         <div className="ml-auto flex items-center gap-2">
           {children}
-          <ThemeSwitcher />
+          <AnimatedThemeToggler className="h-8 w-8 rounded-full border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground p-1.5 flex items-center justify-center" />
         </div>
       </div>
     </header>
