@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { GoogleGenAI, Modality } from "@google/genai"
 import { AudioRecorder, AudioPlayer } from "@/lib/audio-utils"
+import { m } from "framer-motion"
 
 export function BrainstormInterface() {
     const [inputValue, setInputValue] = React.useState("")
@@ -15,6 +16,12 @@ export function BrainstormInterface() {
     const [status, setStatus] = React.useState<"idle" | "connecting" | "connected" | "error">("idle")
     const [agentVolume, setAgentVolume] = React.useState(0)
     const [userVolume, setUserVolume] = React.useState(0)
+
+    const [transcripts, setTranscripts] = React.useState<Array<{
+        role: "user" | "model"
+        text: string
+        isComplete: boolean
+    }>>([])
 
     const recorderRef = React.useRef<AudioRecorder | null>(null)
     const playerRef = React.useRef<AudioPlayer | null>(null)
@@ -70,6 +77,11 @@ export function BrainstormInterface() {
 
             sessionRef.current = await client.live.connect({
                 model: "gemini-2.5-flash-native-audio-preview-12-2025",
+                config: {
+                    responseModalities: [Modality.AUDIO],
+                    // inputAudioTranscription: {}, // Optional: Enable if you need input transcription config
+                    outputAudioTranscription: {},
+                },
                 callbacks: {
                     onopen: () => {
                         console.log("Connected to Gemini Live")
@@ -85,6 +97,76 @@ export function BrainstormInterface() {
                                 }
                             }
                         }
+
+                        const { inputTranscription, outputTranscription, turnComplete } = msg.serverContent || {}
+
+                        if (inputTranscription || outputTranscription || turnComplete) {
+                            setTranscripts(prev => {
+                                const newTranscripts = [...prev]
+
+                                // Handle Input Transcription (User)
+                                if (inputTranscription) {
+                                    const text = inputTranscription.text || ""
+
+                                    // Find or create user transcript for this turn
+                                    let userIndex = -1
+                                    for (let i = newTranscripts.length - 1; i >= 0; i--) {
+                                        if (newTranscripts[i].role === "user" && !newTranscripts[i].isComplete) {
+                                            userIndex = i
+                                            break
+                                        }
+                                    }
+
+                                    if (userIndex >= 0) {
+                                        // Append to existing
+                                        newTranscripts[userIndex] = {
+                                            ...newTranscripts[userIndex],
+                                            text: newTranscripts[userIndex].text + text
+                                        }
+                                    } else {
+                                        // Create new
+                                        newTranscripts.push({ role: "user", text, isComplete: false })
+                                    }
+                                }
+
+                                // Handle Output Transcription (Model)
+                                if (outputTranscription) {
+                                    const text = outputTranscription.text || ""
+
+                                    // Find or create model transcript for this turn
+                                    let modelIndex = -1
+                                    for (let i = newTranscripts.length - 1; i >= 0; i--) {
+                                        if (newTranscripts[i].role === "model" && !newTranscripts[i].isComplete) {
+                                            modelIndex = i
+                                            break
+                                        }
+                                    }
+
+                                    if (modelIndex >= 0) {
+                                        // Append to existing - create new object for immutability
+                                        newTranscripts[modelIndex] = {
+                                            ...newTranscripts[modelIndex],
+                                            text: newTranscripts[modelIndex].text + text
+                                        }
+                                    } else {
+                                        // Create new
+                                        newTranscripts.push({ role: "model", text, isComplete: false })
+                                    }
+                                }
+
+                                // Handle Turn Completion
+                                if (turnComplete) {
+                                    for (let i = 0; i < newTranscripts.length; i++) {
+                                        if (!newTranscripts[i].isComplete) {
+                                            newTranscripts[i] = { ...newTranscripts[i], isComplete: true }
+                                        }
+                                    }
+                                }
+
+                                return newTranscripts
+                            })
+                        }
+
                         if (msg.serverContent?.interrupted) {
                             console.log("Interrupted")
                             playerRef.current?.stop()
@@ -152,21 +234,41 @@ export function BrainstormInterface() {
         <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] relative bg-background">
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col items-center justify-center relative bg-background">
+
+
                 {/* Center Visual / Status */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-8">
+                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
                     {/* Visual Indicator */}
                     <div className="relative flex items-center justify-center">
                         <Orb status={status} agentVolume={agentVolume} userVolume={userVolume} />
                     </div>
 
+                    {/* Active Transcript */}
+                    {transcripts.length > 0 && (
+                        <div className="bg-secondary rounded-2xl max-h-[10rem] p-4 max-w-[25rem] w-full text-center px-4 animate-in fade-in slide-in-from-bottom-4 duration-300 overflow-scroll">
+                            {(() => {
+                                const latest = transcripts[transcripts.length - 1]
+                                if (!latest || !latest.text) return null
+                                return (
+                                    <p className={`text-sm text-left font-medium leading-relaxed ${latest.role === "user" ? "text-muted-foreground" : "text-foreground"
+                                        }`}>
+                                        <span className="italic font-bold mr-1">{latest.role === "user" ? "You:" : "Gemini:"}</span>
+                                        {latest.text}
+                                    </p>
+                                )
+                            })()}
+                        </div>
+                    )}
+
                     <div className="px-6 py-2 rounded-full bg-background border shadow-sm text-sm font-medium text-muted-foreground">
                         {status === "connected" ? "Listening..." : status === "connecting" ? "Connecting..." : "Start voice chat"}
                     </div>
+
                 </div>
 
                 {/* Bottom Input Area */}
                 <div className="absolute bottom-8 w-full max-w-3xl px-4">
-                    <div className="bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50 shadow-2xl p-4 flex flex-col gap-4">
+                    <div className="bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50 shadow-lg p-4 flex flex-col gap-4">
                         <Textarea
                             placeholder="Send a message to start the conversation"
                             className="min-h-[60px] border-0 focus-visible:ring-0 resize-none shadow-none p-2 text-base bg-transparent placeholder:text-muted-foreground/50"

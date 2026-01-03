@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { DataTable } from "@/components/data-table"
-import { DataTableSkeleton } from "@/components/data-table-skeleton"
+import { SpinnerEmpty } from "@/components/spinner-empty"
 import { projectColumns, type ProjectData } from "./columns"
 import { Badge } from "@/components/ui/badge"
 import { useGetProjectsQuery } from "@/services/projectsApi"
@@ -49,7 +49,7 @@ export default function Page() {
         <div className="flex flex-1 flex-col gap-4 px-2 py-4">
           <div className="mx-auto w-full max-w-6xl flex flex-1 flex-col gap-2">
             <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
-              {isLoading && <DataTableSkeleton />}
+              {isLoading && <SpinnerEmpty />}
 
               {isError && (
                 <div className="flex items-center justify-center py-8">

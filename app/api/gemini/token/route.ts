@@ -20,7 +20,7 @@ export async function GET() {
     // The token expires in 30 minutes by default
     const token = await client.authTokens.create({
       config: {
-        uses: 1, // The default
+        uses: 1,
         expireTime: expireTime,
         liveConnectConstraints: {
           model: 'gemini-2.5-flash-native-audio-preview-12-2025',
@@ -28,6 +28,8 @@ export async function GET() {
             sessionResumption: {},
             temperature: 0.2,
             responseModalities: [Modality.AUDIO],
+            outputAudioTranscription: {},
+            inputAudioTranscription: {},
             systemInstruction: {
               parts: [{
                 text: (() => {

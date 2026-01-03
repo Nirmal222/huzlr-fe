@@ -40,7 +40,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
     const userRingScale = useTransform(smoothUserVolume, [0, 0.08], [1, 1.15])
 
     return (
-        <div className={cn("relative flex items-center justify-center w-48 h-48", className)}>
+        <div className={cn("relative flex items-center justify-center w-32 h-32", className)}>
             <div className="relative flex items-center justify-center">
 
                 {/* IDLE STATE - Flat circle */}
@@ -48,7 +48,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                     <motion.div
                         animate={{ scale: [0.98, 1.02, 0.98] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-20 h-20 rounded-full bg-slate-400/40 border border-slate-400/30"
+                        className="w-25 h-25 rounded-full bg-slate-400/40 border border-slate-400/30"
                     />
                 )}
 
@@ -60,7 +60,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                             opacity: [0.6, 1, 0.6]
                         }}
                         transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-20 h-20 rounded-full bg-indigo-500/50 border border-indigo-400/40"
+                        className="w-25 h-25 rounded-full bg-indigo-500/50 border border-indigo-400/40"
                     />
                 )}
 
@@ -73,7 +73,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                                 scale: userRingScale,
                                 opacity: userRingOpacity,
                             }}
-                            className="absolute w-24 h-24 rounded-full border-2 border-cyan-400/50"
+                            className="absolute w-25 h-25 rounded-full border-2 border-cyan-400/50"
                         />
 
                         {/* Core - wobbles when agent speaks */}
@@ -90,7 +90,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                             transition={{
                                 borderRadius: { duration: 0.3, repeat: agentVolume > 0.02 ? Infinity : 0 }
                             }}
-                            className="w-20 h-20 bg-indigo-500/60 border border-indigo-400/50"
+                            className="w-25 h-25 bg-indigo-500/60 border border-indigo-400/50"
                         />
                     </>
                 )}
@@ -100,7 +100,7 @@ export function Orb({ status, agentVolume = 0, userVolume = 0, className }: OrbP
                     <motion.div
                         animate={{ scale: [0.98, 1.02, 0.98] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-20 h-20 rounded-full bg-red-500/50 border border-red-400/40"
+                        className="w-25 h-25 rounded-full bg-red-500/50 border border-red-400/40"
                     />
                 )}
             </div>

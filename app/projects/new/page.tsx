@@ -22,10 +22,6 @@ export default function Page() {
             <AppSidebar variant="inset" />
             <SidebarInset>
                 <SiteHeader>
-                    <Button variant="outline" size="sm" className="gap-2 rounded-full">
-                        <MessageSquare className="h-4 w-4" />
-                        Switch to chat mode
-                    </Button>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
                         <X className="h-4 w-4" />
                     </Button>
