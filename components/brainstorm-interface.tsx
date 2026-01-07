@@ -10,6 +10,7 @@ import { useGeminiLive } from "@/hooks/use-gemini-live" // Import custom hook
 
 export function BrainstormInterface() {
     const [inputValue, setInputValue] = React.useState("")
+    const scrollRef = React.useRef<HTMLDivElement>(null)
 
     // Use the custom hook for all Gemini logic
     const {
@@ -28,6 +29,13 @@ export function BrainstormInterface() {
             // console.log("📊 Volume:", { agent: agentVolume.toFixed(3), user: userVolume.toFixed(3) })
         }
     }, [agentVolume, userVolume])
+
+    // Auto-scroll to bottom of transcript
+    React.useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+        }
+    }, [transcripts])
 
     const handleSendMessage = () => {
         if (!inputValue.trim()) return
@@ -57,7 +65,7 @@ export function BrainstormInterface() {
 
                     {/* Active Transcript */}
                     {transcripts.length > 0 && (
-                        <div className="h-[10rem] w-[25rem]">
+                        <div ref={scrollRef} className="h-[10rem] w-[25rem] overflow-scroll">
                             <div className="bg-secondary rounded-2xl p-4 w-full text-center px-4 animate-in fade-in slide-in-from-bottom-4 duration-300 overflow-scroll">
                                 {(() => {
                                     const latest = transcripts[transcripts.length - 1]

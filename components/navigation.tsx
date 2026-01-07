@@ -83,8 +83,8 @@ function Navbar({ className }: { className?: string }) {
           <div className="hidden lg:flex items-center gap-4">
             <Link href="/signup">
               <Button variant="outline" className="rounded-full cursor-pointer">
-                Get started
                 <Sparkles className="text-yellow-500 fill-yellow-500" />
+                Get started
               </Button>
             </Link>
             <AnimatedThemeToggler className="h-8 w-8 rounded-full border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground p-1.5 flex items-center justify-center" />

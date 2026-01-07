@@ -16,6 +16,7 @@ import { SpinnerEmpty } from "@/components/spinner-empty"
 import { projectColumns, type ProjectData } from "./columns"
 import { Badge } from "@/components/ui/badge"
 import { useGetProjectsQuery } from "@/services/projectsApi"
+import { IntegrationSelector } from "@/components/integration-selector"
 
 export default function Page() {
   const { data, isLoading, isError, error } = useGetProjectsQuery()
@@ -48,7 +49,7 @@ export default function Page() {
         </SiteHeader>
         <div className="flex flex-1 flex-col gap-4 px-2 py-4">
           <div className="mx-auto w-full max-w-6xl flex flex-1 flex-col gap-2">
-            <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
+            <div className="flex flex-1 flex-col gap-4 md:gap-6">
               {isLoading && <SpinnerEmpty />}
 
               {isError && (
@@ -75,11 +76,15 @@ export default function Page() {
                       <p className="text-sm text-muted-foreground">
                         You can start brainstorming a new project now.
                       </p>
-                      <a href="/projects/new" className="mt-4">
-                        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
-                          Create Project
-                        </button>
-                      </a>
+                      <div className="mt-4 flex items-center gap-4">
+                        <Link href="/projects/new">
+                          <Button className="gap-2 rounded-full">
+                            <Plus className="h-4 w-4" />
+                            Create Project
+                          </Button>
+                        </Link>
+                        <IntegrationSelector />
+                      </div>
                     </div>
                   </div>
                 )

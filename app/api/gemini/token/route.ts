@@ -53,7 +53,6 @@ export async function GET() {
               }
             },
             tools: tools,
-            // enableAffectiveDialog: true,
             proactivity: {
               proactiveAudio: true
             },
