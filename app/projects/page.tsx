@@ -71,16 +71,16 @@ export default function Page() {
                   <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-col items-center gap-1 text-center">
                       <h3 className="text-base font-medium tracking-tight">
-                        You have no projects
+                        Start planning your projects
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        You can start brainstorming a new project now.
+                        Bring existing work or start fresh. huzlr helps you think, plan,execute, moitor and predict outcomes.
                       </p>
                       <div className="mt-4 flex items-center gap-4">
                         <Link href="/projects/new">
-                          <Button className="gap-2 rounded-full">
+                          <Button className="gap-2 rounded-full cursor-pointer">
                             <Plus className="h-4 w-4" />
-                            Create Project
+                            Start from Scratch
                           </Button>
                         </Link>
                         <IntegrationSelector />

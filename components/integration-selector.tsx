@@ -1,23 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, LayoutGrid } from "lucide-react"
+import { Check, ChevronsUpDown, LayoutGrid, Plus, FileSpreadsheet } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 const JiraIcon = ({ className }: { className?: string }) => (
     <svg
@@ -63,101 +59,112 @@ const integrations = [
     {
         value: "jira",
         label: "Jira",
+        description: "Issues, epics, sprints",
         icon: JiraIcon,
         color: "text-blue-500",
     },
     {
         value: "linear",
         label: "Linear",
+        description: "Issues, projects, cycles",
         icon: LinearIcon,
         color: "text-purple-500",
     },
     {
         value: "asana",
         label: "Asana",
+        description: "Tasks, projects, portfolios",
         icon: AsanaIcon,
         color: "text-red-500",
+    },
+    {
+        value: "csv",
+        label: "CSV Import",
+        description: "Upload spreadsheet",
+        icon: FileSpreadsheet,
+        color: "text-green-500",
     },
 ]
 
 export function IntegrationSelector() {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const [selected, setSelected] = React.useState<string | null>(null)
 
-    const selectedIntegration = integrations.find(
-        (integration) => integration.value === value
-    )
+    const handleProceed = () => {
+        if (selected) {
+            setOpen(false)
+            console.log("Proceed with", selected)
+        }
+    }
 
     return (
-        <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
                 <Button
                     variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="h-10 w-50 justify-center rounded-full border-dashe px-4d"
+                    className="h-10 rounded-full border-dashed px-4"
                 >
-                    <div className="flex items-center gap-2">
-                        {value && selectedIntegration ? (
-                            <selectedIntegration.icon
-                                className={cn("h-4 w-4", selectedIntegration.color)}
-                            />
-                        ) : (
-                            <LayoutGrid className="h-4 w-4 shrink-0 opacity-50" />
-                        )}
-                        {value
-                            ? selectedIntegration?.label
-                            : "Import Project"}
-                    </div>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Bring Existing Work
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0" align="start">
-                <Command>
-                    <CommandInput placeholder="Search integration..." />
-                    <CommandList>
-                        <CommandEmpty>No integration found.</CommandEmpty>
-                        <CommandGroup>
-                            {integrations.map((integration) => (
-                                <CommandItem
-                                    key={integration.value}
-                                    value={integration.value}
-                                    onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
-                                    }}
-                                >
-                                    <integration.icon
-                                        className={cn(
-                                            "mr-2 h-4 w-4",
-                                            integration.color
-                                        )}
-                                    />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[550px] border shadow-2xl bg-background">
+                <DialogHeader className="pb-6">
+                    <DialogTitle className="text-xl font-medium tracking-tight">
+                        Bring your existing work
+                    </DialogTitle>
+                    <DialogDescription className="text-muted-foreground">
+                        Connect your tools to help Huzlr plan, predict risks, and optimize delivery.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-2 gap-4">
+                    {integrations.map((integration) => (
+                        <div
+                            key={integration.value}
+                            className={cn(
+                                "group relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 p-6 transition-all duration-200 hover:border-primary/20 hover:bg-muted/30",
+                                selected === integration.value
+                                    ? "border-primary bg-primary/5 ring-0"
+                                    : "border-muted/40 bg-transparent"
+                            )}
+                            onClick={() => setSelected(integration.value)}
+                        >
+                            <div className={cn(
+                                "rounded-lg p-2.5 transition-colors",
+                                selected === integration.value ? "bg-background shadow-sm" : "bg-muted/50 group-hover:bg-background"
+                            )}>
+                                <integration.icon className={cn("h-6 w-6", integration.color)} />
+                            </div>
+                            <div className="space-y-0.5 text-center">
+                                <h3 className="text-sm font-medium leading-none">
                                     {integration.label}
-                                    <Check
-                                        className={cn(
-                                            "ml-auto h-4 w-4",
-                                            value === integration.value ? "opacity-100" : "opacity-0"
-                                        )}
-                                    />
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
-                    </CommandList>
-                    {value && (
-                        <div className="p-2 border-t mt-1">
-                            <Button
-                                className="w-full rounded-full h-8 text-xs font-normal"
-                                onClick={() => {
-                                    setOpen(false)
-                                    console.log("Proceed with", value)
-                                }}
-                            >
-                                Proceed
-                            </Button>
+                                </h3>
+                                <p className="text-[10px] text-muted-foreground">
+                                    {integration.description}
+                                </p>
+                            </div>
                         </div>
-                    )}
-                </Command>
-            </PopoverContent>
-        </Popover>
+                    ))}
+                </div>
+                <div className="flex items-center justify-between">
+                    <Button variant="link" className="text-muted-foreground h-auto p-0 cursor-pointer" onClick={() => console.log("View all integrations")}>
+                        View all integrations
+                    </Button>
+                    <Button
+                        onClick={handleProceed}
+                        disabled={!selected}
+                        className="rounded-full px-6 cursor-pointer"
+                    >
+                        Proceed
+                    </Button>
+                </div>
+                <DialogFooter className="border-t pt-6 sm:justify-center">
+                    <p className="text-xs text-muted-foreground text-left">
+                        huzlr does not replace your tools. It analyzes your work to help you execute the plan better.
+                    </p>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
 
