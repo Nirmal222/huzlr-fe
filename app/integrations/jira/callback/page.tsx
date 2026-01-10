@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react'
 
-export default function JiraCallbackPage() {
+function CallbackContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
@@ -62,34 +62,47 @@ export default function JiraCallbackPage() {
     }, [searchParams, router])
 
     return (
+        <div className="flex flex-col items-center gap-4 rounded-lg border bg-card p-8 shadow-lg">
+            {status === 'loading' && (
+                <>
+                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                    <p className="text-lg font-medium">{message}</p>
+                </>
+            )}
+            {status === 'success' && (
+                <>
+                    <CheckCircle2 className="h-12 w-12 text-green-500" />
+                    <p className="text-lg font-medium text-green-500">{message}</p>
+                    <p className="text-sm text-muted-foreground">Redirecting...</p>
+                </>
+            )}
+            {status === 'error' && (
+                <>
+                    <XCircle className="h-12 w-12 text-destructive" />
+                    <p className="text-lg font-medium text-destructive">{message}</p>
+                    <button
+                        onClick={() => router.push('/projects')}
+                        className="mt-4 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
+                    >
+                        Return to Projects
+                    </button>
+                </>
+            )}
+        </div>
+    )
+}
+
+export default function JiraCallbackPage() {
+    return (
         <div className="flex min-h-screen items-center justify-center bg-background">
-            <div className="flex flex-col items-center gap-4 rounded-lg border bg-card p-8 shadow-lg">
-                {status === 'loading' && (
-                    <>
-                        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                        <p className="text-lg font-medium">{message}</p>
-                    </>
-                )}
-                {status === 'success' && (
-                    <>
-                        <CheckCircle2 className="h-12 w-12 text-green-500" />
-                        <p className="text-lg font-medium text-green-500">{message}</p>
-                        <p className="text-sm text-muted-foreground">Redirecting...</p>
-                    </>
-                )}
-                {status === 'error' && (
-                    <>
-                        <XCircle className="h-12 w-12 text-destructive" />
-                        <p className="text-lg font-medium text-destructive">{message}</p>
-                        <button
-                            onClick={() => router.push('/projects')}
-                            className="mt-4 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
-                        >
-                            Return to Projects
-                        </button>
-                    </>
-                )}
-            </div>
+            <Suspense fallback={
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                    <p className="text-sm text-muted-foreground">Loading...</p>
+                </div>
+            }>
+                <CallbackContent />
+            </Suspense>
         </div>
     )
 }
