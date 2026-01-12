@@ -16,7 +16,6 @@ import { SpinnerEmpty } from "@/components/spinner-empty"
 import { projectColumns, type ProjectData } from "./columns"
 import { Badge } from "@/components/ui/badge"
 import { useGetProjectsQuery } from "@/services/projectsApi"
-import { IntegrationSelector } from "@/components/integration-selector"
 import { ConnectedIntegrationsSheet } from "@/components/connected-integrations"
 import { JiraImportDialog } from "@/components/jira-import-dialog"
 import { useAppSelector } from "@/lib/redux/hooks"
@@ -96,7 +95,6 @@ export default function Page() {
                             Start from Scratch
                           </Button>
                         </Link>
-                        <IntegrationSelector />
                         <ConnectedIntegrationsSheet
                           onImportClick={(integration) => {
                             if (integration === "jira") {
