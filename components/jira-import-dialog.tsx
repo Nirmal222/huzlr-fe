@@ -15,46 +15,30 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 import { Spinner } from "@/components/ui/spinner"
 
-interface JiraProject {
-    id: string
-    key: string
-    name: string
-    description?: string
-    issueCount?: number
-}
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
+import { fetchJiraProjects } from "@/lib/redux/slices/jiraSlice"
+import { importJiraProjects, ProjectStatus, IntegrationSource } from "@/lib/redux/slices/projectSlice"
 
 interface JiraImportDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
-    onImport?: (projectKeys: string[]) => void
+    onImport?: (projectKeys: string[]) => void // Deprecated but keeping for comp
 }
 
-// Mock data for now - will be replaced with actual API call
-const mockJiraProjects: JiraProject[] = [
-    { id: "1", key: "PROJ", name: "Project Alpha", description: "Main product project", issueCount: 45 },
-    { id: "2", key: "INFRA", name: "Infrastructure", description: "DevOps and infrastructure", issueCount: 23 },
-    { id: "3", key: "MARKET", name: "Marketing", description: "Marketing campaigns", issueCount: 12 },
-]
+export function JiraImportDialog({ open, onOpenChange }: JiraImportDialogProps) {
+    const dispatch = useAppDispatch()
+    const { projects, loading, error } = useAppSelector((state) => state.jira)
+    const { importing } = useAppSelector((state) => state.projects)
+    const user = useAppSelector((state) => state.auth.user)
 
-export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDialogProps) {
-    const [loading, setLoading] = React.useState(false)
-    const [projects, setProjects] = React.useState<JiraProject[]>([])
     const [selectedProjects, setSelectedProjects] = React.useState<Set<string>>(new Set())
-    const [importing, setImporting] = React.useState(false)
 
     React.useEffect(() => {
         if (open) {
-            // Simulate API call
-            setLoading(true)
-            setTimeout(() => {
-                setProjects(mockJiraProjects)
-                setLoading(false)
-            }, 1000)
-        } else {
-            // Reset when dialog closes
+            dispatch(fetchJiraProjects())
             setSelectedProjects(new Set())
         }
-    }, [open])
+    }, [open, dispatch])
 
     const toggleProject = (projectKey: string) => {
         const newSelected = new Set(selectedProjects)
@@ -67,20 +51,48 @@ export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDia
     }
 
     const handleImport = async () => {
-        if (selectedProjects.size === 0) return
+        if (selectedProjects.size === 0 || !user) return
 
-        setImporting(true)
-        // Simulate import
-        setTimeout(() => {
-            onImport?.(Array.from(selectedProjects))
-            setImporting(false)
-            onOpenChange(false)
-        }, 1500)
+        const projectsToImport = projects
+            .filter(p => selectedProjects.has(p.key))
+            .map(p => ({
+                project_title: p.name,
+                description: p.description,
+                user_id: user.id,
+                status: "planning" as ProjectStatus,
+                source: "jira" as IntegrationSource,
+                external_id: p.id,
+                external_url: p.self, // or construct browse URL if available
+                integration_metadata: {
+                    original_key: p.key,
+                    original_id: p.id,
+                    project_type: p.projectTypeKey
+                },
+                // Mocking data that isn't in simple Jira project fetch but needed for UI demo
+                stats: {
+                    scope: 17,
+                    completed: 2,
+                    progress: 12
+                },
+                teams: ["Huzlr"],
+                labels: ["Jira Import", "Backlog"],
+                milestones: [
+                    { id: 1, title: "Migration", date: "2024-02-01", status: "pending" }
+                ],
+                resources: [
+                    { title: "Jira Source", url: p.self || "", type: "link", icon: "jira" }
+                ]
+            }));
+
+        await dispatch(importJiraProjects(projectsToImport))
+        onOpenChange(false)
+        // Optionally trigger a refresh of projects if not handled by store update
+        // The projectSlice.ts createProject.fulfilled handles adding to state, so it should auto-update.
     }
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[600px] max-h-[80vh] flex flex-col">
+            <DialogContent className="sm:max-w-[600px] max-h-[80vh] flex flex-col transition-all duration-200">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-semibold">Import from Jira</DialogTitle>
                     <DialogDescription>
@@ -88,19 +100,23 @@ export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDia
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex-1 overflow-y-auto -mx-6 px-6 py-4">
+                <div className="flex-1 overflow-y-auto -mx-6 px-6 py-4 min-h-[300px]">
                     {loading ? (
-                        <div className="flex flex-col items-center justify-center py-12 gap-3">
+                        <div className="flex flex-col items-center justify-center py-12 gap-3 h-full">
                             <Spinner className="size-8" />
                             <p className="text-sm text-muted-foreground">Loading your Jira projects...</p>
                         </div>
+                    ) : error ? (
+                        <div className="flex flex-col items-center justify-center py-12 gap-3 h-full text-destructive">
+                            <p>Error loading projects: {error}</p>
+                        </div>
                     ) : projects.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-12 gap-3 text-center">
+                        <div className="flex flex-col items-center justify-center py-12 gap-3 text-center h-full">
                             <FolderKanban className="h-12 w-12 text-muted-foreground/50" />
                             <div className="space-y-1">
                                 <p className="text-sm font-medium">No projects found</p>
                                 <p className="text-xs text-muted-foreground">
-                                    You don't have any Jira projects to import
+                                    You don't have any Jira projects available to import.
                                 </p>
                             </div>
                         </div>
@@ -110,10 +126,10 @@ export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDia
                                 <div
                                     key={project.id}
                                     className={cn(
-                                        "flex items-start gap-3 rounded-lg border p-4 cursor-pointer transition-colors",
+                                        "flex items-start gap-3 rounded-lg border p-4 cursor-pointer transition-all duration-200",
                                         selectedProjects.has(project.key)
-                                            ? "border-primary bg-primary/5"
-                                            : "border-border hover:bg-muted/50"
+                                            ? "border-primary bg-primary/5 shadow-sm"
+                                            : "border-transparent border bg-muted/30 hover:bg-muted/50"
                                     )}
                                     onClick={() => toggleProject(project.key)}
                                 >
@@ -124,18 +140,18 @@ export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDia
                                     />
                                     <div className="flex-1 space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <h4 className="text-sm font-medium">{project.name}</h4>
-                                            <span className="text-xs font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                                            <h4 className="text-sm font-medium leading-none">{project.name}</h4>
+                                            <span className="text-[10px] font-mono text-muted-foreground bg-background border px-1.5 py-0.5 rounded">
                                                 {project.key}
                                             </span>
                                         </div>
                                         {project.description && (
-                                            <p className="text-xs text-muted-foreground">
+                                            <p className="text-xs text-muted-foreground line-clamp-2">
                                                 {project.description}
                                             </p>
                                         )}
                                         {project.issueCount !== undefined && (
-                                            <p className="text-xs text-muted-foreground">
+                                            <p className="text-[10px] text-muted-foreground pt-1">
                                                 {project.issueCount} issue{project.issueCount !== 1 ? 's' : ''}
                                             </p>
                                         )}
@@ -153,15 +169,15 @@ export function JiraImportDialog({ open, onOpenChange, onImport }: JiraImportDia
                         </p>
                         <div className="flex gap-2">
                             <Button
-                                variant="outline"
-                                className="rounded-full"
+                                variant="ghost"
+                                className="rounded-full hover:bg-muted"
                                 onClick={() => onOpenChange(false)}
                                 disabled={importing}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="rounded-full"
+                                className="rounded-full shadow-md"
                                 onClick={handleImport}
                                 disabled={selectedProjects.size === 0 || importing}
                             >

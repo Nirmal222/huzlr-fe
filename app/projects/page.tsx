@@ -15,16 +15,22 @@ import { DataTable } from "@/components/data-table"
 import { SpinnerEmpty } from "@/components/spinner-empty"
 import { projectColumns, type ProjectData } from "./columns"
 import { Badge } from "@/components/ui/badge"
-import { useGetProjectsQuery } from "@/services/projectsApi"
 import { ConnectedIntegrationsSheet } from "@/components/connected-integrations"
 import { JiraImportDialog } from "@/components/jira-import-dialog"
-import { useAppSelector } from "@/lib/redux/hooks"
-import { useState } from "react"
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks"
+import { useEffect, useState } from "react"
+import { fetchProjects } from "@/lib/redux/slices/projectSlice"
 
 export default function Page() {
-  const { data, isLoading, isError, error } = useGetProjectsQuery()
+  const dispatch = useAppDispatch()
+  const { items: data, loading: isLoading, error } = useAppSelector((state) => state.projects) // Assuming state.projects is bound in store
   const user = useAppSelector((state) => state.auth.user)
   const [jiraImportOpen, setJiraImportOpen] = useState(false)
+
+  // Fetch projects on mount
+  useEffect(() => {
+    dispatch(fetchProjects())
+  }, [dispatch])
 
   const hasConnectedIntegrations = user?.integrations?.jira?.connected || false
 
@@ -34,6 +40,20 @@ export default function Page() {
     { value: "key-personnel", label: "Key Personnel", badge: 2 },
     { value: "focus-documents", label: "Focus Documents" },
   ]
+
+  // Transform Redux Project[] to DataTable expected format
+  const transformedData = data?.map(project => ({
+    id: project.project_id,
+    header: project.project_title,
+    status: project.status || "Not Started",
+    // Default values for fields not yet in backend model but required by UI columns
+    type: "Focus Documents",
+    target: "2000",
+    limit: "5000",
+    reviewer: "Assign reviewer"
+  })) || []
+
+  const isError = !!error;
 
   return (
     <SidebarProvider
@@ -67,14 +87,15 @@ export default function Page() {
                 </div>
               )}
 
-              {data && data.length > 0 ? (
-                <DataTable<ProjectData>
-                  data={data}
+              {transformedData.length > 0 ? (
+                <DataTable<any>
+                  data={transformedData}
                   columns={projectColumns}
                   tabs={tabs}
                 />
               ) : (
-                data && (
+                // Only show empty state if not loading and no data
+                !isLoading && !isError && (
                   <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-col items-center gap-1 text-center">
 
@@ -116,10 +137,6 @@ export default function Page() {
       <JiraImportDialog
         open={jiraImportOpen}
         onOpenChange={setJiraImportOpen}
-        onImport={(projectKeys) => {
-          console.log("Importing projects:", projectKeys)
-          // TODO: Call API to import projects
-        }}
       />
     </SidebarProvider>
   )
