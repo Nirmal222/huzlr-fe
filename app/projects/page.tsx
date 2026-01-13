@@ -42,16 +42,18 @@ export default function Page() {
   ]
 
   // Transform Redux Project[] to DataTable expected format
-  const transformedData = data?.map(project => ({
-    id: project.project_id,
-    header: project.project_title,
-    status: project.status || "Not Started",
-    // Default values for fields not yet in backend model but required by UI columns
-    type: "Focus Documents",
-    target: "2000",
-    limit: "5000",
-    reviewer: "Assign reviewer"
-  })) || []
+  const transformedData = data?.map(project => {
+    const props = project.properties || {};
+    return {
+      id: project.project_id,
+      header: project.project_title,
+      status: project.status || "Not Started",
+      type: props.type || "Focus Documents",
+      target: props.stats?.target || "2000",
+      limit: props.stats?.limit || "5000",
+      reviewer: props.reviewer || "Assign reviewer"
+    }
+  }) || []
 
   const isError = !!error;
 

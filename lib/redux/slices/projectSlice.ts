@@ -43,10 +43,40 @@ export interface ProjectStats {
     scope?: number;
     completed?: number;
     progress?: number;
+    target?: string;
+    limit?: string;
 }
 
 // Define the Project interface matching the backend schema
 // Define the Project interface matching the backend schema
+// Consolidated Properties Interface
+export interface ProjectProperties {
+    // Charter & Content
+    purpose?: any;
+    objectives?: Objective[];
+    deliverables?: Deliverable[];
+    scope?: any;
+    timeline?: any;
+    budget?: any;
+    stakeholders?: any[];
+    team_members?: any[];
+    resources?: Resource[];
+    milestones?: Milestone[];
+    integration_metadata?: IntegrationMetadata;
+
+    // Metadata
+    priority?: ProjectPriority;
+    start_date?: string;
+    target_date?: string;
+    labels?: string[];
+    teams?: string[];
+    stats?: ProjectStats;
+
+    // UI Specific
+    type?: string;
+    reviewer?: string;
+}
+
 export interface Project {
     project_id: number;
     user_id: number;
@@ -58,27 +88,10 @@ export interface Project {
     source?: IntegrationSource;
     external_id?: string;
     external_url?: string;
-    integration_metadata?: IntegrationMetadata;
 
-    // Charter & Content (JSON)
-    purpose?: any; // Keep flexible or define specific type if known
-    objectives?: Objective[];
-    deliverables?: Deliverable[];
-    scope?: any;
-    timeline?: any;
-    budget?: any;
-    stakeholders?: any[];
-    team_members?: any[];
-    resources?: Resource[];
-    milestones?: Milestone[];
+    // Extensible Properties
+    properties?: ProjectProperties;
 
-    // Linear-style Metadata
-    priority?: ProjectPriority;
-    start_date?: string;
-    target_date?: string;
-    labels?: string[];
-    teams?: string[];
-    stats?: ProjectStats;
     lead_id?: number;
 
     created_at: string;
@@ -95,12 +108,9 @@ export interface ProjectCreate {
     source?: IntegrationSource;
     external_id?: string;
     external_url?: string;
-    integration_metadata?: IntegrationMetadata;
-    milestones?: Milestone[];
-    resources?: Resource[];
-    labels?: string[];
-    teams?: string[];
-    stats?: ProjectStats;
+
+    properties?: ProjectProperties;
+
     lead_id?: number;
 }
 
@@ -178,11 +188,9 @@ export const createProject = createAsyncThunk(
 
 // Thunk to handle importing multiple Jira projects
 // This iterates over the selection and creates a project for each
-// Thunk to handle importing multiple Jira projects
-// This iterates over the selection and creates a project for each
 export const importJiraProjects = createAsyncThunk(
     'projects/importJira',
-    async (projectsToImport: Partial<ProjectCreate>[], { dispatch, rejectWithValue }) => {
+    async (projectsToImport: any[], { dispatch, rejectWithValue }) => {
         try {
             const results = [];
             for (const proj of projectsToImport) {
@@ -201,13 +209,16 @@ export const importJiraProjects = createAsyncThunk(
                     source: proj.source || "native",
                     external_id: proj.external_id,
                     external_url: proj.external_url,
-                    integration_metadata: proj.integration_metadata,
-                    stats: proj.stats,
-                    milestones: proj.milestones,
-                    resources: proj.resources,
-                    labels: proj.labels,
-                    teams: proj.teams,
-                    lead_id: proj.lead_id
+                    lead_id: proj.lead_id,
+
+                    properties: {
+                        integration_metadata: proj.integration_metadata,
+                        stats: proj.stats,
+                        milestones: proj.milestones,
+                        resources: proj.resources,
+                        labels: proj.labels,
+                        teams: proj.teams,
+                    }
                 };
 
                 // Dispatch createProject for each one
