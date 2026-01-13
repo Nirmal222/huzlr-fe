@@ -1,56 +1,139 @@
-"use client";
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import data from "@/constants/how-it-works-data.json";
-import Image from "next/image";
+interface HowItWorksProps {
+  title?: string;
+  description?: string;
+  mainImage?: {
+    src: string;
+    alt: string;
+    captionTitle?: string;
+    captionDescription?: string;
+  };
+  featureCard?: {
+    title: string;
+    features: string[];
+    buttonText: string;
+    buttonUrl: string;
+  };
+  infoCard?: {
+    title: string;
+    description: string;
+  };
+  bottomSection?: {
+    title: string;
+    description: string;
+  };
+}
 
-export function HowItWorks() {
-  const { steps } = data;
-
+export const HowItWorks = ({
+  title = "Project Intelligence That Works for You",
+  description = "Huzlr connects people, skills, tasks, and risks into a living knowledge graph giving you clear, simple project intelligence without the complexity of Jira or heavy tools.",
+  mainImage = {
+    src: "https://shadcnblocks.com/images/block/placeholder-1.svg",
+    alt: "Huzlr Dashboard",
+    captionTitle: "See the Full Picture of Your Projects Effortlessly",
+    captionDescription: "Huzlr understands your team’s capacity, skills, dependencies, and risk before issues appear. You get clarity, not clutter.",
+  },
+  featureCard = {
+    title: "Why Huzlr?",
+    features: [
+      "Maps skills to tasks intelligently",
+      "Predicts risk early",
+      "Shows workload & capacity clearly",
+      "Keeps the UI clean and simple",
+    ],
+    buttonText: "Discover More",
+    buttonUrl: "#",
+  },
+  infoCard = {
+    title: "A Smarter Way to Deliver Projects",
+    description: "Huzlr uses a dynamic knowledge graph to connect projects, people, workflows, and outcomes so decisions are faster and execution is smoother.",
+  },
+  bottomSection = {
+    title: "Project Intelligence. Zero Complexity.",
+    description: "Huzlr predicts risks, maps skills to work, and keeps project execution simple and clear.",
+  },
+}: HowItWorksProps = {}) => {
   return (
-    <section className="relative py-24 bg-background overflow-hidden border-t border-border">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
+    <section className="py-16 border-t">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
           How <q>huzlr</q> <span className="text-primary font-caveat">works</span>
         </h2>
         <div className="h-1 w-24 bg-primary/20 mx-auto rounded-full mt-4" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="relative flex flex-col bg-card border border-border rounded-3xl p-6 transition-all hover:shadow-lg min-h-[350px] overflow-hidden group"
-            >
-              {/* Number */}
-              <span className="text-3xl font-bold text-primary mb-4 block">
-                {step.number}
-              </span>
+      <div className="container mx-auto">
+        {/* Header */}
+        <div className="mb-8 grid gap-4 text-center md:grid-cols-2 md:text-left">
+          <h1 className="text-3xl font-semibold">{title}</h1>
+          <p className="text-muted-foreground">{description}</p>
+        </div>
 
-              {/* Title */}
-              <h3 className="text-xl font-bold text-foreground mb-3 leading-tight">
-                {step.title}
-              </h3>
+        {/* Main Grid */}
+        <div className="grid gap-4 lg:grid-cols-3">
 
-              {/* Description */}
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6 relative z-10">
-                {step.description}
-              </p>
-
-              {/* Image - Positioned at bottom right like the reference */}
-              <div className="mt-auto self-end relative w-40 h-40 -mb-6 -mr-2 group-hover:scale-105 transition-transform duration-500">
-                <Image
-                  src={step.image}
-                  alt={step.title}
-                  fill
-                  className="object-contain object-bottom"
-                />
-              </div>
+          {/* Left Large Area (Main Image + Caption) */}
+          <div className="relative overflow-hidden rounded-xl lg:col-span-2 max-h-[600px] group">
+            <img
+              src={mainImage.src}
+              alt={mainImage.alt}
+              className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 flex flex-col justify-end text-white">
+              <h3 className="text-2xl font-bold mb-2">{mainImage.captionTitle}</h3>
+              <p className="text-white/90 max-w-xl">{mainImage.captionDescription}</p>
             </div>
-          ))}
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col gap-4">
+
+            {/* Top Right Card (Why Huzlr) */}
+            <div className="flex flex-col justify-between gap-5 rounded-xl bg-muted p-5 flex-1">
+              <div>
+                <h3 className="mb-4 text-xl font-semibold">{featureCard.title}</h3>
+                <ul className="space-y-2">
+                  {featureCard.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-muted-foreground">
+                      <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <Button variant="outline" className="w-full sm:w-auto" asChild>
+                <a href={featureCard.buttonUrl}>
+                  {featureCard.buttonText}
+                </a>
+              </Button>
+            </div>
+
+            {/* Bottom Right Card (Smarter Way) */}
+            <div className="flex flex-col justify-center gap-4 rounded-xl bg-primary/5 border border-primary/10 p-5 flex-1">
+              <h3 className="text-xl font-semibold">{infoCard.title}</h3>
+              <p className="text-muted-foreground">
+                {infoCard.description}
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Bottom Section (Even Shorter Text) */}
+        <div className="mt-4 relative overflow-hidden rounded-xl bg-muted p-6 md:p-10 text-center">
+          <div className="relative z-10 max-w-3xl mx-auto space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold">{bottomSection.title}</h2>
+            <p className="text-lg text-muted-foreground">{bottomSection.description}</p>
+          </div>
+
+          {/* Decorative Background Pattern */}
+          <div className="pointer-events-none absolute top-0 left-0 h-full w-full opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(#000000_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          </div>
         </div>
       </div>
     </section>
   );
-}
+};

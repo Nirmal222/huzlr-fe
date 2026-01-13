@@ -54,11 +54,8 @@ export function IdealCustomers() {
               Building for the modern workforce
             </p>
           </div>
-          <div className="mt-4">
-            <LogoCloud />
-          </div>
         </div>
-        <div className="mt-16 flex w-full overflow-hidden py-10">
+        <div className="mt-16 flex w-full overflow-hidden">
           <div className="pause-on-hover flex animate-marquee gap-8 pl-8">
             {[...segments, ...segments].map((segment, idx) => (
               <div

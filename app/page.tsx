@@ -39,7 +39,6 @@ export default function Home() {
       <Hero />
       <IdealCustomers />
       <HowItWorks />
-      <AnimatedBeamFeatures />
       <Benefits />
       <FAQ />
       <CTA />
