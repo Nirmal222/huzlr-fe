@@ -19,7 +19,10 @@ import {
   Position,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Home, Crown, Settings, FileText, Package, User } from "lucide-react";
+import {
+  Home, Crown, Settings, FileText, Package, User,
+  Code2, Laptop, Server, Cpu, LayoutDashboard, Map, Palette, Search, Rocket, BarChart3, Globe
+} from "lucide-react";
 
 interface FlowCanvasProps {
   className?: string;
@@ -64,40 +67,56 @@ const UniversalHandles = ({ id }: { id: string }) => {
 // 1. Hub Node (The Sun)
 function HubNode({ data }: any) {
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       <UniversalHandles id={data.id} />
       <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900 border-4 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.3)] relative z-10 dark:bg-slate-900 bg-white">
         <Home size={32} className="text-indigo-500" strokeWidth={2} />
       </div>
-    </>
+      {/* Label */}
+      <span className="absolute top-[85px] text-xs font-bold text-foreground/80 whitespace-nowrap px-2 py-0.5 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+        {data.label}
+      </span>
+    </div>
   );
 }
 
 // 2. Cluster Head Node (The Planets - Pink/Purple)
 function ClusterHeadNode({ data }: any) {
   const color = data.color || "#EC4899";
+  const Icon = data.icon || Crown;
+
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       <UniversalHandles id={data.id} />
       <div
         className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-card border-2 shadow-lg relative z-10"
         style={{ borderColor: color, boxShadow: `0 0 20px ${color}40` }}
       >
-        <Crown size={24} color={color} strokeWidth={2} />
+        <Icon size={24} color={color} strokeWidth={2} />
       </div>
-    </>
+      <span className="absolute top-[65px] text-[10px] font-semibold text-foreground/70 whitespace-nowrap px-1.5 py-0.5 rounded-full bg-background/50 backdrop-blur-sm">
+        {data.label}
+      </span>
+    </div>
   );
 }
 
 // 3. Satellite Node (The Moons - Blue/Cyan)
 function SatelliteNode({ data }: any) {
+  const Icon = data.icon || User;
+
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       <UniversalHandles id={data.id} />
       <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card border border-border hover:border-cyan-400 transition-colors shadow-md relative z-10">
-        <User size={18} className="text-cyan-400" />
+        <Icon size={18} className="text-cyan-400" />
       </div>
-    </>
+      {data.label && (
+        <span className="absolute top-[42px] text-[9px] font-medium text-muted-foreground whitespace-nowrap pointer-events-none">
+          {data.label}
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -112,88 +131,262 @@ const edgeStyle: React.CSSProperties = {
   strokeWidth: 1.5,
 };
 
-// --- Algorithmic Layout Generator ---
+// --- Semantic Startup Data Structure ---
+const graphData = {
+  id: "hub",
+  type: "hub",
+  label: "Huzlr Core",
+  children: [
+    {
+      id: "engineering",
+      label: "Engineering",
+      color: "#3b82f6", // Blue
+      icon: Code2,
+      children: [
+        {
+          id: "fe", label: "Frontend", icon: Laptop, children: [
+            { id: "fe-react", label: "React" },
+            { id: "fe-tw", label: "Tailwind" },
+            { id: "fe-next", label: "Next.js" },
+            { id: "fe-ts", label: "TypeScript" },
+            { id: "fe-perf", label: "Vitals" }
+          ]
+        },
+        {
+          id: "be", label: "Backend", icon: Server, children: [
+            { id: "be-py", label: "Python" },
+            { id: "be-pg", label: "Postgres" },
+            { id: "be-api", label: "FastAPI" },
+            { id: "be-redis", label: "Redis" },
+            { id: "be-auth", label: "OAuth" }
+          ]
+        },
+        {
+          id: "ai", label: "AI Core", icon: Cpu, children: [
+            { id: "ai-llm", label: "LLM" },
+            { id: "ai-rag", label: "RAG" },
+            { id: "ai-vec", label: "Pinecone" },
+            { id: "ai-agent", label: "Agents" }
+          ]
+        },
+        {
+          id: "devops", label: "DevOps", icon: Settings, children: [
+            { id: "do-k8s", label: "K8s" },
+            { id: "do-ci", label: "GitHub" },
+            { id: "do-aws", label: "AWS" }
+          ]
+        },
+        {
+          id: "mobile", label: "Mobile", icon: Laptop, children: [
+            { id: "mob-ios", label: "iOS" },
+            { id: "mob-and", label: "Android" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "product",
+      label: "Product",
+      color: "#ec4899", // Pink
+      icon: LayoutDashboard,
+      children: [
+        {
+          id: "rdmap", label: "Roadmap", icon: Map, children: [
+            { id: "q1", label: "Q1 Goals" },
+            { id: "q2", label: "Q2 Goals" },
+            { id: "mvp", label: "MVP" }
+          ]
+        },
+        {
+          id: "design", label: "Design", icon: Palette, children: [
+            { id: "ui", label: "UI Kit" },
+            { id: "ux", label: "Flows" },
+            { id: "ix", label: "Proto" },
+            { id: "brand", label: "Brand" }
+          ]
+        },
+        {
+          id: "research", label: "Research", icon: Search, children: [
+            { id: "res-user", label: "Users" },
+            { id: "res-comp", label: "Comp" },
+            { id: "res-data", label: "Data" }
+          ]
+        },
+        {
+          id: "analytics", label: "Analytics", icon: BarChart3, children: [
+            { id: "ana-mix", label: "Mixpanel" },
+            { id: "ana-ga", label: "GA4" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "gtm",
+      label: "GTM",
+      color: "#f59e0b", // Orange
+      icon: Rocket,
+      children: [
+        {
+          id: "sales", label: "Sales", icon: BarChart3, children: [
+            { id: "pipe", label: "Pipeline" },
+            { id: "crm", label: "CRM" },
+            { id: "out", label: "Outreach" },
+            { id: "cls", label: "Closing" }
+          ]
+        },
+        {
+          id: "mkt", label: "Marketing", icon: Globe, children: [
+            { id: "seo", label: "SEO" },
+            { id: "ads", label: "Ads" },
+            { id: "cont", label: "Content" },
+            { id: "soc", label: "Social" }
+          ]
+        },
+        {
+          id: "supp", label: "Support", icon: User, children: [
+            { id: "tix", label: "Tickets" },
+            { id: "doc", label: "Docs" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// --- Recursive Layout Generator ---
 const generateGraph = () => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
-
-  // Center Point
   const CX = 600;
   const CY = 400;
 
-  // 1. Create Central Hub
-  nodes.push({ id: "hub", type: "hub", position: { x: CX - 40, y: CY - 40 }, data: { id: "hub" } });
+  // Level 0: Hub
+  nodes.push({
+    id: graphData.id,
+    type: "hub",
+    position: { x: CX - 40, y: CY - 40 },
+    data: { id: graphData.id, label: graphData.label }
+  });
 
-  // 2. Create 3 Major Clusters (The Planets)
-  const clusters = [
-    { id: "c1", color: "#EC4899", angle: 210 }, // Bottom Left
-    { id: "c2", color: "#8B5CF6", angle: 330 }, // Bottom Right
-    { id: "c3", color: "#F59E0B", angle: 90 },  // Top
-  ];
+  // Level 1: Clusters (Orbit Radius: 360)
+  const L1_RADIUS = 360;
+  const categories = graphData.children;
 
-  const clusterRadius = 350; // Distance of clusters from hub
+  categories.forEach((cat, i) => {
+    // 90 top, 210 bottom-left, 330 bottom-right
+    const angle = 90 + (i * 120);
+    const rad = (angle * Math.PI) / 180;
 
-  clusters.forEach((cluster) => {
-    // Position Cluster Head
-    const rad = (cluster.angle * Math.PI) / 180;
-    const cx = CX + clusterRadius * Math.cos(rad);
-    const cy = CY + clusterRadius * Math.sin(rad);
+    const cx = CX + L1_RADIUS * Math.cos(rad);
+    const cy = CY + L1_RADIUS * Math.sin(rad);
 
     nodes.push({
-      id: cluster.id,
+      id: cat.id,
       type: "clusterHead",
       position: { x: cx - 30, y: cy - 30 },
-      data: { id: cluster.id, color: cluster.color },
+      data: { id: cat.id, label: cat.label, color: cat.color, icon: cat.icon }
     });
 
-    // Connect Cluster Head to Hub
     edges.push({
-      id: `e-hub-${cluster.id}`,
+      id: `e-hub-${cat.id}`,
       source: "hub",
-      target: cluster.id,
-      sourceHandle: `hub-center-s`,
-      targetHandle: `${cluster.id}-center-t`,
+      target: cat.id,
+      sourceHandle: "hub-center-s",
+      targetHandle: `${cat.id}-center-t`,
       type: "straight",
-      style: { stroke: "#475569", strokeWidth: 2 },
+      style: { stroke: "#475569", strokeWidth: 2 }
     });
 
-    // 3. Create Satellites for each Cluster (The Moons)
-    const satelliteCount = 12;
-    const satelliteRadius = 140; // Size of the satellite ring
+    // Level 2: Satellites (Orbit Radius: 160 around Cluster - increased for space)
+    const subCategories = cat.children;
+    const L2_RADIUS = 160;
 
-    for (let i = 0; i < satelliteCount; i++) {
-      const satId = `${cluster.id}-sat-${i}`;
-      const angleStep = 360 / satelliteCount;
-      const satAngle = i * angleStep;
-      const satRad = (satAngle * Math.PI) / 180;
+    subCategories.forEach((sub, j) => {
+      const subAngleStep = 360 / subCategories.length;
+      const subAngle = (j * subAngleStep) + angle + 30; // Rotate offset
+      const subRad = (subAngle * Math.PI) / 180;
 
-      const sx = cx + satelliteRadius * Math.cos(satRad);
-      const sy = cy + satelliteRadius * Math.sin(satRad);
+      const sx = cx + L2_RADIUS * Math.cos(subRad);
+      const sy = cy + L2_RADIUS * Math.sin(subRad);
 
       nodes.push({
-        id: satId,
+        id: sub.id,
         type: "satellite",
         position: { x: sx - 20, y: sy - 20 },
-        data: { id: satId },
+        data: { id: sub.id, label: sub.label, icon: sub.icon }
       });
-
-      // Connect Satellite to Cluster Head
-      // Use logic to pick nearest handles for straightest line
-      // (Visual hack: standard straight line handles mostly work well with universal handles 
-      // if we just rely on react-flow's default center-to-center or nearest handle logic.
-      // But here we specify explicit handles for robustness if needed. 
-      // For pure radial starburst, center connection is ideal, but we have perimeter handles.)
 
       edges.push({
-        id: `e-${cluster.id}-${satId}`,
-        source: cluster.id,
-        target: satId,
-        sourceHandle: `${cluster.id}-center-s`,
-        targetHandle: `${satId}-center-t`,
+        id: `e-${cat.id}-${sub.id}`,
+        source: cat.id,
+        target: sub.id,
+        sourceHandle: `${cat.id}-center-s`,
+        targetHandle: `${sub.id}-center-t`,
         type: "straight",
-        style: edgeStyle,
+        style: edgeStyle
       });
-    }
+
+      // Level 3: Grandchildren (Orbit Radius: 65 - compact)
+      if (sub.children && sub.children.length > 0) {
+        const grandChildren = sub.children;
+        const L3_RADIUS = 65;
+
+        grandChildren.forEach((child, k) => {
+          // Fan layout logic - tightened to 30 degrees to fit more nodes
+          const baseAngle = Math.atan2(sy - cy, sx - cx) * 180 / Math.PI;
+          // Center the fan around baseAngle
+          const initialOffset = -((grandChildren.length - 1) * 30) / 2;
+          const gcAngle = baseAngle + initialOffset + (k * 30);
+
+          const gcRad = (gcAngle * Math.PI) / 180;
+
+          const gcx = sx + L3_RADIUS * Math.cos(gcRad);
+          const gcy = sy + L3_RADIUS * Math.sin(gcRad);
+
+          nodes.push({
+            id: child.id,
+            type: "satellite",
+            position: { x: gcx - 15, y: gcy - 15 },
+            data: { id: child.id, label: child.label, icon: FileText }
+          });
+
+          edges.push({
+            id: `e-${sub.id}-${child.id}`,
+            source: sub.id,
+            target: child.id,
+            sourceHandle: `${sub.id}-center-s`,
+            targetHandle: `${child.id}-center-t`,
+            type: "straight",
+            style: { ...edgeStyle, strokeWidth: 1, opacity: 0.6 }
+          });
+        });
+      }
+    });
+
+  });
+
+  // Cross-Pollination Edges (Enhanced Mesh)
+  const crossConnections = [
+    { from: "fe", to: "design" },
+    { from: "be", to: "ai" },
+    { from: "product", to: "gtm" },
+    { from: "sales", to: "mkt" },
+    { from: "ai-rag", to: "be-pg" },
+    { from: "devops", to: "be" },
+    { from: "analytics", to: "mkt" },
+    { from: "mobile", to: "fe" }
+  ];
+
+  crossConnections.forEach(conn => {
+    edges.push({
+      id: `e-cross-${conn.from}-${conn.to}`,
+      source: conn.from,
+      target: conn.to,
+      sourceHandle: `${conn.from}-center-s`,
+      targetHandle: `${conn.to}-center-t`,
+      type: "straight",
+      style: { ...edgeStyle, strokeDasharray: "4 4", opacity: 0.3 }
+    });
   });
 
   return { nodes, edges };
