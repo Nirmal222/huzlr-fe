@@ -445,6 +445,7 @@ export const FlowCanvas = ({
         attributionPosition="bottom-right"
       >
         <Background
+          key={resolvedTheme}
           variant={BackgroundVariant.Dots}
           gap={32}
           size={2}
@@ -453,6 +454,7 @@ export const FlowCanvas = ({
         {showControls && <Controls />}
         {showMiniMap && (
           <MiniMap
+            key={resolvedTheme}
             nodeColor={() => "#888"}
             maskColor={maskColor}
             style={{ backgroundColor: isDark ? "#1e293b" : "#f1f5f9" }}
