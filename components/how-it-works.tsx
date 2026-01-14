@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Rocket, ArrowRight, Zap } from "lucide-react";
 import { FlowCanvas } from "@/components/flow-canvas";
 
 interface HowItWorksProps {
@@ -68,32 +68,73 @@ export const HowItWorks = ({
           {/* Right Column */}
           <div className="flex flex-col gap-4">
 
-            {/* Top Right Card (Why Huzlr) */}
-            <div className="flex flex-col justify-between gap-5 rounded-xl bg-secondary p-5 flex-1">
-              <div>
-                <h3 className="mb-4 text-xl font-semibold">{featureCard.title}</h3>
-                <ul className="space-y-2">
+            {/* Top Right Card (Why Huzlr) - Creative Redesign */}
+            <div className="flex flex-col justify-between gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-8 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+
+              {/* Subtle visual accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] -mr-4 -mt-4 transition-all group-hover:bg-primary/10" />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+                    {featureCard.title}
+                  </h3>
+                  <Rocket className="text-primary/20 -rotate-45" size={32} />
+                </div>
+
+                <ul className="space-y-4">
                   {featureCard.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-muted-foreground">
-                      <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <span>{feature}</span>
+                    <li key={idx} className="flex items-start gap-3 group/item">
+                      <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary group-hover/item:bg-primary group-hover/item:text-primary-foreground transition-colors duration-300">
+                        <Check size={12} strokeWidth={3} />
+                      </div>
+                      <span className="text-muted-foreground font-medium group-hover/item:text-foreground transition-colors">
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <Button variant="outline" className="w-full sm:w-auto rounded-full" asChild>
+
+              <Button className="w-full rounded-full gap-2 h-12 text-md font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20" asChild>
                 <a href={featureCard.buttonUrl}>
-                  {featureCard.buttonText}
+                  {featureCard.buttonText} <ArrowRight size={18} />
                 </a>
               </Button>
             </div>
 
-            {/* Bottom Right Card (Smarter Way) */}
-            <div className="flex flex-col justify-center gap-4 rounded-xl bg-secondary border border-primary/10 p-5 flex-1">
-              <h3 className="text-xl font-semibold">{infoCard.title}</h3>
-              <p className="text-muted-foreground">
-                {infoCard.description}
-              </p>
+            {/* Bottom Right Card (Smarter Way) - Balanced Redesign */}
+            <div className="flex flex-col justify-center gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-8 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+
+              {/* Abstract Network Background */}
+              <div className="absolute inset-0 opacity-[0.15] pointer-events-none group-hover:opacity-[0.2] transition-opacity duration-500">
+                <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="grid-pattern-2" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <circle cx="2" cy="2" r="1" className="fill-primary" />
+                      <path d="M2 2 H 42 V 42" stroke="currentColor" strokeWidth="0.5" className="text-primary/20" fill="none" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid-pattern-2)" />
+                </svg>
+              </div>
+
+              {/* Glowing Pulse Accent */}
+              <div className="absolute -bottom-12 -right-12 h-48 w-48 bg-blue-500/10 rounded-full blur-[60px] group-hover:bg-blue-500/20 transition-colors duration-500" />
+
+              <div className="relative z-10 text-left">
+                <div className="mb-4 inline-flex items-center justify-center p-3 rounded-xl bg-primary/10 text-primary mb-5 ring-1 ring-primary/20 shadow-sm">
+                  <Zap size={24} fill="currentColor" className="opacity-90" />
+                </div>
+
+                <h3 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+                  {infoCard.title}
+                </h3>
+
+                <p className="text-muted-foreground leading-relaxed text-md font-medium pr-4">
+                  {infoCard.description}
+                </p>
+              </div>
             </div>
 
           </div>
