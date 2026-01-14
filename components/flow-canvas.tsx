@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import {
   ReactFlow,
   Background,
@@ -22,6 +23,8 @@ import { Home, Crown, Settings, FileText, Package, User } from "lucide-react";
 
 interface FlowCanvasProps {
   className?: string;
+  showControls?: boolean;
+  showMiniMap?: boolean;
 }
 
 // --- Universal Handle Component ---
@@ -63,8 +66,8 @@ function HubNode({ data }: any) {
   return (
     <>
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900 border-4 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.3)] relative z-10">
-        <Home size={32} className="text-indigo-400" strokeWidth={2} />
+      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900 border-4 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.3)] relative z-10 dark:bg-slate-900 bg-white">
+        <Home size={32} className="text-indigo-500" strokeWidth={2} />
       </div>
     </>
   );
@@ -77,7 +80,7 @@ function ClusterHeadNode({ data }: any) {
     <>
       <UniversalHandles id={data.id} />
       <div
-        className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-slate-900 border-2 shadow-lg relative z-10"
+        className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-card border-2 shadow-lg relative z-10"
         style={{ borderColor: color, boxShadow: `0 0 20px ${color}40` }}
       >
         <Crown size={24} color={color} strokeWidth={2} />
@@ -91,7 +94,7 @@ function SatelliteNode({ data }: any) {
   return (
     <>
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-slate-800 border border-slate-600 hover:border-cyan-400 transition-colors shadow-md relative z-10">
+      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card border border-border hover:border-cyan-400 transition-colors shadow-md relative z-10">
         <User size={18} className="text-cyan-400" />
       </div>
     </>
@@ -105,7 +108,7 @@ const nodeTypes = {
 };
 
 const edgeStyle: React.CSSProperties = {
-  stroke: "#334155", // Darker, subtle lines
+  stroke: "#64748b", // Slate 500 - visible in both modes
   strokeWidth: 1.5,
 };
 
@@ -196,7 +199,19 @@ const generateGraph = () => {
   return { nodes, edges };
 };
 
-export const FlowCanvas = ({ className = "" }: FlowCanvasProps) => {
+export const FlowCanvas = ({
+  className = "",
+  showControls = false,
+  showMiniMap = false
+}: FlowCanvasProps) => {
+  const { resolvedTheme } = useTheme();
+  // Ensure we have a value for initial render to avoid hydration mismatch
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { nodes: generatedNodes, edges: generatedEdges } = useMemo(() => generateGraph(), []);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(generatedNodes);
@@ -212,8 +227,19 @@ export const FlowCanvas = ({ className = "" }: FlowCanvasProps) => {
     console.log("Clicked node", node.id);
   }, []);
 
+  // Dynamic Background Color based on resolvedTheme
+  // Default to dark if not mounted yet (to match initial server render typically)
+  const isDark = !mounted || resolvedTheme === 'dark';
+
+  // High visibility settings
+  // Light Mode: #94a3b8 is slate-400 (visible grey). 
+  // Dark Mode: White with 20% opacity.
+  const dotColor = isDark ? "rgba(255,255,255,0.2)" : "#94a3b8";
+  const maskColor = isDark ? "rgba(5,11,26,0.95)" : "rgba(255,255,255,0.9)";
+
   return (
-    <div className={`${className} bg-[#050B1A]`} style={{ width: "100%", height: "100%" }}>
+    // Added 'bg-background' to ensure it matches the global theme perfectly.
+    <div className={`${className} bg-background`} style={{ width: "100%", height: "100%" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -225,9 +251,20 @@ export const FlowCanvas = ({ className = "" }: FlowCanvasProps) => {
         fitView
         attributionPosition="bottom-right"
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="rgba(255,255,255,0.06)" />
-        <Controls />
-        <MiniMap nodeColor={() => "#888"} maskColor="rgba(5,11,26,0.8)" />
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={32}
+          size={2}
+          color={dotColor}
+        />
+        {showControls && <Controls />}
+        {showMiniMap && (
+          <MiniMap
+            nodeColor={() => "#888"}
+            maskColor={maskColor}
+            style={{ backgroundColor: isDark ? "#1e293b" : "#f1f5f9" }}
+          />
+        )}
       </ReactFlow>
     </div>
   );
