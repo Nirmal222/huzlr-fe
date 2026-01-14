@@ -28,21 +28,13 @@ interface HowItWorksProps {
 }
 
 export const HowItWorks = ({
-  title = "Project Intelligence That Works for You",
-  description = "Huzlr connects people, skills, tasks, and risks into a living knowledge graph giving you clear, simple project intelligence without the complexity of Jira or heavy tools.",
-  mainImage = {
-    src: "https://shadcnblocks.com/images/block/placeholder-1.svg",
-    alt: "Huzlr Dashboard",
-    captionTitle: "See the Full Picture of Your Projects Effortlessly",
-    captionDescription: "Huzlr understands your team’s capacity, skills, dependencies, and risk before issues appear. You get clarity, not clutter.",
-  },
   featureCard = {
-    title: "Why Huzlr?",
+    title: "huzlr.",
     features: [
-      "Maps skills to tasks intelligently",
-      "Predicts risk early",
+      "Evolves with your organization",
+      "Plans and executes projects with ease",
       "Shows workload & capacity clearly",
-      "Keeps the UI clean and simple",
+      "Monitors risk & capacity",
     ],
     buttonText: "Discover More",
     buttonUrl: "#",
@@ -66,11 +58,6 @@ export const HowItWorks = ({
       </div>
 
       <div className="container mx-auto">
-        {/* Header */}
-        <div className="mb-8 grid gap-4 text-center md:grid-cols-2 md:text-left align-top">
-          <h1 className="text-3xl font-semibold">{title}</h1>
-          <p className="text-sm text-muted-foreground">{description}</p>
-        </div>
 
         {/* Main Grid */}
         <div className="grid gap-4 lg:grid-cols-3">
@@ -94,7 +81,7 @@ export const HowItWorks = ({
                   ))}
                 </ul>
               </div>
-              <Button variant="outline" className="w-full sm:w-auto" asChild>
+              <Button variant="outline" className="w-full sm:w-auto rounded-full" asChild>
                 <a href={featureCard.buttonUrl}>
                   {featureCard.buttonText}
                 </a>
