@@ -41,11 +41,11 @@ export const HowItWorks = ({
   },
   infoCard = {
     title: "A Smarter Way to Deliver Projects",
-    description: "Huzlr uses a dynamic knowledge graph to connect projects, people, workflows, and outcomes so decisions are faster and execution is smoother.",
+    description: "huzlr uses a dynamic knowledge graph to connect projects, people, workflows, and outcomes so decisions are faster and execution is smoother.",
   },
   bottomSection = {
     title: "Project Intelligence. Zero Complexity.",
-    description: "Huzlr predicts risks, maps skills to work, and keeps project execution simple and clear.",
+    description: "huzlr predicts risks, maps skills to work, and keeps project execution simple and clear.",
   },
 }: HowItWorksProps = {}) => {
   return (
@@ -69,7 +69,7 @@ export const HowItWorks = ({
           <div className="flex flex-col gap-4">
 
             {/* Top Right Card (Why Huzlr) */}
-            <div className="flex flex-col justify-between gap-5 rounded-xl bg-muted p-5 flex-1">
+            <div className="flex flex-col justify-between gap-5 rounded-xl bg-secondary p-5 flex-1">
               <div>
                 <h3 className="mb-4 text-xl font-semibold">{featureCard.title}</h3>
                 <ul className="space-y-2">
@@ -89,7 +89,7 @@ export const HowItWorks = ({
             </div>
 
             {/* Bottom Right Card (Smarter Way) */}
-            <div className="flex flex-col justify-center gap-4 rounded-xl bg-primary/5 border border-primary/10 p-5 flex-1">
+            <div className="flex flex-col justify-center gap-4 rounded-xl bg-secondary border border-primary/10 p-5 flex-1">
               <h3 className="text-xl font-semibold">{infoCard.title}</h3>
               <p className="text-muted-foreground">
                 {infoCard.description}
@@ -100,15 +100,57 @@ export const HowItWorks = ({
         </div>
 
         {/* Bottom Section (Even Shorter Text) */}
-        <div className="mt-4 relative overflow-hidden rounded-xl bg-muted p-6 md:p-10 text-center">
-          <div className="relative z-10 max-w-3xl mx-auto space-y-4">
-            <h2 className="text-3xl md:text-2xl font-bold">{bottomSection.title}</h2>
-            <p className="text-md text-muted-foreground">{bottomSection.description}</p>
+        <div className="mt-4 relative overflow-hidden rounded-xl border border-border/40 bg-gradient-to-b from-secondary/30 to-background p-8 md:p-14 text-center">
+
+          {/* Ambient Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+          <div className="relative z-10 max-w-3xl mx-auto space-y-5">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+              {bottomSection.title}
+            </h2>
+            <p className="text-lg text-muted-foreground/90 leading-relaxed max-w-2xl mx-auto">
+              {bottomSection.description}
+            </p>
           </div>
 
-          {/* Decorative Background Pattern */}
-          <div className="pointer-events-none absolute top-0 left-0 h-full w-full opacity-10">
-            <div className="absolute inset-0 bg-black/5 bg-[radial-gradient(#000000_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          {/* Decorative Floating UI Element - Left (Capacity) */}
+          <div className="absolute left-10 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-2 p-4 rounded-xl border border-border/50 bg-background/40 backdrop-blur-md shadow-xl w-48 -rotate-6">
+            <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+              <span>Team Capacity</span>
+              <span className="text-emerald-500 font-mono">94%</span>
+            </div>
+            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 w-[94%] rounded-full" />
+            </div>
+            <div className="flex gap-1 mt-1">
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <div className="h-1.5 w-8 rounded-full bg-secondary" />
+            </div>
+          </div>
+
+          {/* Decorative Floating UI Element - Right (Risk) */}
+          <div className="absolute right-10 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-3 p-4 rounded-xl border border-border/50 bg-background/40 backdrop-blur-md shadow-xl w-48 rotate-6">
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs font-semibold text-foreground">Risk Analysis</div>
+                <div className="text-[10px] text-muted-foreground">0 Critical Issues</div>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <div className="h-1.5 w-3/4 bg-secondary rounded-full" />
+              <div className="h-1.5 w-1/2 bg-secondary rounded-full" />
+            </div>
+          </div>
+
+          {/* Refined Grid Pattern */}
+          <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.06] pointer-events-none">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
           </div>
         </div>
       </div>
