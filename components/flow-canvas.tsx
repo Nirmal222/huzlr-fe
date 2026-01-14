@@ -442,7 +442,8 @@ export const FlowCanvas = ({
         onConnect={onConnect}
         onNodeClick={onNodeClick}
         fitView
-        attributionPosition="bottom-right"
+        fitViewOptions={{ padding: 0.05, minZoom: 0.7, maxZoom: 2 }}
+        attributionPosition="bottom-left"
       >
         <Background
           key={resolvedTheme}
