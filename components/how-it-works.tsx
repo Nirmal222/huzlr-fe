@@ -44,7 +44,7 @@ export const HowItWorks = ({
     description: "huzlr uses a dynamic knowledge graph to connect projects, people, workflows, and outcomes so decisions are faster and execution is smoother.",
   },
   bottomSection = {
-    title: "Project Intelligence. Zero Complexity.",
+    title: "Your project brain. that AI can never forget.",
     description: "huzlr predicts risks, maps skills to work, and keeps project execution simple and clear.",
   },
 }: HowItWorksProps = {}) => {
