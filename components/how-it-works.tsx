@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { FlowCanvas } from "@/components/flow-canvas";
 
 interface HowItWorksProps {
   title?: string;
@@ -66,26 +67,16 @@ export const HowItWorks = ({
 
       <div className="container mx-auto">
         {/* Header */}
-        <div className="mb-8 grid gap-4 text-center md:grid-cols-2 md:text-left">
+        <div className="mb-8 grid gap-4 text-center md:grid-cols-2 md:text-left align-top">
           <h1 className="text-3xl font-semibold">{title}</h1>
-          <p className="text-muted-foreground">{description}</p>
+          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
 
         {/* Main Grid */}
         <div className="grid gap-4 lg:grid-cols-3">
 
-          {/* Left Large Area (Main Image + Caption) */}
-          <div className="relative overflow-hidden rounded-xl lg:col-span-2 max-h-[600px] group">
-            <img
-              src={mainImage.src}
-              alt={mainImage.alt}
-              className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 flex flex-col justify-end text-white">
-              <h3 className="text-2xl font-bold mb-2">{mainImage.captionTitle}</h3>
-              <p className="text-white/90 max-w-xl">{mainImage.captionDescription}</p>
-            </div>
-          </div>
+          {/* Left Large Area (React Flow Canvas) */}
+          <FlowCanvas className="relative overflow-hidden rounded-xl lg:col-span-2 h-[600px] border border-border" />
 
           {/* Right Column */}
           <div className="flex flex-col gap-4">
@@ -124,13 +115,13 @@ export const HowItWorks = ({
         {/* Bottom Section (Even Shorter Text) */}
         <div className="mt-4 relative overflow-hidden rounded-xl bg-muted p-6 md:p-10 text-center">
           <div className="relative z-10 max-w-3xl mx-auto space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold">{bottomSection.title}</h2>
-            <p className="text-lg text-muted-foreground">{bottomSection.description}</p>
+            <h2 className="text-3xl md:text-2xl font-bold">{bottomSection.title}</h2>
+            <p className="text-md text-muted-foreground">{bottomSection.description}</p>
           </div>
 
           {/* Decorative Background Pattern */}
           <div className="pointer-events-none absolute top-0 left-0 h-full w-full opacity-10">
-            <div className="absolute inset-0 bg-[radial-gradient(#000000_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div className="absolute inset-0 bg-black/5 bg-[radial-gradient(#000000_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
           </div>
         </div>
       </div>
