@@ -66,7 +66,7 @@ export function BrainstormInterface() {
                     {/* Active Transcript */}
                     {transcripts.length > 0 && (
                         <div ref={scrollRef} className="h-[10rem] w-[25rem] overflow-scroll">
-                            <div className="bg-secondary rounded-2xl p-4 w-full text-center px-4 animate-in fade-in slide-in-from-bottom-4 duration-300 overflow-scroll">
+                            <div className="bg-transparent rounded-2xl p-4 w-full text-center px-4 animate-in fade-in slide-in-from-bottom-4 duration-300 overflow-scroll">
                                 {(() => {
                                     const latest = transcripts[transcripts.length - 1]
                                     if (!latest || !latest.text) return null
