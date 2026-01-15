@@ -117,12 +117,12 @@ export function HeroWithMockup({
               className={cn(
                 "animate-appear opacity-0 [animation-delay:700ms]",
                 "shadow-[0_0_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_0_50px_-12px_rgba(255,255,255,0.1)]",
-                "border-brand/10 dark:border-brand/5",
+                "border-[10px] border-secondary dark:border-secondary/5",
               )}
             >
               <img
                 {...mockupImage}
-                className="w-full h-auto rounded-lg"
+                className="w-full h-auto rounded-xl"
                 loading="lazy"
                 decoding="async"
               />

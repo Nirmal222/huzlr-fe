@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <HeroWithMockup
       title="Project intelligence that thinks ahead"
-      description="Huzlr is a thinking layer above your existing tools that understands dependencies, predicts risk early, and helps teams make better decisions before projects derail."
+      description="huzlr is a thinking layer above your existing tools that understands dependencies, predicts risk early, and helps teams make better decisions before projects derail."
       primaryCta={{
         text: "Get Early Access",
         href: "/signup",
