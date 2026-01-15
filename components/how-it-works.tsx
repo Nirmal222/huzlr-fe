@@ -49,7 +49,7 @@ export const HowItWorks = ({
   },
 }: HowItWorksProps = {}) => {
   return (
-    <section className="py-16 border-t">
+    <section className="py-12 border-t">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
           How <q>huzlr</q> <span className="text-primary font-caveat">works</span>
@@ -63,13 +63,13 @@ export const HowItWorks = ({
         <div className="grid gap-4 lg:grid-cols-3">
 
           {/* Left Large Area (React Flow Canvas) */}
-          <FlowCanvas className="relative overflow-hidden rounded-xl lg:col-span-2 h-[600px] border border-border" />
+          <FlowCanvas className="relative overflow-hidden rounded-xl lg:col-span-2 h-full min-h-[400px] border border-border" />
 
           {/* Right Column */}
           <div className="flex flex-col gap-4">
 
             {/* Top Right Card (Why Huzlr) - Creative Redesign */}
-            <div className="flex flex-col justify-between gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-8 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+            <div className="flex flex-col justify-between gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-6 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
 
               {/* Subtle visual accent */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] -mr-4 -mt-4 transition-all group-hover:bg-primary/10" />
@@ -104,7 +104,7 @@ export const HowItWorks = ({
             </div>
 
             {/* Bottom Right Card (Smarter Way) - Balanced Redesign */}
-            <div className="flex flex-col justify-center gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-8 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+            <div className="flex flex-col justify-center gap-6 rounded-xl bg-gradient-to-br from-secondary/50 to-background border border-border/60 p-6 flex-1 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
 
               {/* Abstract Network Background */}
               <div className="absolute inset-0 opacity-[0.15] pointer-events-none group-hover:opacity-[0.2] transition-opacity duration-500">
@@ -141,7 +141,7 @@ export const HowItWorks = ({
         </div>
 
         {/* Bottom Section (Even Shorter Text) */}
-        <div className="mt-4 relative overflow-hidden rounded-xl border border-border/40 bg-gradient-to-b from-secondary/30 to-background p-8 md:p-14 text-center">
+        <div className="mt-4 relative overflow-hidden rounded-xl border border-border/40 bg-gradient-to-b from-secondary/30 to-background p-6 md:p-10 text-center">
 
           {/* Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />

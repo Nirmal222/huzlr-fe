@@ -21,7 +21,8 @@ import {
 import "@xyflow/react/dist/style.css";
 import {
   Home, Crown, Settings, FileText, Package, User,
-  Code2, Laptop, Server, Cpu, LayoutDashboard, Map, Palette, Search, Rocket, BarChart3, Globe
+  Code2, Laptop, Server, Cpu, LayoutDashboard, Map, Palette, Search, Rocket, BarChart3, Globe,
+  Shield, CheckCircle, TrendingUp, Users
 } from "lucide-react";
 
 interface FlowCanvasProps {
@@ -64,55 +65,60 @@ const UniversalHandles = ({ id }: { id: string }) => {
 
 // --- Custom Node Components ---
 
-// 1. Hub Node (The Sun)
+// 1. Hub Node (The Sun) - Bubbly Style
 function HubNode({ data }: any) {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900 border-4 border-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.3)] relative z-10 dark:bg-slate-900 bg-white">
-        <Home size={32} className="text-indigo-500" strokeWidth={2} />
+      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-gradient-to-b from-primary/80 to-primary shadow-[0_10px_20px_-5px_rgba(var(--primary),0.4)] border-2 border-primary/30 relative z-10 pointer-events-auto transition-transform hover:scale-105 active:scale-95">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
+        <Home size={32} className="text-primary-foreground drop-shadow-md" strokeWidth={2.5} />
       </div>
       {/* Label */}
-      <span className="absolute top-[85px] text-xs font-bold text-foreground/80 whitespace-nowrap px-2 py-0.5 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+      <span className="absolute top-[85px] text-xs font-bold text-foreground/80 whitespace-nowrap px-3 py-1 rounded-full bg-background/60 backdrop-blur-md border border-border/50 shadow-sm">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 2. Cluster Head Node (The Planets - Pink/Purple)
+// 2. Cluster Head Node (The Planets) - Bubbly Style
 function ClusterHeadNode({ data }: any) {
   const color = data.color || "#EC4899";
   const Icon = data.icon || Crown;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
       <div
-        className="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-card border-2 shadow-lg relative z-10"
-        style={{ borderColor: color, boxShadow: `0 0 20px ${color}40` }}
+        className="flex items-center justify-center w-[60px] h-[60px] rounded-full shadow-lg border border-white/20 relative z-10 pointer-events-auto transition-transform hover:scale-110 active:scale-95"
+        style={{
+          background: `linear-gradient(135deg, ${color}dd, ${color})`,
+          boxShadow: `0 8px 16px -4px ${color}66`
+        }}
       >
-        <Icon size={24} color={color} strokeWidth={2} />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/30 to-transparent pointer-events-none" />
+        <Icon size={24} className="text-white drop-shadow-sm" strokeWidth={2.5} />
       </div>
-      <span className="absolute top-[65px] text-[10px] font-semibold text-foreground/70 whitespace-nowrap px-1.5 py-0.5 rounded-full bg-background/50 backdrop-blur-sm">
+      <span className="absolute top-[65px] text-[10px] font-bold text-foreground/70 whitespace-nowrap px-2 py-0.5 rounded-full bg-background/60 backdrop-blur-md shadow-sm border border-border/30">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 3. Satellite Node (The Moons - Blue/Cyan)
+// 3. Satellite Node (The Moons) - Bubbly Style
 function SatelliteNode({ data }: any) {
   const Icon = data.icon || User;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card border border-border hover:border-cyan-400 transition-colors shadow-md relative z-10">
-        <Icon size={18} className="text-cyan-400" />
+      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-md hover:shadow-lg relative z-10 pointer-events-auto transition-all hover:scale-110 duration-200 group">
+        <Icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
       </div>
       {data.label && (
-        <span className="absolute top-[42px] text-[9px] font-medium text-muted-foreground whitespace-nowrap pointer-events-none">
+        <span className="absolute top-[42px] text-[9px] font-medium text-muted-foreground/80 whitespace-nowrap pointer-events-none bg-background/40 px-1.5 rounded-full backdrop-blur-[1px]">
           {data.label}
         </span>
       )}
@@ -140,25 +146,27 @@ const graphData = {
     {
       id: "engineering",
       label: "Engineering",
-      color: "#3b82f6", // Blue
+      color: "var(--primary)",
       icon: Code2,
       children: [
         {
           id: "fe", label: "Frontend", icon: Laptop, children: [
             { id: "fe-react", label: "React" },
-            { id: "fe-tw", label: "Tailwind" },
             { id: "fe-next", label: "Next.js" },
             { id: "fe-ts", label: "TypeScript" },
+            { id: "fe-tw", label: "Tailwind" },
+            { id: "fe-state", label: "Zustand" },
             { id: "fe-perf", label: "Vitals" }
           ]
         },
         {
           id: "be", label: "Backend", icon: Server, children: [
             { id: "be-py", label: "Python" },
-            { id: "be-pg", label: "Postgres" },
             { id: "be-api", label: "FastAPI" },
+            { id: "be-pg", label: "Postgres" },
             { id: "be-redis", label: "Redis" },
-            { id: "be-auth", label: "OAuth" }
+            { id: "be-auth", label: "OAuth" },
+            { id: "be-go", label: "Go" }
           ]
         },
         {
@@ -166,20 +174,28 @@ const graphData = {
             { id: "ai-llm", label: "LLM" },
             { id: "ai-rag", label: "RAG" },
             { id: "ai-vec", label: "Pinecone" },
-            { id: "ai-agent", label: "Agents" }
+            { id: "ai-agent", label: "Agents" },
+            { id: "ai-vis", label: "Vision" }
           ]
         },
         {
           id: "devops", label: "DevOps", icon: Settings, children: [
             { id: "do-k8s", label: "K8s" },
             { id: "do-ci", label: "GitHub" },
-            { id: "do-aws", label: "AWS" }
+            { id: "do-aws", label: "AWS" },
+            { id: "do-terra", label: "Terraform" }
           ]
         },
         {
-          id: "mobile", label: "Mobile", icon: Laptop, children: [
-            { id: "mob-ios", label: "iOS" },
-            { id: "mob-and", label: "Android" }
+          id: "qa", label: "Quality", icon: CheckCircle, children: [
+            { id: "qa-e2e", label: "Cypress" },
+            { id: "qa-unit", label: "Jest" }
+          ]
+        },
+        {
+          id: "sec", label: "Security", icon: Shield, children: [
+            { id: "sec-audit", label: "Audit" },
+            { id: "sec-pen", label: "Pentest" }
           ]
         }
       ]
@@ -187,13 +203,14 @@ const graphData = {
     {
       id: "product",
       label: "Product",
-      color: "#ec4899", // Pink
+      color: "var(--chart-2)",
       icon: LayoutDashboard,
       children: [
         {
           id: "rdmap", label: "Roadmap", icon: Map, children: [
             { id: "q1", label: "Q1 Goals" },
             { id: "q2", label: "Q2 Goals" },
+            { id: "q3", label: "Q3 Goals" },
             { id: "mvp", label: "MVP" }
           ]
         },
@@ -202,7 +219,8 @@ const graphData = {
             { id: "ui", label: "UI Kit" },
             { id: "ux", label: "Flows" },
             { id: "ix", label: "Proto" },
-            { id: "brand", label: "Brand" }
+            { id: "brand", label: "Brand" },
+            { id: "sys", label: "System" }
           ]
         },
         {
@@ -215,7 +233,14 @@ const graphData = {
         {
           id: "analytics", label: "Analytics", icon: BarChart3, children: [
             { id: "ana-mix", label: "Mixpanel" },
-            { id: "ana-ga", label: "GA4" }
+            { id: "ana-ga", label: "GA4" },
+            { id: "ana-post", label: "PostHog" }
+          ]
+        },
+        {
+          id: "growth", label: "Growth", icon: TrendingUp, children: [
+            { id: "gro-vir", label: "Viral" },
+            { id: "gro-exp", label: "Experim." }
           ]
         }
       ]
@@ -223,7 +248,7 @@ const graphData = {
     {
       id: "gtm",
       label: "GTM",
-      color: "#f59e0b", // Orange
+      color: "var(--chart-1)",
       icon: Rocket,
       children: [
         {
@@ -231,7 +256,8 @@ const graphData = {
             { id: "pipe", label: "Pipeline" },
             { id: "crm", label: "CRM" },
             { id: "out", label: "Outreach" },
-            { id: "cls", label: "Closing" }
+            { id: "cls", label: "Closing" },
+            { id: "rev", label: "Revenue" }
           ]
         },
         {
@@ -239,13 +265,21 @@ const graphData = {
             { id: "seo", label: "SEO" },
             { id: "ads", label: "Ads" },
             { id: "cont", label: "Content" },
-            { id: "soc", label: "Social" }
+            { id: "soc", label: "Social" },
+            { id: "pr", label: "PR" }
           ]
         },
         {
           id: "supp", label: "Support", icon: User, children: [
             { id: "tix", label: "Tickets" },
-            { id: "doc", label: "Docs" }
+            { id: "doc", label: "Docs" },
+            { id: "chat", label: "Intercom" }
+          ]
+        },
+        {
+          id: "part", label: "Partners", icon: Users, children: [
+            { id: "par-ag", label: "Agency" },
+            { id: "par-tech", label: "Tech" }
           ]
         }
       ]
@@ -268,8 +302,8 @@ const generateGraph = () => {
     data: { id: graphData.id, label: graphData.label }
   });
 
-  // Level 1: Clusters (Orbit Radius: 360)
-  const L1_RADIUS = 360;
+  // Level 1: Clusters (Orbit Radius: 480 - Increased for breathing space)
+  const L1_RADIUS = 480;
   const categories = graphData.children;
 
   categories.forEach((cat, i) => {
@@ -297,9 +331,9 @@ const generateGraph = () => {
       style: { stroke: "#475569", strokeWidth: 2 }
     });
 
-    // Level 2: Satellites (Orbit Radius: 160 around Cluster - increased for space)
+    // Level 2: Satellites (Orbit Radius: 240 around Cluster - Increased for breathing space)
     const subCategories = cat.children;
-    const L2_RADIUS = 160;
+    const L2_RADIUS = 240;
 
     subCategories.forEach((sub, j) => {
       const subAngleStep = 360 / subCategories.length;
@@ -326,10 +360,10 @@ const generateGraph = () => {
         style: edgeStyle
       });
 
-      // Level 3: Grandchildren (Orbit Radius: 65 - compact)
+      // Level 3: Grandchildren (Orbit Radius: 90 - Increased for clear separation)
       if (sub.children && sub.children.length > 0) {
         const grandChildren = sub.children;
-        const L3_RADIUS = 65;
+        const L3_RADIUS = 90;
 
         grandChildren.forEach((child, k) => {
           // Fan layout logic - tightened to 30 degrees to fit more nodes
