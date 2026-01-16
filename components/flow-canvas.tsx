@@ -17,6 +17,7 @@ import {
   BackgroundVariant,
   Handle,
   Position,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import {
@@ -30,6 +31,8 @@ interface FlowCanvasProps {
   className?: string;
   showControls?: boolean;
   showMiniMap?: boolean;
+  simulationPhase?: "IDLE" | "USER_TYPING" | "AI_PROCESSING" | "AI_REPLYING" | "COMPLETE";
+  currentTopic?: "sprint" | "team" | "milestone" | "infra";
 }
 
 // --- Universal Handle Component ---
@@ -142,7 +145,7 @@ const edgeStyle: React.CSSProperties = {
 const clusters = [
   {
     id: "hub-product",
-    label: "StandMate SaaS",
+    label: "huzlr",
     type: "hub",
     color: "#a855f7", // Purple (Core Product)
     x: 600, y: 400,
@@ -233,10 +236,21 @@ const spineEdges = [
   { source: "bridge-github", target: "hub-infra", label: "TRIGGERS_CI" },
 ];
 
+// Topic to nodes mapping for highlighting
+const TOPIC_NODE_MAP: Record<string, string[]> = {
+  sprint: ["hub-sprint", "hub-sprint-task-101", "hub-sprint-task-102"],
+  team: ["hub-team", "hub-team-u-sarah", "hub-team-u-david", "hub-team-u-nirmal"],
+  milestone: ["hub-sprint", "hub-sprint-bug-404", "hub-sprint-milestone"],
+  infra: ["hub-infra", "hub-infra-aws", "hub-infra-vercel", "hub-infra-db-pg", "hub-infra-redis"],
+};
+
 // --- Layout Generator ---
-const generateGraph = () => {
+const generateGraph = (highlightedNodes: string[] = [], activeEdges: string[] = []) => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
+
+  // Helper to check highlight status
+  const isHighlighted = (id: string) => highlightedNodes.includes(id);
 
   // 1. Render Clusters & Satellites
   clusters.forEach(cluster => {
@@ -250,6 +264,14 @@ const generateGraph = () => {
         label: cluster.label,
         color: cluster.color,
         icon: cluster.type === 'hub' ? Laptop : Activity
+      },
+      style: isHighlighted(cluster.id) ? {
+        filter: "drop-shadow(0 0 12px hsl(var(--primary)))",
+        zIndex: 100,
+        transition: "filter 0.3s ease, opacity 0.3s ease"
+      } : {
+        transition: "filter 0.3s ease, opacity 0.3s ease",
+        opacity: highlightedNodes.length > 0 ? 0.4 : 1
       }
     });
 
@@ -273,6 +295,14 @@ const generateGraph = () => {
             id: item.id,
             label: item.label,
             icon: item.type === 'user' ? User : (item.type === 'task' ? CheckCircle2 : (item.type === "tool" ? Settings : FileText))
+          },
+          style: isHighlighted(`${cluster.id}-${item.id}`) ? {
+            filter: "drop-shadow(0 0 10px hsl(var(--primary)))",
+            zIndex: 100,
+            transition: "filter 0.3s ease, opacity 0.3s ease"
+          } : {
+            transition: "filter 0.3s ease, opacity 0.3s ease",
+            opacity: highlightedNodes.length > 0 ? 0.3 : 1
           }
         });
 
@@ -288,18 +318,30 @@ const generateGraph = () => {
           target = cluster.id;
         }
 
+        const isEdgeActive = isHighlighted(source) && isHighlighted(target);
+
         edges.push({
           id: `e-${source}-${target}`,
           source,
           target,
           type: "straight",
           label: item.edge,
-          style: { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 0.8 },
-          labelStyle: { fill: "#64748b", fontWeight: 700, fontSize: 8 },
-          labelBgStyle: { fill: "var(--background)", fillOpacity: 0.8 },
+          style: isEdgeActive ? {
+            stroke: cluster.color,
+            strokeWidth: 3,
+            opacity: 1,
+            filter: "drop-shadow(0 0 4px currentColor)"
+          } : {
+            stroke: "#94a3b8",
+            strokeWidth: 1.5,
+            opacity: highlightedNodes.length > 0 ? 0.1 : 0.8
+          },
+          labelStyle: { fill: "#64748b", fontWeight: 700, fontSize: 8, opacity: isEdgeActive ? 1 : (highlightedNodes.length > 0 ? 0 : 1) },
+          labelBgStyle: { fill: "var(--background)", fillOpacity: 0.8, opacity: isEdgeActive ? 1 : (highlightedNodes.length > 0 ? 0 : 1) },
           labelBgPadding: [2, 1],
           labelBgBorderRadius: 2,
-          markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: "#94a3b8" },
+          markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: isEdgeActive ? cluster.color : "#94a3b8" },
+          animated: isEdgeActive
         });
       });
     }
@@ -311,7 +353,8 @@ const generateGraph = () => {
       id: bridge.id,
       type: "clusterHead",
       position: { x: bridge.x - 30, y: bridge.y - 30 },
-      data: { id: bridge.id, label: bridge.label, color: bridge.color, icon: GitBranch }
+      data: { id: bridge.id, label: bridge.label, color: bridge.color, icon: GitBranch },
+      style: { opacity: highlightedNodes.length > 0 ? 0.3 : 1, transition: "opacity 0.3s" }
     });
   });
 
@@ -323,9 +366,9 @@ const generateGraph = () => {
       target: edge.target,
       type: "straight",
       label: edge.label,
-      style: { stroke: "#a855f7", strokeWidth: 2, opacity: 0.6 },
-      labelStyle: { fill: "#a855f7", fontWeight: 700, fontSize: 9 },
-      labelBgStyle: { fill: "var(--background)", fillOpacity: 0.9 },
+      style: { stroke: "#a855f7", strokeWidth: 2, opacity: highlightedNodes.length > 0 ? 0.1 : 0.6 },
+      labelStyle: { fill: "#a855f7", fontWeight: 700, fontSize: 9, opacity: highlightedNodes.length > 0 ? 0 : 1 },
+      labelBgStyle: { fill: "var(--background)", fillOpacity: 0.9, opacity: highlightedNodes.length > 0 ? 0 : 1 },
       markerEnd: { type: MarkerType.ArrowClosed, width: 15, height: 15, color: "#a855f7" },
     });
   });
@@ -336,20 +379,60 @@ const generateGraph = () => {
 export const FlowCanvas = ({
   className = "",
   showControls = false,
-  showMiniMap = false
+  showMiniMap = false,
+  simulationPhase = "IDLE",
+  currentTopic = "sprint"
 }: FlowCanvasProps) => {
   const { resolvedTheme } = useTheme();
   // Ensure we have a value for initial render to avoid hydration mismatch
   const [mounted, setMounted] = useState(false);
 
+  // Simulation State
+  const [highlightedNodes, setHighlightedNodes] = useState<string[]>([]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const { nodes: generatedNodes, edges: generatedEdges } = useMemo(() => generateGraph(), []);
+  // Handle Simulation Phases - The "Thinking" Animation
+  useEffect(() => {
+    if (!simulationPhase) return;
+
+    let interval: NodeJS.Timeout;
+
+    if (simulationPhase === "AI_PROCESSING") {
+      // Sequence of nodes to "scan" - cycle through all main hubs
+      const sequence = ["hub-product", "hub-sprint", "hub-team", "hub-infra", "hub-stack"];
+      let idx = 0;
+
+      interval = setInterval(() => {
+        setHighlightedNodes([sequence[idx]]);
+        idx = (idx + 1) % sequence.length;
+      }, 500); // Fast scanning
+    }
+    else if (simulationPhase === "AI_REPLYING") {
+      // Highlight the topic-specific nodes permanently during reply
+      const nodesToHighlight = TOPIC_NODE_MAP[currentTopic] || TOPIC_NODE_MAP.sprint;
+      setHighlightedNodes(nodesToHighlight);
+    }
+    else {
+      // Clear highlights for IDLE, USER_TYPING, COMPLETE
+      setHighlightedNodes([]);
+    }
+
+    return () => clearInterval(interval);
+  }, [simulationPhase, currentTopic]);
+
+  const { nodes: generatedNodes, edges: generatedEdges } = useMemo(() => generateGraph(highlightedNodes), [highlightedNodes]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(generatedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(generatedEdges);
+
+  // Sync nodes/edges when highlights change
+  useEffect(() => {
+    setNodes(generatedNodes);
+    setEdges(generatedEdges);
+  }, [generatedNodes, generatedEdges, setNodes, setEdges]);
 
   const onConnect = useCallback(
     (params: Connection) =>
