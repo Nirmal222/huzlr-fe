@@ -22,7 +22,8 @@ import "@xyflow/react/dist/style.css";
 import {
   Home, Crown, Settings, FileText, Package, User,
   Code2, Laptop, Server, Cpu, LayoutDashboard, Map, Palette, Search, Rocket, BarChart3, Globe,
-  Shield, CheckCircle, TrendingUp, Users
+  Shield, CheckCircle, TrendingUp, Users, GitBranch, Trello, Calendar, CheckCircle2, AlertCircle,
+  Workflow, Database, Activity
 } from "lucide-react";
 
 interface FlowCanvasProps {
@@ -137,289 +138,195 @@ const edgeStyle: React.CSSProperties = {
   strokeWidth: 1.5,
 };
 
-// --- Semantic Startup Data Structure ---
-const graphData = {
-  id: "hub",
-  type: "hub",
-  label: "Huzlr Core",
-  children: [
-    {
-      id: "engineering",
-      label: "Engineering",
-      color: "var(--primary)",
-      icon: Code2,
-      children: [
-        {
-          id: "fe", label: "Frontend", icon: Laptop, children: [
-            { id: "fe-react", label: "React" },
-            { id: "fe-next", label: "Next.js" },
-            { id: "fe-ts", label: "TypeScript" },
-            { id: "fe-tw", label: "Tailwind" },
-            { id: "fe-state", label: "Zustand" },
-            { id: "fe-perf", label: "Vitals" }
-          ]
-        },
-        {
-          id: "be", label: "Backend", icon: Server, children: [
-            { id: "be-py", label: "Python" },
-            { id: "be-api", label: "FastAPI" },
-            { id: "be-pg", label: "Postgres" },
-            { id: "be-redis", label: "Redis" },
-            { id: "be-auth", label: "OAuth" },
-            { id: "be-go", label: "Go" }
-          ]
-        },
-        {
-          id: "ai", label: "AI Core", icon: Cpu, children: [
-            { id: "ai-llm", label: "LLM" },
-            { id: "ai-rag", label: "RAG" },
-            { id: "ai-vec", label: "Pinecone" },
-            { id: "ai-agent", label: "Agents" },
-            { id: "ai-vis", label: "Vision" }
-          ]
-        },
-        {
-          id: "devops", label: "DevOps", icon: Settings, children: [
-            { id: "do-k8s", label: "K8s" },
-            { id: "do-ci", label: "GitHub" },
-            { id: "do-aws", label: "AWS" },
-            { id: "do-terra", label: "Terraform" }
-          ]
-        },
-        {
-          id: "qa", label: "Quality", icon: CheckCircle, children: [
-            { id: "qa-e2e", label: "Cypress" },
-            { id: "qa-unit", label: "Jest" }
-          ]
-        },
-        {
-          id: "sec", label: "Security", icon: Shield, children: [
-            { id: "sec-audit", label: "Audit" },
-            { id: "sec-pen", label: "Pentest" }
-          ]
-        }
-      ]
-    },
-    {
-      id: "product",
-      label: "Product",
-      color: "var(--chart-2)",
-      icon: LayoutDashboard,
-      children: [
-        {
-          id: "rdmap", label: "Roadmap", icon: Map, children: [
-            { id: "q1", label: "Q1 Goals" },
-            { id: "q2", label: "Q2 Goals" },
-            { id: "q3", label: "Q3 Goals" },
-            { id: "mvp", label: "MVP" }
-          ]
-        },
-        {
-          id: "design", label: "Design", icon: Palette, children: [
-            { id: "ui", label: "UI Kit" },
-            { id: "ux", label: "Flows" },
-            { id: "ix", label: "Proto" },
-            { id: "brand", label: "Brand" },
-            { id: "sys", label: "System" }
-          ]
-        },
-        {
-          id: "research", label: "Research", icon: Search, children: [
-            { id: "res-user", label: "Users" },
-            { id: "res-comp", label: "Comp" },
-            { id: "res-data", label: "Data" }
-          ]
-        },
-        {
-          id: "analytics", label: "Analytics", icon: BarChart3, children: [
-            { id: "ana-mix", label: "Mixpanel" },
-            { id: "ana-ga", label: "GA4" },
-            { id: "ana-post", label: "PostHog" }
-          ]
-        },
-        {
-          id: "growth", label: "Growth", icon: TrendingUp, children: [
-            { id: "gro-vir", label: "Viral" },
-            { id: "gro-exp", label: "Experim." }
-          ]
-        }
-      ]
-    },
-    {
-      id: "gtm",
-      label: "GTM",
-      color: "var(--chart-1)",
-      icon: Rocket,
-      children: [
-        {
-          id: "sales", label: "Sales", icon: BarChart3, children: [
-            { id: "pipe", label: "Pipeline" },
-            { id: "crm", label: "CRM" },
-            { id: "out", label: "Outreach" },
-            { id: "cls", label: "Closing" },
-            { id: "rev", label: "Revenue" }
-          ]
-        },
-        {
-          id: "mkt", label: "Marketing", icon: Globe, children: [
-            { id: "seo", label: "SEO" },
-            { id: "ads", label: "Ads" },
-            { id: "cont", label: "Content" },
-            { id: "soc", label: "Social" },
-            { id: "pr", label: "PR" }
-          ]
-        },
-        {
-          id: "supp", label: "Support", icon: User, children: [
-            { id: "tix", label: "Tickets" },
-            { id: "doc", label: "Docs" },
-            { id: "chat", label: "Intercom" }
-          ]
-        },
-        {
-          id: "part", label: "Partners", icon: Users, children: [
-            { id: "par-ag", label: "Agency" },
-            { id: "par-tech", label: "Tech" }
-          ]
-        }
-      ]
-    }
-  ]
-};
+// Domain: "StandMate" Product Development
+const clusters = [
+  {
+    id: "hub-product",
+    label: "StandMate SaaS",
+    type: "hub",
+    color: "#a855f7", // Purple (Core Product)
+    x: 600, y: 400,
+    satellites: []
+  },
+  {
+    id: "hub-sprint",
+    label: "Sprint 24",
+    type: "clusterHead",
+    color: "#eab308", // Yellow (Active Work)
+    x: 600, y: 150, // Top
+    satellites: [
+      { id: "task-101", label: "Auth Flow", type: "task", edge: "CONTAINS", color: "#3b82f6" },
+      { id: "task-102", label: "payments", type: "task", edge: "CONTAINS", color: "#3b82f6" },
+      { id: "bug-404", label: "Login Bug", type: "bug", edge: "BLOCKS", color: "#ef4444" }, // Red for bug
+      { id: "milestone", label: "Beta Launch", type: "milestone", edge: "TARGETS", color: "#10b981" } // Green
+    ]
+  },
+  {
+    id: "hub-team",
+    label: "Core Team",
+    type: "clusterHead",
+    color: "#3b82f6", // Blue (People)
+    x: 300, y: 400, // Left
+    satellites: [
+      { id: "u-nirmal", label: "Nirmal", type: "user", edge: "LEADS", color: "#f59e0b" },
+      { id: "u-sarah", label: "Sarah (FE)", type: "user", edge: "MEMBER", color: "#eab308" },
+      { id: "u-david", label: "David (BE)", type: "user", edge: "MEMBER", color: "#eab308" },
+      { id: "u-agent", label: "AI Agent", type: "bot", edge: "ASSISTS", color: "#ec4899" }
+    ]
+  },
+  {
+    id: "hub-infra",
+    label: "Infrastructure",
+    type: "clusterHead",
+    color: "#64748b", // Slate (Tech)
+    x: 900, y: 400, // Right
+    satellites: [
+      { id: "aws", label: "AWS", type: "tool", edge: "HOSTS", color: "#64748b" },
+      { id: "vercel", label: "Vercel", type: "tool", edge: "DEPLOYS", color: "#000000" },
+      { id: "db-pg", label: "Postgres", type: "db", edge: "STORES", color: "#3b82f6" },
+      { id: "redis", label: "Redis", type: "db", edge: "CATCHES", color: "#ef4444" }
+    ]
+  },
+  {
+    id: "hub-stack",
+    label: "Tech Stack",
+    type: "clusterHead",
+    color: "#ec4899", // Pink (Code)
+    x: 600, y: 650, // Bottom
+    satellites: [
+      { id: "next", label: "Next.js 14", type: "tech", edge: "POWERS", color: "#000000" },
+      { id: "tw", label: "Tailwind", type: "tech", edge: "STYLES", color: "#38bdf8" },
+      { id: "py", label: "Python/FastAPI", type: "tech", edge: "POWERS", color: "#3b82f6" },
+      { id: "llm-core", label: "Gemini Pro", type: "model", edge: "DRIVES", color: "#8b5cf6" }
+    ]
+  }
+];
 
-// --- Recursive Layout Generator ---
+// Special Bridge nodes for cross-functional links
+const bridgeNodes = [
+  {
+    id: "bridge-github",
+    label: "GitHub Repo",
+    type: "tool",
+    color: "#1e293b",
+    x: 450, y: 550 // Between Team and Stack/Sprint
+  }
+];
+
+// Relationships (The "Story")
+const spineEdges = [
+  // Sprint Management
+  { source: "hub-product", target: "hub-sprint", label: "MANAGES" },
+  // Team Assignment
+  { source: "hub-team", target: "hub-product", label: "BUILDS" },
+  // Tech Usage
+  { source: "hub-product", target: "hub-stack", label: "BUILT_WITH" },
+  // Infra Usage
+  { source: "hub-product", target: "hub-infra", label: "RUNS_ON" },
+
+  // Cross-Cluster details
+  // Team works on Sprint
+  { source: "hub-team", target: "hub-sprint", label: "EXECUTES" },
+  // Team uses GitHub
+  { source: "hub-team", target: "bridge-github", label: "COMMITS_TO" },
+  // GitHub deploys to Infra
+  { source: "bridge-github", target: "hub-infra", label: "TRIGGERS_CI" },
+];
+
+// --- Layout Generator ---
 const generateGraph = () => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
-  const CX = 600;
-  const CY = 400;
 
-  // Level 0: Hub
-  nodes.push({
-    id: graphData.id,
-    type: "hub",
-    position: { x: CX - 40, y: CY - 40 },
-    data: { id: graphData.id, label: graphData.label }
-  });
-
-  // Level 1: Clusters (Orbit Radius: 480 - Increased for breathing space)
-  const L1_RADIUS = 480;
-  const categories = graphData.children;
-
-  categories.forEach((cat, i) => {
-    // 90 top, 210 bottom-left, 330 bottom-right
-    const angle = 90 + (i * 120);
-    const rad = (angle * Math.PI) / 180;
-
-    const cx = CX + L1_RADIUS * Math.cos(rad);
-    const cy = CY + L1_RADIUS * Math.sin(rad);
-
+  // 1. Render Clusters & Satellites
+  clusters.forEach(cluster => {
+    // Cluster Hub
     nodes.push({
-      id: cat.id,
-      type: "clusterHead",
-      position: { x: cx - 30, y: cy - 30 },
-      data: { id: cat.id, label: cat.label, color: cat.color, icon: cat.icon }
-    });
-
-    edges.push({
-      id: `e-hub-${cat.id}`,
-      source: "hub",
-      target: cat.id,
-      sourceHandle: "hub-center-s",
-      targetHandle: `${cat.id}-center-t`,
-      type: "straight",
-      style: { stroke: "#475569", strokeWidth: 2 }
-    });
-
-    // Level 2: Satellites (Orbit Radius: 240 around Cluster - Increased for breathing space)
-    const subCategories = cat.children;
-    const L2_RADIUS = 240;
-
-    subCategories.forEach((sub, j) => {
-      const subAngleStep = 360 / subCategories.length;
-      const subAngle = (j * subAngleStep) + angle + 30; // Rotate offset
-      const subRad = (subAngle * Math.PI) / 180;
-
-      const sx = cx + L2_RADIUS * Math.cos(subRad);
-      const sy = cy + L2_RADIUS * Math.sin(subRad);
-
-      nodes.push({
-        id: sub.id,
-        type: "satellite",
-        position: { x: sx - 20, y: sy - 20 },
-        data: { id: sub.id, label: sub.label, icon: sub.icon }
-      });
-
-      edges.push({
-        id: `e-${cat.id}-${sub.id}`,
-        source: cat.id,
-        target: sub.id,
-        sourceHandle: `${cat.id}-center-s`,
-        targetHandle: `${sub.id}-center-t`,
-        type: "straight",
-        style: edgeStyle
-      });
-
-      // Level 3: Grandchildren (Orbit Radius: 90 - Increased for clear separation)
-      if (sub.children && sub.children.length > 0) {
-        const grandChildren = sub.children;
-        const L3_RADIUS = 90;
-
-        grandChildren.forEach((child, k) => {
-          // Fan layout logic - tightened to 30 degrees to fit more nodes
-          const baseAngle = Math.atan2(sy - cy, sx - cx) * 180 / Math.PI;
-          // Center the fan around baseAngle
-          const initialOffset = -((grandChildren.length - 1) * 30) / 2;
-          const gcAngle = baseAngle + initialOffset + (k * 30);
-
-          const gcRad = (gcAngle * Math.PI) / 180;
-
-          const gcx = sx + L3_RADIUS * Math.cos(gcRad);
-          const gcy = sy + L3_RADIUS * Math.sin(gcRad);
-
-          nodes.push({
-            id: child.id,
-            type: "satellite",
-            position: { x: gcx - 15, y: gcy - 15 },
-            data: { id: child.id, label: child.label, icon: FileText }
-          });
-
-          edges.push({
-            id: `e-${sub.id}-${child.id}`,
-            source: sub.id,
-            target: child.id,
-            sourceHandle: `${sub.id}-center-s`,
-            targetHandle: `${child.id}-center-t`,
-            type: "straight",
-            style: { ...edgeStyle, strokeWidth: 1, opacity: 0.6 }
-          });
-        });
+      id: cluster.id,
+      type: cluster.type === "hub" ? "hub" : "clusterHead",
+      position: { x: cluster.x - (cluster.type === "hub" ? 40 : 30), y: cluster.y - (cluster.type === "hub" ? 40 : 30) },
+      data: {
+        id: cluster.id,
+        label: cluster.label,
+        color: cluster.color,
+        icon: cluster.type === 'hub' ? Laptop : Activity
       }
     });
 
+    // Satellites
+    const itemCount = cluster.satellites.length;
+    if (itemCount > 0) {
+      const angleStep = 360 / itemCount;
+      const radius = 130;
+
+      cluster.satellites.forEach((item, i) => {
+        const angle = (i * angleStep) - 90; // Start from top
+        const rad = (angle * Math.PI) / 180;
+        const x = cluster.x + radius * Math.cos(rad);
+        const y = cluster.y + radius * Math.sin(rad);
+
+        nodes.push({
+          id: `${cluster.id}-${item.id}`,
+          type: "satellite",
+          position: { x: x - 20, y: y - 20 },
+          data: {
+            id: item.id,
+            label: item.label,
+            icon: item.type === 'user' ? User : (item.type === 'task' ? CheckCircle2 : (item.type === "tool" ? Settings : FileText))
+          }
+        });
+
+        // Consistent Direction: Hub -> Satellite for "Contains/Owns"
+        // But for "User -> Leads", we want User -> Hub
+        let source = cluster.id;
+        let target = `${cluster.id}-${item.id}`;
+
+        // Logical "Reading" order
+        if (["LEADS", "MEMBER", "ASSISTS", "POWERS", "STYLES", "DRIVES", "HOSTS", "STORES"].includes(item.edge)) {
+          // "User LEADS Team" -> Source: User, Target: Team
+          source = `${cluster.id}-${item.id}`;
+          target = cluster.id;
+        }
+
+        edges.push({
+          id: `e-${source}-${target}`,
+          source,
+          target,
+          type: "straight",
+          label: item.edge,
+          style: { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 0.8 },
+          labelStyle: { fill: "#64748b", fontWeight: 700, fontSize: 8 },
+          labelBgStyle: { fill: "var(--background)", fillOpacity: 0.8 },
+          labelBgPadding: [2, 1],
+          labelBgBorderRadius: 2,
+          markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: "#94a3b8" },
+        });
+      });
+    }
   });
 
-  // Cross-Pollination Edges (Enhanced Mesh)
-  const crossConnections = [
-    { from: "fe", to: "design" },
-    { from: "be", to: "ai" },
-    { from: "product", to: "gtm" },
-    { from: "sales", to: "mkt" },
-    { from: "ai-rag", to: "be-pg" },
-    { from: "devops", to: "be" },
-    { from: "analytics", to: "mkt" },
-    { from: "mobile", to: "fe" }
-  ];
+  // 2. Render Bridge Nodes
+  bridgeNodes.forEach(bridge => {
+    nodes.push({
+      id: bridge.id,
+      type: "clusterHead",
+      position: { x: bridge.x - 30, y: bridge.y - 30 },
+      data: { id: bridge.id, label: bridge.label, color: bridge.color, icon: GitBranch }
+    });
+  });
 
-  crossConnections.forEach(conn => {
+  // 3. Render Spine Edges (Inter-hub)
+  spineEdges.forEach((edge, i) => {
     edges.push({
-      id: `e-cross-${conn.from}-${conn.to}`,
-      source: conn.from,
-      target: conn.to,
-      sourceHandle: `${conn.from}-center-s`,
-      targetHandle: `${conn.to}-center-t`,
+      id: `spine-${i}`,
+      source: edge.source,
+      target: edge.target,
       type: "straight",
-      style: { ...edgeStyle, strokeDasharray: "4 4", opacity: 0.3 }
+      label: edge.label,
+      style: { stroke: "#a855f7", strokeWidth: 2, opacity: 0.6 },
+      labelStyle: { fill: "#a855f7", fontWeight: 700, fontSize: 9 },
+      labelBgStyle: { fill: "var(--background)", fillOpacity: 0.9 },
+      markerEnd: { type: MarkerType.ArrowClosed, width: 15, height: 15, color: "#a855f7" },
     });
   });
 
