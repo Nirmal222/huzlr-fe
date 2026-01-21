@@ -38,7 +38,7 @@ export const HowItWorks = ({
           <span className="text-xs font-medium text-primary tracking-wide uppercase">See it in action</span>
         </div>
 
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
           How <q>huzlr</q> <span className="text-primary font-caveat">works</span>
         </h2>
         <div className="h-1 w-24 bg-primary/20 mx-auto rounded-full mt-4" />
@@ -69,16 +69,16 @@ export const HowItWorks = ({
             </div>
 
             {/* Main Grid */}
-            <div className="grid lg:grid-cols-[1fr_380px] min-h-[520px]">
+            <div className="grid lg:grid-cols-[1fr_380px] min-h-[640px]">
               {/* Left: Flow Canvas */}
               <FlowCanvas
-                className="h-full min-h-[520px] border-r border-border/30"
+                className="h-full min-h-[640px] border-r border-border/30"
                 simulationPhase={simulationState}
                 currentTopic={currentTopic}
               />
 
               {/* Right: Chat Simulation */}
-              <div className="h-[520px] bg-gradient-to-b from-muted/10 to-muted/30">
+              <div className="h-[640px] bg-gradient-to-b from-muted/10 to-muted/30">
                 <ChatSimulation
                   onPhaseChange={(phase, topic) => {
                     setSimulationState(phase);

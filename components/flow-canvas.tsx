@@ -69,61 +69,71 @@ const UniversalHandles = ({ id }: { id: string }) => {
 
 // --- Custom Node Components ---
 
-// 1. Hub Node (The Sun) - Premium Bubbly Style
+// 1. Hub Node (The Core) - Enterprise Glass
 function HubNode({ data }: any) {
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-gradient-to-br from-primary via-primary to-violet-600 shadow-[0_8px_32px_-4px_rgba(139,92,246,0.5)] border border-white/20 relative z-10 pointer-events-auto transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_-4px_rgba(139,92,246,0.6)]">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/25 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent to-black/10 pointer-events-none" />
-        <Home size={32} className="text-white drop-shadow-md" strokeWidth={2} />
+      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900/40 backdrop-blur-xl border border-white/10 relative z-10 pointer-events-auto transition-all duration-500 shadow-2xl hover:scale-105 group">
+        {/* Subtle internal gradient glow */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/5 to-transparent pointer-events-none opacity-50" />
+
+        {/* Central Core */}
+        <div className="relative flex items-center justify-center w-[64px] h-[64px] rounded-full bg-gradient-to-br from-[#4338ca] to-[#312e81] shadow-inner shadow-black/40">
+          <Home size={28} className="text-white/90 drop-shadow-md" strokeWidth={1.5} />
+        </div>
+
+        {/* Outer Ring pulse */}
+        <div className="absolute -inset-1 rounded-full border border-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-110" />
       </div>
+
       {/* Label */}
-      <span className="absolute top-[88px] text-xs font-bold text-foreground whitespace-nowrap px-3 py-1.5 rounded-full bg-card/90 backdrop-blur-md border border-border/50 shadow-lg">
+      <span className="absolute top-[90px] text-[11px] font-semibold text-foreground/80 tracking-wide uppercase px-3 py-1 rounded-full bg-background/50 backdrop-blur-md border border-white/5 shadow-sm">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 2. Cluster Head Node (The Planets) - Premium Style
+// 2. Cluster Head Node (The Planets) - Tinted Glass
 function ClusterHeadNode({ data }: any) {
-  const color = data.color || "#EC4899";
+  const color = data.color || "#475569";
   const Icon = data.icon || Crown;
 
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
       <div
-        className="flex items-center justify-center w-[60px] h-[60px] rounded-full shadow-lg border border-white/30 relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:shadow-2xl group"
+        className="flex items-center justify-center w-[56px] h-[56px] rounded-full backdrop-blur-md shadow-xl relative z-10 pointer-events-auto transition-all duration-500 hover:scale-105 group border border-white/10"
         style={{
-          background: `linear-gradient(145deg, ${color}ee, ${color}cc)`,
-          boxShadow: `0 8px 24px -4px ${color}55, inset 0 1px 0 rgba(255,255,255,0.2)`
+          background: `linear-gradient(135deg, ${color}15, ${color}05)`,
+          boxShadow: `0 8px 32px -8px ${color}20`
         }}
       >
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/30 to-transparent pointer-events-none" />
-        <Icon size={24} className="text-white drop-shadow-sm" strokeWidth={2} />
+        {/* Subtle color highlight ring */}
+        <div className="absolute inset-0 rounded-full border border-white/5" />
+
+        <Icon size={22} color={color} className="drop-shadow-sm opacity-90 transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
       </div>
-      <span className="absolute top-[68px] text-[10px] font-semibold text-foreground/90 whitespace-nowrap px-2.5 py-1 rounded-full bg-card/90 backdrop-blur-md shadow-md border border-border/40">
+      <span className="absolute top-[64px] text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-2 py-0.5 rounded-md bg-background/40 backdrop-blur-sm">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 3. Satellite Node (The Moons) - Premium Style
+// 3. Satellite Node (The Moons) - Minimal Beads
 function SatelliteNode({ data }: any) {
   const Icon = data.icon || User;
 
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card/90 backdrop-blur-md border border-border/60 shadow-md hover:shadow-xl relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:border-primary/40 group">
-        <Icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+      <div className="flex items-center justify-center w-[36px] h-[36px] rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-sm relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:border-foreground/20 hover:shadow-md group">
+        <Icon size={16} className="text-slate-400 group-hover:text-foreground transition-colors duration-200" strokeWidth={1.5} />
       </div>
       {data.label && (
-        <span className="absolute top-[44px] text-[9px] font-medium text-muted-foreground whitespace-nowrap pointer-events-none bg-card/80 px-2 py-0.5 rounded-full backdrop-blur-sm border border-border/30">
+        <span className="absolute top-[42px] text-[9px] font-medium text-slate-500 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           {data.label}
         </span>
       )}
@@ -142,13 +152,13 @@ const edgeStyle: React.CSSProperties = {
   strokeWidth: 1.5,
 };
 
-// Domain: "StandMate" Product Development
+// Domain: "huzlr" Product Development
 const clusters = [
   {
     id: "hub-product",
     label: "huzlr",
     type: "hub",
-    color: "#a855f7", // Purple (Core Product)
+    color: "#4338ca", // Indigo 700
     x: 600, y: 400,
     satellites: []
   },
@@ -156,38 +166,38 @@ const clusters = [
     id: "hub-sprint",
     label: "Sprint 24",
     type: "clusterHead",
-    color: "#eab308", // Yellow (Active Work)
+    color: "#b45309", // Amber 700 (Warm, active)
     x: 600, y: 150, // Top
     satellites: [
-      { id: "task-101", label: "Auth Flow", type: "task", edge: "CONTAINS", color: "#3b82f6" },
-      { id: "task-102", label: "payments", type: "task", edge: "CONTAINS", color: "#3b82f6" },
-      { id: "bug-404", label: "Login Bug", type: "bug", edge: "BLOCKS", color: "#ef4444" }, // Red for bug
-      { id: "milestone", label: "Beta Launch", type: "milestone", edge: "TARGETS", color: "#10b981" } // Green
+      { id: "task-101", label: "Auth Flow", type: "task", edge: "CONTAINS", color: "#64748b" },
+      { id: "task-102", label: "payments", type: "task", edge: "CONTAINS", color: "#64748b" },
+      { id: "bug-404", label: "Login Bug", type: "bug", edge: "BLOCKS", color: "#ef4444" },
+      { id: "milestone", label: "Beta Launch", type: "milestone", edge: "TARGETS", color: "#10b981" }
     ]
   },
   {
     id: "hub-team",
-    label: "Core Team",
+    label: "Team",
     type: "clusterHead",
-    color: "#3b82f6", // Blue (People)
+    color: "#2563eb", // Blue 600
     x: 300, y: 400, // Left
     satellites: [
-      { id: "u-nirmal", label: "Nirmal", type: "user", edge: "LEADS", color: "#f59e0b" },
-      { id: "u-sarah", label: "Sarah (FE)", type: "user", edge: "MEMBER", color: "#eab308" },
-      { id: "u-david", label: "David (BE)", type: "user", edge: "MEMBER", color: "#eab308" },
-      { id: "u-agent", label: "AI Agent", type: "bot", edge: "ASSISTS", color: "#ec4899" }
+      { id: "u-nirmal", label: "Nirmal", type: "user", edge: "LEADS", color: "#64748b" },
+      { id: "u-sarah", label: "Sarah (FE)", type: "user", edge: "MEMBER", color: "#64748b" },
+      { id: "u-david", label: "David (BE)", type: "user", edge: "MEMBER", color: "#64748b" },
+      { id: "u-agent", label: "AI Agent", type: "bot", edge: "ASSISTS", color: "#8b5cf6" }
     ]
   },
   {
     id: "hub-infra",
     label: "Infrastructure",
     type: "clusterHead",
-    color: "#64748b", // Slate (Tech)
+    color: "#475569", // Slate 600
     x: 900, y: 400, // Right
     satellites: [
-      { id: "aws", label: "AWS", type: "tool", edge: "HOSTS", color: "#64748b" },
+      { id: "aws", label: "AWS", type: "tool", edge: "HOSTS", color: "#475569" },
       { id: "vercel", label: "Vercel", type: "tool", edge: "DEPLOYS", color: "#000000" },
-      { id: "db-pg", label: "Postgres", type: "db", edge: "STORES", color: "#3b82f6" },
+      { id: "db-pg", label: "Postgres", type: "db", edge: "STORES", color: "#2563eb" },
       { id: "redis", label: "Redis", type: "db", edge: "CATCHES", color: "#ef4444" }
     ]
   },
@@ -195,11 +205,11 @@ const clusters = [
     id: "hub-stack",
     label: "Tech Stack",
     type: "clusterHead",
-    color: "#ec4899", // Pink (Code)
+    color: "#0f766e", // Teal 700 (Precise)
     x: 600, y: 650, // Bottom
     satellites: [
       { id: "next", label: "Next.js 14", type: "tech", edge: "POWERS", color: "#000000" },
-      { id: "tw", label: "Tailwind", type: "tech", edge: "STYLES", color: "#38bdf8" },
+      { id: "tw", label: "Tailwind", type: "tech", edge: "STYLES", color: "#06b6d4" },
       { id: "py", label: "Python/FastAPI", type: "tech", edge: "POWERS", color: "#3b82f6" },
       { id: "llm-core", label: "Gemini Pro", type: "model", edge: "DRIVES", color: "#8b5cf6" }
     ]
