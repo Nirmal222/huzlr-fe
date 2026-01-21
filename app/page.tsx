@@ -7,6 +7,7 @@ import Hero from "@/components/hero"
 import { HowItWorks } from "@/components/how-it-works"
 import { IdealCustomers } from "@/components/ideal-customers"
 import { Navigation } from "@/components/navigation"
+import { Signals } from "@/components/signals"
 
 export default function Home() {
   const jsonLd = {
@@ -39,6 +40,7 @@ export default function Home() {
       <Hero />
       <IdealCustomers />
       <HowItWorks />
+      <Signals />
       <Benefits />
       <FAQ />
       <CTA />

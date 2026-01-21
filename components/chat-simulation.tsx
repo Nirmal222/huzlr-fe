@@ -161,81 +161,104 @@ export const ChatSimulation = ({ onPhaseChange, className }: ChatSimulationProps
     }, [setPhase]);
 
     return (
-        <div className={cn("flex flex-col h-full bg-background/50 backdrop-blur-md rounded-xl border border-border/50 shadow-xl overflow-hidden", className)}>
-            {/* Header */}
-            <div className="flex items-center gap-3 p-4 border-b border-border/40 bg-muted/20 shrink-0">
-                <div className="bg-primary/20 p-2 rounded-full ring-1 ring-primary/30">
-                    <Sparkles size={18} className="text-primary" />
-                </div>
-                <div>
-                    <div className="text-sm font-semibold">Agent Tony</div>
-                    <div className="text-[10px] text-muted-foreground flex items-center gap-1.5">
+        <div className={cn("flex flex-col h-full bg-background/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden font-sans", className)}>
+            {/* Premium Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-gradient-to-r from-white/5 via-white/0 to-white/5 shrink-0">
+                <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <div className="w-10 h-10 rounded-full p-[1px] shadow-lg shadow-primary/20">
+                            <div className="w-full h-full rounded-full bg-black/90 flex items-center justify-center">
+                                <Sparkles size={18} className="text-white" fill="currentColor" fillOpacity={0.2} />
+                            </div>
+                        </div>
                         <span className={cn(
-                            "block w-1.5 h-1.5 rounded-full transition-colors",
-                            phase === "AI_PROCESSING" ? "bg-amber-500 animate-pulse" : "bg-emerald-500"
+                            "absolute bottom-0 right-0 block w-3 h-3 rounded-full ring-2 ring-black transition-all duration-500",
+                            phase === "AI_PROCESSING"
+                                ? "bg-amber-400 shadow-[0_0_8px_2px_rgba(251,191,36,0.5)]"
+                                : "bg-emerald-500 shadow-[0_0_8px_2px_rgba(16,185,129,0.5)]"
                         )} />
-                        {phase === "AI_PROCESSING" ? "Thinking..." : "Online"}
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="text-sm font-bold text-foreground tracking-tight flex items-center gap-2">
+                            huzlr AI
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-muted-foreground font-medium border border-white/5">BETA</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground/80 font-medium">
+                            {phase === "AI_PROCESSING" ? (
+                                <span className="animate-pulse text-amber-500/90">Processing context...</span>
+                            ) : (
+                                <span className="text-emerald-500/90">Active & Ready</span>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Messages Area - Fixed height, internal scroll only */}
-            <div className="flex-1 p-4 space-y-3 overflow-y-auto min-h-0">
+            {/* Messages Area */}
+            <div className="flex-1 p-6 space-y-6 overflow-y-auto min-h-0 scrollbar-hide">
                 <AnimatePresence initial={false}>
                     {messages.map((msg) => (
                         <motion.div
                             key={msg.id}
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.4, type: "spring", stiffness: 100 }}
                             className={cn(
-                                "w-max max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm",
-                                msg.role === "user"
-                                    ? "ml-auto bg-primary text-primary-foreground rounded-tr-sm"
-                                    : "bg-muted/80 backdrop-blur-sm border border-border/50 rounded-tl-sm"
+                                "flex w-full",
+                                msg.role === "user" ? "justify-end" : "justify-start"
                             )}
                         >
-                            {msg.text || <span className="opacity-0">.</span>}
+                            <div className={cn(
+                                "max-w-[85%] rounded-2xl px-5 py-3.5 text-sm leading-relaxed shadow-sm",
+                                msg.role === "user"
+                                    ? "bg-primary text-primary-foreground font-medium rounded-tr-sm shadow-lg shadow-primary/10"
+                                    : "bg-muted/50 backdrop-blur-md border border-white/5 text-foreground/90 rounded-tl-sm shadow-sm"
+                            )}>
+                                {msg.text}
+                            </div>
                         </motion.div>
                     ))}
 
-                    {/* Typing Indicator - Fixed height */}
+                    {/* Sophisticated Typing Indicator */}
                     {isTyping && (
                         <motion.div
                             key="typing-indicator"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -5 }}
-                            transition={{ duration: 0.2 }}
-                            className="bg-muted/80 backdrop-blur-sm border border-border/50 rounded-2xl rounded-tl-sm w-16 px-3 py-3 flex items-center justify-center gap-1.5 shrink-0"
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                            className="flex justify-start w-full"
                         >
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" />
+                            <div className="flex items-center gap-1.5 bg-muted/30 backdrop-blur-md border border-white/5 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
+                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "0ms" }} />
+                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "200ms" }} />
+                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "400ms" }} />
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
 
-            {/* Input Area */}
-            <div className="p-3 border-t border-border/40 bg-background/40 shrink-0">
+            {/* Premium Input Area */}
+            <div className="p-5 bg-gradient-to-t from-background via-background/95 to-transparent shrink-0">
                 <div className={cn(
-                    "relative flex items-center gap-2 bg-muted/30 border rounded-full px-4 py-2.5 transition-all duration-300",
+                    "relative flex items-center gap-3 bg-muted/20 border transition-all duration-300 rounded-2xl px-4 py-3",
                     inputValue
-                        ? "border-primary/60 shadow-[0_0_15px_hsl(var(--primary)/0.3)] ring-1 ring-primary/30"
-                        : "border-border/50"
+                        ? "border-primary/30 shadow-[0_0_20px_-5px_hsl(var(--primary)/0.15)] ring-1 ring-primary/20 bg-background/60"
+                        : "border-white/5 hover:border-white/10"
                 )}>
                     <input
                         value={inputValue}
                         readOnly
-                        className="bg-transparent border-none outline-none text-sm flex-1 placeholder:text-muted-foreground/50"
-                        placeholder="Ask anything about your project..."
+                        className="bg-transparent border-none outline-none text-sm flex-1 placeholder:text-muted-foreground/40 font-medium tracking-wide"
+                        placeholder="Ask about your project..."
                     />
                     <div className={cn(
-                        "p-1.5 rounded-full transition-colors",
-                        inputValue ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                        "p-2 rounded-xl transition-all duration-300",
+                        inputValue
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-100"
+                            : "bg-muted text-muted-foreground/40 scale-90"
                     )}>
-                        <Send size={14} />
+                        <Send size={16} />
                     </div>
                 </div>
             </div>

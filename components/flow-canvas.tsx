@@ -69,24 +69,25 @@ const UniversalHandles = ({ id }: { id: string }) => {
 
 // --- Custom Node Components ---
 
-// 1. Hub Node (The Sun) - Bubbly Style
+// 1. Hub Node (The Sun) - Premium Bubbly Style
 function HubNode({ data }: any) {
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-gradient-to-b from-primary/80 to-primary shadow-[0_10px_20px_-5px_rgba(var(--primary),0.4)] border-2 border-primary/30 relative z-10 pointer-events-auto transition-transform hover:scale-105 active:scale-95">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
-        <Home size={32} className="text-primary-foreground drop-shadow-md" strokeWidth={2.5} />
+      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-gradient-to-br from-primary via-primary to-violet-600 shadow-[0_8px_32px_-4px_rgba(139,92,246,0.5)] border border-white/20 relative z-10 pointer-events-auto transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_-4px_rgba(139,92,246,0.6)]">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/25 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent to-black/10 pointer-events-none" />
+        <Home size={32} className="text-white drop-shadow-md" strokeWidth={2} />
       </div>
       {/* Label */}
-      <span className="absolute top-[85px] text-xs font-bold text-foreground/80 whitespace-nowrap px-3 py-1 rounded-full bg-background/60 backdrop-blur-md border border-border/50 shadow-sm">
+      <span className="absolute top-[88px] text-xs font-bold text-foreground whitespace-nowrap px-3 py-1.5 rounded-full bg-card/90 backdrop-blur-md border border-border/50 shadow-lg">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 2. Cluster Head Node (The Planets) - Bubbly Style
+// 2. Cluster Head Node (The Planets) - Premium Style
 function ClusterHeadNode({ data }: any) {
   const color = data.color || "#EC4899";
   const Icon = data.icon || Crown;
@@ -95,34 +96,34 @@ function ClusterHeadNode({ data }: any) {
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
       <div
-        className="flex items-center justify-center w-[60px] h-[60px] rounded-full shadow-lg border border-white/20 relative z-10 pointer-events-auto transition-transform hover:scale-110 active:scale-95"
+        className="flex items-center justify-center w-[60px] h-[60px] rounded-full shadow-lg border border-white/30 relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:shadow-2xl group"
         style={{
-          background: `linear-gradient(135deg, ${color}dd, ${color})`,
-          boxShadow: `0 8px 16px -4px ${color}66`
+          background: `linear-gradient(145deg, ${color}ee, ${color}cc)`,
+          boxShadow: `0 8px 24px -4px ${color}55, inset 0 1px 0 rgba(255,255,255,0.2)`
         }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/30 to-transparent pointer-events-none" />
-        <Icon size={24} className="text-white drop-shadow-sm" strokeWidth={2.5} />
+        <Icon size={24} className="text-white drop-shadow-sm" strokeWidth={2} />
       </div>
-      <span className="absolute top-[65px] text-[10px] font-bold text-foreground/70 whitespace-nowrap px-2 py-0.5 rounded-full bg-background/60 backdrop-blur-md shadow-sm border border-border/30">
+      <span className="absolute top-[68px] text-[10px] font-semibold text-foreground/90 whitespace-nowrap px-2.5 py-1 rounded-full bg-card/90 backdrop-blur-md shadow-md border border-border/40">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 3. Satellite Node (The Moons) - Bubbly Style
+// 3. Satellite Node (The Moons) - Premium Style
 function SatelliteNode({ data }: any) {
   const Icon = data.icon || User;
 
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-md hover:shadow-lg relative z-10 pointer-events-auto transition-all hover:scale-110 duration-200 group">
-        <Icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+      <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-card/90 backdrop-blur-md border border-border/60 shadow-md hover:shadow-xl relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:border-primary/40 group">
+        <Icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors duration-200" />
       </div>
       {data.label && (
-        <span className="absolute top-[42px] text-[9px] font-medium text-muted-foreground/80 whitespace-nowrap pointer-events-none bg-background/40 px-1.5 rounded-full backdrop-blur-[1px]">
+        <span className="absolute top-[44px] text-[9px] font-medium text-muted-foreground whitespace-nowrap pointer-events-none bg-card/80 px-2 py-0.5 rounded-full backdrop-blur-sm border border-border/30">
           {data.label}
         </span>
       )}
