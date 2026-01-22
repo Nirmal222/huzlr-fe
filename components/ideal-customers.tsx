@@ -5,7 +5,7 @@ import { LogoCloud } from "@/components/logo-cloud"
 export function IdealCustomers() {
   const segments = [
     {
-      imageSrc: "/placeholder.jpg",
+      imageSrc: "/segment-enterprise.png",
       category: "Enterprise",
       title: "Scale Governance & Security",
       description:
@@ -14,7 +14,7 @@ export function IdealCustomers() {
       readTime: "5 min read",
     },
     {
-      imageSrc: "/placeholder.jpg",
+      imageSrc: "/segment-startups.png",
       category: "Startups",
       title: "Move Fast & Iterate",
       description:
@@ -23,7 +23,7 @@ export function IdealCustomers() {
       readTime: "4 min read",
     },
     {
-      imageSrc: "/placeholder.jpg",
+      imageSrc: "/segment-agencies.png",
       category: "Agencies",
       title: "Manage Multiple Clients",
       description:
@@ -32,7 +32,7 @@ export function IdealCustomers() {
       readTime: "3 min read",
     },
     {
-      imageSrc: "/placeholder.jpg",
+      imageSrc: "/segment-solopreneurs.png",
       category: "Solopreneurs",
       title: "Your AI Co-founder",
       description:
