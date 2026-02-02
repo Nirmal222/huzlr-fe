@@ -69,11 +69,11 @@ export function SlideProblem({
             {/* Main Content Area */}
             <div className="flex w-full h-[calc(100%-theme(spacing.24))]">
                 {/* Left Column: Context */}
-                <div className="w-[45%] flex flex-col justify-center px-16 relative z-10 h-full gap-12">
+                <div className="w-[50%] flex flex-col justify-center px-16 relative z-10 h-full gap-16">
                     <div className="flex flex-col gap-6">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-300 bg-white/50 w-fit">
                             <span className="flex h-2 w-2 rounded-full bg-red-500 shadow-sm"></span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">The Conflict</span>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">The Problem</span>
                         </div>
 
                         <h1 className="text-5xl font-black tracking-tight leading-[1.1] text-slate-800">
@@ -85,42 +85,58 @@ export function SlideProblem({
                         </p>
                     </div>
 
-                    <div className="p-8 rounded-3xl bg-white shadow-xl border border-slate-200/60 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-bl-full -mr-8 -mt-8 opacity-50"></div>
-                        <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3 relative z-10">The Consequence</div>
-                        <div className="text-lg font-semibold text-slate-700 relative z-10">
-                            Burnt out PMs • Missed deadlines • Revenue loss
+                    {/* Bottom Left: Consequence Card (Matched to Slide 1 Quote Card style) */}
+                    <div className="h-48 rounded-[40px] overflow-hidden shadow-2xl relative group flex bg-white border border-slate-100">
+                        {/* Decorative Background */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-bl-full -mr-8 -mt-8 opacity-50 z-0"></div>
+
+                        <div className="w-full relative z-10 h-full p-8 pl-10 flex flex-col justify-center items-start text-left">
+                            <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">The Consequence</div>
+
+                            <h3 className="text-2xl font-extrabold text-slate-700 mb-2 leading-tight tracking-tight drop-shadow-sm">
+                                Burnt out PMs • Missed deadlines
+                            </h3>
+                            <div className="h-1.5 w-16 bg-red-500 mb-3 rounded-full" />
+                            <p className="text-slate-600 text-lg font-medium">
+                                And significant <span className="text-red-500 font-bold">Revenue Loss</span>.
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 {/* Right Column: Problem Grid */}
-                <div className="w-[55%] h-full p-6 pl-0 flex items-center justify-center">
-                    <div className="w-full h-full grid grid-cols-2 gap-4 p-2">
-                        {problems.map((item, i) => (
-                            <div key={i} className="group relative p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col justify-between overflow-hidden">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-bl-[40px] -mr-4 -mt-4 transition-colors group-hover:bg-blue-50/50"></div>
+                <div className="w-[50%] h-full relative flex items-center justify-center bg-slate-200/50">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 
-                                <div className="relative z-10">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <span className="text-2xl font-black text-slate-600 group-hover:text-blue-500/10 transition-colors duration-300">{item.number}</span>
+                    {/* Content Container */}
+                    <div className="relative w-[90%] h-[92%]">
+                        <div className="w-full h-full grid grid-cols-2 gap-4 p-2 align-content-center">
+                            {problems.map((item, i) => (
+                                <div key={i} className="group relative p-5 rounded-[24px] bg-white border-2 border-white/50 shadow-sm hover:shadow-2xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col justify-between overflow-hidden h-full">
+                                    <div className="absolute top-0 right-0 w-20 h-20 bg-slate-50 rounded-bl-[30px] -mr-4 -mt-4 transition-colors group-hover:bg-blue-50/50"></div>
+
+                                    <div className="relative z-10">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-2xl font-black text-slate-200 group-hover:text-blue-500/20 transition-colors duration-300 select-none">{item.number}</span>
+                                        </div>
+
+                                        <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors leading-tight">{item.title}</h3>
+                                        <ul className="space-y-1.5 list-disc list-outside ml-4 marker:text-blue-400">
+                                            {item.description.map((desc, idx) => (
+                                                <li key={idx} className="text-xs text-slate-500 leading-relaxed font-medium pl-1">{desc}</li>
+                                            ))}
+                                        </ul>
                                     </div>
 
-                                    <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors leading-tight">{item.title}</h3>
-                                    <div className="space-y-1">
-                                        {item.description.map((desc, idx) => (
-                                            <p key={idx} className="text-md text-slate-500 leading-snug font-medium">{desc}</p>
-                                        ))}
-                                    </div>
+                                    {item.highlight && (
+                                        <div className="relative z-10 mt-2 pt-2 border-t border-slate-100">
+                                            <p className="text-[10px] font-bold text-blue-600 leading-tight uppercase tracking-wide">{item.highlight}</p>
+                                        </div>
+                                    )}
                                 </div>
-
-                                {item.highlight && (
-                                    <div className="relative z-10 mt-3 pt-3 border-t border-slate-100">
-                                        <p className="text-xs font-bold text-blue-600 leading-tight">{item.highlight}</p>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

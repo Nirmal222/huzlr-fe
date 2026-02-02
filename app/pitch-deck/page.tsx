@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils"
 import { SlideCover } from "@/components/pitch-deck/slide-cover"
 import { SlideProblem } from "@/components/pitch-deck/slide-problem"
+import { SlideSolution } from "@/components/pitch-deck/slide-solution"
 
 export default function PitchDeckPage() {
     const [api, setApi] = React.useState<any>()
@@ -53,6 +54,10 @@ export default function PitchDeckPage() {
         {
             id: "problem",
             content: <SlideProblem />,
+        },
+        {
+            id: "solution",
+            content: <SlideSolution />,
         },
     ]
 
