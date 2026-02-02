@@ -16,6 +16,11 @@ interface HeroWithMockupProps {
     href: string
     icon?: React.ReactNode
   }
+  tertiaryCta?: {
+    text: string
+    href: string
+    icon?: React.ReactNode
+  }
   mockupImage: {
     src: string
     alt: string
@@ -37,6 +42,7 @@ export function HeroWithMockup({
     href: "https://github.com/your-repo",
     icon: <GithubIcon className="mr-2 h-4 w-4" />,
   },
+  tertiaryCta,
   mockupImage,
   className,
 }: HeroWithMockupProps) {
@@ -109,6 +115,23 @@ export function HeroWithMockup({
                 {secondaryCta.text}
               </a>
             </Button>
+
+            {tertiaryCta && (
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className={cn(
+                  "text-foreground/80 dark:text-foreground/70",
+                  "rounded-full"
+                )}
+              >
+                <a href={tertiaryCta.href}>
+                  {tertiaryCta.icon}
+                  {tertiaryCta.text}
+                </a>
+              </Button>
+            )}
           </div>
 
           {/* Mockup */}

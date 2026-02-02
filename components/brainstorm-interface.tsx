@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Loader2, Plus, Paperclip, ChevronDown, AudioLines, ArrowUp } from "lucide-react"
+import { Loader2, Plus, Paperclip, ChevronDown, AudioLines, ArrowUp, FullscreenIcon } from "lucide-react"
 import { Orb } from "@/components/orb"
 
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,8 @@ import { useGeminiLive } from "@/hooks/use-gemini-live" // Import custom hook
 export function BrainstormInterface() {
     const [inputValue, setInputValue] = React.useState("")
     const scrollRef = React.useRef<HTMLDivElement>(null)
-
+    const screenShareHandlerRef = React.useRef<any>(null);
+    const [isScreenSharing, setIsScreenSharing] = React.useState<boolean>(false);
     // Use the custom hook for all Gemini logic
     const {
         status,
@@ -21,6 +22,8 @@ export function BrainstormInterface() {
         transcripts,
         toggleMic,
         sendText,
+        sendImage,
+        sendVideoFrame
     } = useGeminiLive()
 
     // Debug: Log volume changes (Optional preservation of debug log)
@@ -29,6 +32,60 @@ export function BrainstormInterface() {
             // console.log("📊 Volume:", { agent: agentVolume.toFixed(3), user: userVolume.toFixed(3) })
         }
     }, [agentVolume, userVolume])
+
+    React.useEffect(() => {
+        // Dynamic import to avoid SSR issues
+        const initializeMediaHandler = async () => {
+            try {
+                const { MediaHandler } = await import("@/lib/media/media-handler.js");
+                screenShareHandlerRef.current = new MediaHandler();
+                console.log("MediaHandler initialized");
+            } catch (error) {
+                console.error("Failed to initialize MediaHandler:", error);
+            }
+        };
+
+        initializeMediaHandler();
+
+        // Cleanup on unmount
+        return () => {
+            if (screenShareHandlerRef.current) {
+                screenShareHandlerRef.current.stopAll();
+                screenShareHandlerRef.current = null;
+            }
+        };
+    }, []);
+
+    const handleScreenSharing = async () => {
+        if (!screenShareHandlerRef.current) {
+            console.error("❌ MediaHandler not initialized");
+            return;
+        }
+        if (isScreenSharing) {
+
+        } else {
+            const success = await screenShareHandlerRef.current.startScreenShare();
+
+            screenShareHandlerRef.current.startFrameCapture(
+                (base64Image: string) => {
+                    console.log("📸 React callback received frame:", {
+                        imageLength: base64Image?.length || 0,
+                        imagePrefix: base64Image?.substring(0, 50) || "empty",
+                        timestamp: new Date().toISOString(),
+                    });
+
+                    // Validate image data before sending
+                    if (!base64Image || base64Image.length < 1000) {
+                        console.warn("⚠️ Received small or empty image, skipping send");
+                        return;
+                    }
+
+                    // Send the image directly - MediaHandler should provide valid data
+                    sendVideoFrame(base64Image);
+                }
+            );
+        }
+    }
 
     // Auto-scroll to bottom of transcript
     React.useEffect(() => {
@@ -147,6 +204,19 @@ export function BrainstormInterface() {
                                         ) : (
                                             <AudioLines className="h-6 w-6" />
                                         )}
+                                    </Button>
+
+                                    <Button
+                                        title={
+                                            isScreenSharing
+                                                ? "Stop screen sharing"
+                                                : "Share your screen"
+                                        }
+                                        variant="ghost"
+                                        onClick={handleScreenSharing}
+                                        className="h-7 w-7 bg-transparent text-white hover:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <FullscreenIcon className="w-4 h-4" />
                                     </Button>
 
                                     {/* Send Button */}

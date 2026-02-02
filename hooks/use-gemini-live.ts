@@ -150,6 +150,37 @@ export function useGeminiLive() {
         }
     }, []);
 
+    const sendImage = useCallback((image: any) => {
+        if (sessionRef.current) {
+            sessionRef.current.sendClientContent({
+                contents: [
+                    {
+                        inlineData: {
+                            mimeType: 'image/jpeg',
+                            data: image,
+                        },
+                    },]
+            });
+        }
+    }, []);
+
+    const sendVideoFrame = useCallback((base64Image: string) => {
+        if (sessionRef.current) {
+            try {
+                sessionRef.current.sendRealtimeInput({
+                    mediaChunks: [
+                        {
+                            mimeType: "image/jpeg",
+                            data: base64Image,
+                        },
+                    ],
+                });
+            } catch (e) {
+                console.error("Error sending video frame:", e);
+            }
+        }
+    }, []);
+
     // Cleanup on unmount
     useEffect(() => {
         return () => disconnect();
@@ -176,5 +207,7 @@ export function useGeminiLive() {
         disconnect,
         toggleMic,
         sendText,
+        sendImage,
+        sendVideoFrame,
     };
 }

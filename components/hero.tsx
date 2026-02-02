@@ -13,6 +13,10 @@ export default function Hero() {
         text: "See How Huzlr Works",
         href: "/how-it-works",
       }}
+      tertiaryCta={{
+        text: "Pitch Deck",
+        href: "/pitch-deck",
+      }}
       mockupImage={{
         alt: "Huzlr Project Intelligence Dashboard",
         width: 1248,
