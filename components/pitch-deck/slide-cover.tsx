@@ -96,7 +96,7 @@ export function SlideCover({
                     {/* Knowledge Graph Visual */}
                     <div className="relative w-[90%] h-[80%] flex items-center justify-center drop-shadow-md">
                         <img
-                            src="/KG3.png"
+                            src="/deck-s1-kg.png"
                             alt="Knowledge Graph"
                             className="w-full h-full object-cover transition-transform duration-700 rounded-[30px]"
                         />

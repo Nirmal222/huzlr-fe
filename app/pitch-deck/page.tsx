@@ -13,6 +13,9 @@ import { cn } from "@/lib/utils"
 import { SlideCover } from "@/components/pitch-deck/slide-cover"
 import { SlideProblem } from "@/components/pitch-deck/slide-problem"
 import { SlideSolution } from "@/components/pitch-deck/slide-solution"
+import { SlideWhyNow } from "@/components/pitch-deck/slide-why-now"
+import { SlideMarketSize } from "@/components/pitch-deck/slide-market-size"
+import { SlideCompetition } from "@/components/pitch-deck/slide-competition"
 
 export default function PitchDeckPage() {
     const [api, setApi] = React.useState<any>()
@@ -58,6 +61,18 @@ export default function PitchDeckPage() {
         {
             id: "solution",
             content: <SlideSolution />,
+        },
+        {
+            id: "why-now",
+            content: <SlideWhyNow />,
+        },
+        {
+            id: "market-size",
+            content: <SlideMarketSize />,
+        },
+        {
+            id: "competition",
+            content: <SlideCompetition />,
         },
     ]
 
