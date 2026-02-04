@@ -128,8 +128,6 @@ export function SlideMarketValidation({
                                 key={idx}
                                 className={cn(
                                     "bg-white/60 backdrop-blur-xl border border-white/40 p-5 rounded-2xl shadow-lg ring-1 ring-slate-900/5 transition-all duration-300 hover:scale-[1.05] hover:shadow-xl hover:bg-white/80",
-                                    // Slight staggered offset for visual interest but vertical flow
-                                    idx % 2 !== 0 ? "translate-x-4" : ""
                                 )}
                             >
                                 <div className="flex justify-between items-start mb-2">
@@ -162,7 +160,7 @@ export function SlideMarketValidation({
                                 src="/market-validation.png"
                                 alt="Market Validation Growth"
                                 fill
-                                className="object-contain drop-shadow-2xl"
+                                className="object-cover drop-shadow-2xl rounded-lg"
                             />
                         </div>
                     </div>
