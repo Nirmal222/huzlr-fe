@@ -69,7 +69,7 @@ export function SlideProblem({
             {/* Main Content Area */}
             <div className="flex w-full h-[calc(100%-theme(spacing.24))]">
                 {/* Left Column: Context */}
-                <div className="w-[50%] flex flex-col justify-center px-16 relative z-10 h-full gap-16">
+                <div className="w-[50%] flex flex-col justify-around px-16 relative z-10">
                     <div className="flex flex-col gap-6">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-300 bg-white/50 w-fit">
                             <span className="flex h-2 w-2 rounded-full bg-red-500 shadow-sm"></span>
@@ -81,12 +81,12 @@ export function SlideProblem({
                         </h1>
 
                         <p className="text-xl text-slate-600 leading-relaxed font-light">
-                            Planning is easy. Maintaining context, energy, and clarity over months is where humans struggle and tools fail.
+                            PMs are drowning in noise, losing the signal that matters most. When tools add more work than they save, execution becomes a constant battle against burnout and missed deadlines.
                         </p>
                     </div>
 
                     {/* Bottom Left: Consequence Card (Matched to Slide 1 Quote Card style) */}
-                    <div className="h-48 rounded-[40px] overflow-hidden shadow-2xl relative group flex bg-white border border-slate-100">
+                    <div className="h-[200px] rounded-[40px] overflow-hidden shadow-2xl relative group flex border border-slate-100">
                         {/* Decorative Background */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-bl-full -mr-8 -mt-8 opacity-50 z-0"></div>
 

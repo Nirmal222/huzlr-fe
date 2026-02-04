@@ -23,11 +23,11 @@ export function SlideSolution({
             </header>
 
             {/* Main Content Area */}
-            <div className="flex w-full h-[calc(100%-theme(spacing.24))]">
+            <div className="flex w-full h-[calc(100%-theme(spacing.24))] py-8">
 
                 {/* Left Column: Context (Light Theme) */}
-                <div className="w-[40%] flex flex-col justify-center px-16 relative z-10 h-full gap-12">
-                    <div className="flex flex-col gap-6">
+                <div className="w-[50%] flex flex-col justify-between px-16 relative z-10 h-full">
+                    <div className="flex flex-col justify-between gap-6">
                         {/* Badge */}
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-white/50 w-fit">
                             <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-sm"></span>
@@ -61,7 +61,7 @@ export function SlideSolution({
                     <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 
                     {/* HUD Container */}
-                    <div className="relative w-[90%] h-[90%] z-10 grid grid-cols-2 gap-5 p-4 items-center">
+                    <div className="relative w-[90%] h-full z-10 grid grid-cols-2 gap-5 px-4 items-center">
 
                         {/* 01: Team Capacity (User List Widget) */}
                         <div className="relative rounded-[16px] bg-white border border-slate-200 shadow-sm flex flex-col overflow-hidden h-full min-h-[200px]">
