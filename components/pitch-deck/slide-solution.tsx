@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
-import { Brain, Activity, AlertTriangle, GitMerge, MoreHorizontal } from "lucide-react";
+import { Brain, Activity, AlertTriangle, GitMerge, MoreHorizontal, Zap } from "lucide-react";
 
 interface SlideSolutionProps {
     companyName?: string;
@@ -26,8 +26,8 @@ export function SlideSolution({
             <div className="flex w-full h-[calc(100%-theme(spacing.24))] py-8">
 
                 {/* Left Column: Context (Light Theme) */}
-                <div className="w-[50%] flex flex-col justify-between px-16 relative z-10 h-full">
-                    <div className="flex flex-col justify-between gap-6">
+                <div className="w-[50%] flex flex-col justify-between gap-10 px-16 relative z-10 h-full">
+                    <div className="flex flex-col gap-5">
                         {/* Badge */}
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-white/50 w-fit">
                             <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-sm"></span>
@@ -39,24 +39,83 @@ export function SlideSolution({
                             From Chaos to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Clarity</span>.
                         </h1>
 
-                        <p className="text-lg text-slate-600 leading-relaxed font-light">
-                            Huzlr continuously watches your project's pulse, telling you what matters <span className="font-semibold text-slate-800">before</span> it’s too late.
+                        <p className="text-xl text-slate-600 leading-relaxed font-light max-w-2xl">
+                            Stop wasting engineering hours. Huzlr automates status tracking to reclaim <span className="font-semibold text-slate-800">20% of your team's capacity</span> while ensuring total alignment.
                         </p>
                     </div>
 
-                    {/* "The PM Experience" Summary Card */}
-                    <div className="p-8 rounded-[32px] bg-white border border-emerald-100 shadow-xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-8 -mt-8 opacity-60 z-0"></div>
-                        <div className="relative z-10">
-                            <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">The PM Experience</div>
-                            <h3 className="text-xl font-bold text-slate-800 mb-1 leading-tight">Minimal noise. Clear priorities.</h3>
-                            <p className="text-slate-600 text-sm font-medium">Focus on <span className="text-emerald-600 font-bold">Decisions</span>, not tracking.</p>
+                    {/* Consolidated Value Stack Card */}
+                    <div className="p-8 rounded-[32px] bg-white border border-slate-100 shadow-2xl relative overflow-hidden">
+                        {/* Decorative Background */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-bl-full -mr-16 -mt-16 z-0"></div>
+
+                        <div className="relative z-10 grid grid-cols-1 gap-6">
+                            {/* Row 1 */}
+                            <div className="grid grid-cols-2 gap-6">
+                                {/* Item 1 */}
+                                <div className="group">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                            <Brain className="h-4 w-4" />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">Automated Intelligence</h3>
+                                    </div>
+                                    <p className="text-xs text-slate-500 font-medium leading-relaxed pl-11">
+                                        No manual data entry. Auto-gathered status.
+                                    </p>
+                                </div>
+
+                                {/* Item 2 */}
+                                <div className="group">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
+                                            <AlertTriangle className="h-4 w-4" />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">Predictive Risk</h3>
+                                    </div>
+                                    <p className="text-xs text-slate-500 font-medium leading-relaxed pl-11">
+                                        Identify bottlenecks <span className="text-amber-600 font-bold">before</span> they hit.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="h-px w-full bg-slate-100"></div>
+
+                            {/* Row 2 */}
+                            <div className="grid grid-cols-2 gap-6">
+                                {/* Item 3 */}
+                                <div className="group">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+                                            <GitMerge className="h-4 w-4" />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">Unified Context</h3>
+                                    </div>
+                                    <p className="text-xs text-slate-500 font-medium leading-relaxed pl-11">
+                                        Jira, GitHub, Slack in <span className="text-blue-600 font-bold">one truth</span>.
+                                    </p>
+                                </div>
+
+                                {/* Item 4 */}
+                                <div className="group">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                                            <Zap className="h-4 w-4" />
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-800">Decision Velocity</h3>
+                                    </div>
+                                    <p className="text-xs text-slate-500 font-medium leading-relaxed pl-11">
+                                        Manage <span className="text-purple-600 font-bold">outcomes</span>, not tools.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Right Column: Visual HUD (Light Theme) */}
-                <div className="w-[60%] h-full relative flex items-center justify-center bg-slate-200/50 text-left overflow-hidden">
+                <div className="w-[50%] h-full relative flex items-center justify-center bg-slate-200/50 text-left overflow-hidden">
                     {/* Background Pattern - Subtle Radial on Grey */}
                     <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 

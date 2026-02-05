@@ -16,7 +16,6 @@ import { SlideSolution } from "@/components/pitch-deck/slide-solution"
 import { SlideWhyNow } from "@/components/pitch-deck/slide-why-now"
 import { SlideMarketSize } from "@/components/pitch-deck/slide-market-size"
 import { SlideCompetition } from "@/components/pitch-deck/slide-competition"
-import { SlideProduct } from "@/components/pitch-deck/slide-product"
 import { SlideMarketValidation } from "@/components/pitch-deck/slide-market-validation"
 import { SlideBusinessModel } from "@/components/pitch-deck/slide-business-model"
 import { SlideGTM } from "@/components/pitch-deck/slide-gtm"
@@ -78,10 +77,6 @@ export default function PitchDeckPage() {
         {
             id: "competition",
             content: <SlideCompetition />,
-        },
-        {
-            id: "product",
-            content: <SlideProduct />,
         },
         {
             id: "market-validation",

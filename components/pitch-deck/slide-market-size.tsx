@@ -153,11 +153,13 @@ export function SlideMarketSize({
                 </div>
 
                 {/* Right Column: Visualization (Bar Chart) */}
-                <div className="w-[55%] h-full flex flex-col items-center justify-center relative p-8 bg-slate-200/50 ">
+                <div className="w-[55%] h-full flex flex-col items-center justify-center relative p-8 bg-slate-200/50 overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 
                     <ChartContainer
                         config={chartConfig}
-                        className="w-full h-full max-h-[500px]"
+                        className="w-full h-full max-h-[500px] relative z-10"
                     >
                         <BarChart
                             accessibilityLayer
@@ -171,7 +173,7 @@ export function SlideMarketSize({
                             }}
                             barSize={72}
                         >
-                            <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.4} />
                             <XAxis type="number" hide />
                             <YAxis
                                 dataKey="market"
