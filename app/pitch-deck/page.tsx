@@ -19,6 +19,7 @@ import { SlideCompetition } from "@/components/pitch-deck/slide-competition"
 import { SlideMarketValidation } from "@/components/pitch-deck/slide-market-validation"
 import { SlideBusinessModel } from "@/components/pitch-deck/slide-business-model"
 import { SlideGTM } from "@/components/pitch-deck/slide-gtm"
+import { SlideTeam } from "@/components/pitch-deck/slide-team"
 import { SlideFinancials } from "@/components/pitch-deck/slide-financials"
 
 export default function PitchDeckPage() {
@@ -89,6 +90,10 @@ export default function PitchDeckPage() {
         {
             id: "gtm-strategy",
             content: <SlideGTM />,
+        },
+        {
+            id: "team",
+            content: <SlideTeam />,
         },
         {
             id: "financials",
