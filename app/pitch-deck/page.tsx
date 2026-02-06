@@ -38,6 +38,10 @@ export default function PitchDeckPage() {
         api.on("select", () => {
             setCurrent(api.selectedScrollSnap() + 1)
         })
+
+        // Expose API for Puppeteer
+        // @ts-ignore
+        window.pitchDeckApi = api;
     }, [api])
 
     const slides = [
@@ -113,7 +117,7 @@ export default function PitchDeckPage() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-background/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-2xl transition-all hover:bg-background/10 hover:border-white/20">
+                <div data-slide-controls="true" className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-background/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-2xl transition-all hover:bg-background/10 hover:border-white/20">
                     <CarouselPrevious variant="ghost" className="static translate-y-0 h-8 w-8 rounded-full hover:bg-white/10 text-muted-foreground hover:text-foreground" />
                     <div className="px-2 text-xs font-medium text-muted-foreground text-center tabular-nums select-none tracking-widest">
                         <span className="text-foreground">{current}</span>
