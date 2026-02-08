@@ -94,11 +94,11 @@ export function SlideCover({
                     <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 
                     {/* Knowledge Graph Visual */}
-                    <div className="relative w-[90%] h-[80%] flex items-center justify-center drop-shadow-md">
+                    <div className="relative w-[80%] h-[800%] flex items-center justify-center drop-shadow-md">
                         <img
-                            src="/deck-s1-kg.png"
+                            src="/PKG.jpg"
                             alt="Knowledge Graph"
-                            className="w-full h-full object-cover transition-transform duration-700 rounded-[30px]"
+                            className="object-contain transition-transform duration-700 rounded-[30px]"
                         />
                     </div>
                 </div>
