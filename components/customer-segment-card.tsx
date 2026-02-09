@@ -9,8 +9,6 @@ interface CustomerSegmentCardProps {
   category: string
   title: string
   description: string
-  time: string
-  readTime: string
 }
 
 export function CustomerSegmentCard({
@@ -18,50 +16,36 @@ export function CustomerSegmentCard({
   category,
   title,
   description,
-  time,
-  readTime,
 }: CustomerSegmentCardProps) {
   return (
-    <Card className="flex flex-col overflow-hidden rounded-3xl border-border/50 bg-card shadow-sm transition-all duration-300 hover:shadow-lg md:flex-row h-full">
-      <div className="relative h-48 w-full p-4 md:h-auto md:w-2/5">
-        <div className="relative h-full w-full overflow-hidden rounded-2xl">
-          <Image
-            src={imageSrc}
-            alt={title}
-            fill
-            className="object-cover"
-          />
-        </div>
+    <Card className="group relative flex h-[400px] flex-col overflow-hidden rounded-3xl border-0 bg-transparent shadow-none transition-all duration-500 hover:shadow-2xl">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={imageSrc}
+          alt={title}
+          fill
+          className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
-      <CardContent className="flex flex-1 flex-col justify-between p-6 md:p-8">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="rounded-lg bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-              {category}
-            </span>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Calendar className="h-3 w-3" />
-              <span>{time}</span>
-            </div>
+
+      <CardContent className="relative z-10 flex h-full flex-col justify-end p-6 text-white sm:p-8">
+        <div className="transform transition-transform duration-500 ease-out group-hover:-translate-y-2">
+          <span className="mb-4 inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white backdrop-blur-md">
+            {category}
+          </span>
+          <h3 className="mb-2 text-2xl font-bold leading-tight tracking-tight text-white md:text-3xl">
+            {title}
+          </h3>
+          <p className="line-clamp-3 text-sm leading-relaxed text-gray-300 opacity-90 transition-opacity duration-500 group-hover:opacity-100 group-hover:line-clamp-none">
+            {description}
+          </p>
+
+          <div className="mt-6 flex translate-y-4 items-center gap-2 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="text-sm font-semibold">Learn more</span>
+            <ArrowRight className="h-4 w-4" />
           </div>
-          <div className="space-y-2">
-            <h3 className="text-2xl font-bold leading-tight tracking-tight text-foreground">
-              {title}
-            </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {description}
-            </p>
-          </div>
-        </div>
-        <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-4">
-          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            <span>{readTime}</span>
-          </div>
-          <Button variant="ghost" size="sm" className="group gap-2 text-xs font-medium">
-            Explore {category}
-            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-          </Button>
         </div>
       </CardContent>
     </Card>
