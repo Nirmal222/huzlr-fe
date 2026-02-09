@@ -69,71 +69,53 @@ const UniversalHandles = ({ id }: { id: string }) => {
 
 // --- Custom Node Components ---
 
-// 1. Hub Node (The Core) - Enterprise Glass
+// 1. Hub Node - Minimal Gradient Sphere (Core)
 function HubNode({ data }: any) {
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-slate-900/40 backdrop-blur-xl border border-white/10 relative z-10 pointer-events-auto transition-all duration-500 shadow-2xl hover:scale-105 group">
-        {/* Subtle internal gradient glow */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/5 to-transparent pointer-events-none opacity-50" />
-
-        {/* Central Core */}
-        <div className="relative flex items-center justify-center w-[64px] h-[64px] rounded-full bg-gradient-to-br from-[#4338ca] to-[#312e81] shadow-inner shadow-black/40">
-          <Home size={28} className="text-white/90 drop-shadow-md" strokeWidth={1.5} />
-        </div>
-
-        {/* Outer Ring pulse */}
-        <div className="absolute -inset-1 rounded-full border border-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-110" />
-      </div>
-
-      {/* Label */}
-      <span className="absolute top-[90px] text-[11px] font-semibold text-foreground/80 tracking-wide uppercase px-3 py-1 rounded-full bg-background/50 backdrop-blur-md border border-white/5 shadow-sm">
+      <div
+        className="w-[80px] h-[80px] rounded-full pointer-events-auto transition-all duration-500 hover:scale-110 bg-primary shadow-lg shadow-primary/30"
+      />
+      <span className="absolute top-[85px] text-xs font-semibold text-foreground/70 whitespace-nowrap">
         {data.label}
       </span>
     </div>
   );
 }
 
-// 2. Cluster Head Node (The Planets) - Tinted Glass
+// 2. Cluster Head Node - Minimal Gradient Sphere (Medium)
 function ClusterHeadNode({ data }: any) {
-  const color = data.color || "#475569";
+  const size = data.size || 60;
+  const color = data.color || "#fbbf24";
   const Icon = data.icon || Crown;
 
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
       <div
-        className="flex items-center justify-center w-[56px] h-[56px] rounded-full backdrop-blur-md shadow-xl relative z-10 pointer-events-auto transition-all duration-500 hover:scale-105 group border border-white/10"
-        style={{
-          background: `linear-gradient(135deg, ${color}15, ${color}05)`,
-          boxShadow: `0 8px 32px -8px ${color}20`
-        }}
-      >
-        {/* Subtle color highlight ring */}
-        <div className="absolute inset-0 rounded-full border border-white/5" />
-
-        <Icon size={22} color={color} className="drop-shadow-sm opacity-90 transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
-      </div>
-      <span className="absolute top-[64px] text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-2 py-0.5 rounded-md bg-background/40 backdrop-blur-sm">
+        className="rounded-full pointer-events-auto transition-all duration-500 hover:scale-110 bg-primary shadow-md shadow-primary/25"
+        style={{ width: size, height: size }}
+      />
+      <span className="absolute text-[10px] font-semibold text-foreground/70 whitespace-nowrap" style={{ top: size + 5 }}>
         {data.label}
       </span>
     </div>
   );
 }
 
-// 3. Satellite Node (The Moons) - Minimal Beads
+// 3. Satellite Node - Minimal Gradient Sphere (Small)
 function SatelliteNode({ data }: any) {
   const Icon = data.icon || User;
 
   return (
     <div className="flex flex-col items-center justify-center pointer-events-none">
       <UniversalHandles id={data.id} />
-      <div className="flex items-center justify-center w-[36px] h-[36px] rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-sm relative z-10 pointer-events-auto transition-all duration-300 hover:scale-110 hover:border-foreground/20 hover:shadow-md group">
-        <Icon size={16} className="text-slate-400 group-hover:text-foreground transition-colors duration-200" strokeWidth={1.5} />
-      </div>
+      <div
+        className="w-[40px] h-[40px] rounded-full pointer-events-auto transition-all duration-300 hover:scale-110 bg-primary shadow-sm shadow-primary/20"
+      />
       {data.label && (
-        <span className="absolute top-[42px] text-[9px] font-medium text-slate-500 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <span className="absolute top-[42px] text-[9px] font-medium text-muted-foreground/70 whitespace-nowrap">
           {data.label}
         </span>
       )}
@@ -148,103 +130,139 @@ const nodeTypes = {
 };
 
 const edgeStyle: React.CSSProperties = {
-  stroke: "#64748b", // Slate 500 - visible in both modes
-  strokeWidth: 1.5,
+  stroke: "hsl(var(--muted-foreground) / 0.12)",
+  strokeWidth: 1,
 };
 
-// Domain: "huzlr" Product Development
+// Minimal nodes evenly distributed across canvas
 const clusters = [
   {
     id: "hub-product",
     label: "huzlr",
     type: "hub",
-    color: "#4338ca", // Indigo 700
-    x: 600, y: 400,
+    color: "#fbbf24",
+    size: 85,
+    x: 500, y: 280,
     satellites: []
   },
   {
     id: "hub-sprint",
-    label: "Sprint 24",
+    label: "Sprint",
     type: "clusterHead",
-    color: "#b45309", // Amber 700 (Warm, active)
-    x: 600, y: 150, // Top
+    color: "#fbbf24",
+    size: 65,
+    x: 180, y: 420,
     satellites: [
-      { id: "task-101", label: "Auth Flow", type: "task", edge: "CONTAINS", color: "#64748b" },
-      { id: "task-102", label: "payments", type: "task", edge: "CONTAINS", color: "#64748b" },
-      { id: "bug-404", label: "Login Bug", type: "bug", edge: "BLOCKS", color: "#ef4444" },
-      { id: "milestone", label: "Beta Launch", type: "milestone", edge: "TARGETS", color: "#10b981" }
+      { id: "task-auth", label: "Auth", type: "task", edge: "CONTAINS", color: "#fbbf24" },
+      { id: "task-pay", label: "Payments", type: "task", edge: "CONTAINS", color: "#fbbf24" },
+      { id: "bug-login", label: "Bug", type: "bug", edge: "BLOCKS", color: "#f59e0b" }
     ]
   },
   {
     id: "hub-team",
     label: "Team",
     type: "clusterHead",
-    color: "#2563eb", // Blue 600
-    x: 300, y: 400, // Left
+    color: "#fbbf24",
+    size: 60,
+    x: 820, y: 100,
     satellites: [
-      { id: "u-nirmal", label: "Nirmal", type: "user", edge: "LEADS", color: "#64748b" },
-      { id: "u-sarah", label: "Sarah (FE)", type: "user", edge: "MEMBER", color: "#64748b" },
-      { id: "u-david", label: "David (BE)", type: "user", edge: "MEMBER", color: "#64748b" },
-      { id: "u-agent", label: "AI Agent", type: "bot", edge: "ASSISTS", color: "#8b5cf6" }
+      { id: "u-nirmal", label: "Nirmal", type: "user", edge: "LEADS", color: "#fbbf24" },
+      { id: "u-sarah", label: "Sarah", type: "user", edge: "MEMBER", color: "#fcd34d" },
+      { id: "u-david", label: "David", type: "user", edge: "MEMBER", color: "#fcd34d" }
     ]
   },
   {
     id: "hub-infra",
     label: "Infrastructure",
     type: "clusterHead",
-    color: "#475569", // Slate 600
-    x: 900, y: 400, // Right
+    color: "#fbbf24",
+    size: 58,
+    x: 880, y: 420,
     satellites: [
-      { id: "aws", label: "AWS", type: "tool", edge: "HOSTS", color: "#475569" },
-      { id: "vercel", label: "Vercel", type: "tool", edge: "DEPLOYS", color: "#000000" },
-      { id: "db-pg", label: "Postgres", type: "db", edge: "STORES", color: "#2563eb" },
-      { id: "redis", label: "Redis", type: "db", edge: "CATCHES", color: "#ef4444" }
+      { id: "aws", label: "AWS", type: "tool", edge: "HOSTS", color: "#fcd34d" },
+      { id: "vercel", label: "Vercel", type: "tool", edge: "DEPLOYS", color: "#fcd34d" },
+      { id: "db-pg", label: "Postgres", type: "db", edge: "STORES", color: "#fbbf24" }
     ]
   },
   {
     id: "hub-stack",
-    label: "Tech Stack",
+    label: "Tech",
     type: "clusterHead",
-    color: "#0f766e", // Teal 700 (Precise)
-    x: 600, y: 650, // Bottom
+    color: "#fbbf24",
+    size: 55,
+    x: 140, y: 120,
     satellites: [
-      { id: "next", label: "Next.js 14", type: "tech", edge: "POWERS", color: "#000000" },
-      { id: "tw", label: "Tailwind", type: "tech", edge: "STYLES", color: "#06b6d4" },
-      { id: "py", label: "Python/FastAPI", type: "tech", edge: "POWERS", color: "#3b82f6" },
-      { id: "llm-core", label: "Gemini Pro", type: "model", edge: "DRIVES", color: "#8b5cf6" }
+      { id: "next", label: "Next.js", type: "tech", edge: "POWERS", color: "#fcd34d" },
+      { id: "py", label: "FastAPI", type: "tech", edge: "POWERS", color: "#fbbf24" },
+      { id: "llm", label: "Gemini", type: "model", edge: "DRIVES", color: "#fb923c" }
     ]
   }
 ];
 
-// Special Bridge nodes for cross-functional links
+// Bridge nodes evenly distributed
 const bridgeNodes = [
-  {
-    id: "bridge-github",
-    label: "GitHub Repo",
-    type: "tool",
-    color: "#1e293b",
-    x: 450, y: 550 // Between Team and Stack/Sprint
-  }
+  { id: "bridge-github", label: "GitHub", type: "tool", color: "#fbbf24", x: 380, y: 480 },
+  { id: "bridge-api", label: "API", type: "tool", color: "#fbbf24", x: 340, y: 240 },
+  { id: "bridge-ci", label: "CI/CD", type: "tool", color: "#fbbf24", x: 600, y: 460 },
+  { id: "bridge-analytics", label: "Analytics", type: "tool", color: "#fbbf24", x: 480, y: 80 },
+  { id: "bridge-monitoring", label: "Monitor", type: "tool", color: "#fbbf24", x: 660, y: 140 },
+  { id: "bridge-docs", label: "Docs", type: "tool", color: "#fbbf24", x: 280, y: 60 }
 ];
 
-// Relationships (The "Story")
+// Relationships (The "Story") - Cyclic Graph
 const spineEdges = [
-  // Sprint Management
+  // Sprint Management (bidirectional)
   { source: "hub-product", target: "hub-sprint", label: "MANAGES" },
-  // Team Assignment
-  { source: "hub-team", target: "hub-product", label: "BUILDS" },
-  // Tech Usage
-  { source: "hub-product", target: "hub-stack", label: "BUILT_WITH" },
-  // Infra Usage
-  { source: "hub-product", target: "hub-infra", label: "RUNS_ON" },
+  { source: "hub-sprint", target: "hub-product", label: "UPDATES" },
 
-  // Cross-Cluster details
-  // Team works on Sprint
+  // Team Assignment (bidirectional)
+  { source: "hub-team", target: "hub-product", label: "BUILDS" },
+  { source: "hub-product", target: "hub-team", label: "ASSIGNS" },
+
+  // Tech Usage (bidirectional)
+  { source: "hub-product", target: "hub-stack", label: "BUILT_WITH" },
+  { source: "hub-stack", target: "hub-product", label: "POWERS" },
+
+  // Infra Usage (bidirectional)
+  { source: "hub-product", target: "hub-infra", label: "RUNS_ON" },
+  { source: "hub-infra", target: "hub-product", label: "HOSTS" },
+
+  // Cross-Cluster cycles
   { source: "hub-team", target: "hub-sprint", label: "EXECUTES" },
-  // Team uses GitHub
+  { source: "hub-sprint", target: "hub-team", label: "REQUIRES" },
+
   { source: "hub-team", target: "bridge-github", label: "COMMITS_TO" },
-  // GitHub deploys to Infra
+  { source: "bridge-github", target: "hub-team", label: "NOTIFIES" },
+
   { source: "bridge-github", target: "hub-infra", label: "TRIGGERS_CI" },
+  { source: "hub-infra", target: "bridge-github", label: "DEPLOYS_FROM" },
+
+  // Additional cycles
+  { source: "hub-stack", target: "hub-infra", label: "DEPENDS_ON" },
+  { source: "hub-infra", target: "hub-stack", label: "SUPPORTS" },
+
+  // Features connections
+  { source: "hub-product", target: "hub-features", label: "PROVIDES" },
+  { source: "hub-features", target: "hub-product", label: "ENHANCES" },
+  { source: "hub-sprint", target: "hub-features", label: "DEVELOPS" },
+  { source: "hub-features", target: "hub-stack", label: "USES" },
+
+  // Top-center nodes connections
+  { source: "hub-product", target: "bridge-analytics", label: "TRACKS" },
+  { source: "bridge-analytics", target: "hub-sprint", label: "MEASURES" },
+  { source: "hub-team", target: "bridge-monitoring", label: "MONITORS" },
+  { source: "bridge-monitoring", target: "hub-infra", label: "WATCHES" },
+  { source: "hub-stack", target: "bridge-docs", label: "DOCUMENTS" },
+  { source: "bridge-docs", target: "hub-team", label: "GUIDES" },
+  { source: "bridge-analytics", target: "bridge-monitoring", label: "FEEDS" },
+
+  // Top edge nodes
+  { source: "hub-stack", target: "bridge-testing", label: "TESTS" },
+  { source: "bridge-testing", target: "hub-sprint", label: "VALIDATES" },
+  { source: "hub-product", target: "bridge-security", label: "SECURES" },
+  { source: "bridge-security", target: "hub-infra", label: "PROTECTS" },
+  { source: "hub-team", target: "bridge-design", label: "DESIGNS" },
+  { source: "bridge-design", target: "hub-features", label: "ENHANCES" },
 ];
 
 // Topic to nodes mapping for highlighting
@@ -286,17 +304,25 @@ const generateGraph = (highlightedNodes: string[] = [], activeEdges: string[] = 
       }
     });
 
-    // Satellites
+    // Satellites - scattered organically instead of circular
     const itemCount = cluster.satellites.length;
     if (itemCount > 0) {
-      const angleStep = 360 / itemCount;
-      const radius = 130;
+      // Define organic scattered positions relative to cluster
+      const scatterPositions = [
+        { dx: -120, dy: -80 },
+        { dx: 100, dy: -100 },
+        { dx: -140, dy: 60 },
+        { dx: 120, dy: 80 },
+        { dx: 0, dy: -140 },
+        { dx: 0, dy: 140 },
+        { dx: -100, dy: 0 },
+        { dx: 100, dy: 0 },
+      ];
 
       cluster.satellites.forEach((item, i) => {
-        const angle = (i * angleStep) - 90; // Start from top
-        const rad = (angle * Math.PI) / 180;
-        const x = cluster.x + radius * Math.cos(rad);
-        const y = cluster.y + radius * Math.sin(rad);
+        const pos = scatterPositions[i % scatterPositions.length];
+        const x = cluster.x + pos.dx;
+        const y = cluster.y + pos.dy;
 
         nodes.push({
           id: `${cluster.id}-${item.id}`,
@@ -338,14 +364,13 @@ const generateGraph = (highlightedNodes: string[] = [], activeEdges: string[] = 
           type: "straight",
           label: item.edge,
           style: isEdgeActive ? {
-            stroke: cluster.color,
-            strokeWidth: 3,
-            opacity: 1,
-            filter: "drop-shadow(0 0 4px currentColor)"
+            stroke: "hsl(var(--muted-foreground) / 0.4)",
+            strokeWidth: 2,
+            opacity: 1
           } : {
-            stroke: "#94a3b8",
-            strokeWidth: 1.5,
-            opacity: highlightedNodes.length > 0 ? 0.1 : 0.8
+            stroke: "hsl(var(--muted-foreground) / 0.12)",
+            strokeWidth: 1,
+            opacity: highlightedNodes.length > 0 ? 0.1 : 1
           },
           labelStyle: { fill: "#64748b", fontWeight: 700, fontSize: 8, opacity: isEdgeActive ? 1 : (highlightedNodes.length > 0 ? 0 : 1) },
           labelBgStyle: { fill: "var(--background)", fillOpacity: 0.8, opacity: isEdgeActive ? 1 : (highlightedNodes.length > 0 ? 0 : 1) },
@@ -377,10 +402,28 @@ const generateGraph = (highlightedNodes: string[] = [], activeEdges: string[] = 
       target: edge.target,
       type: "straight",
       label: edge.label,
-      style: { stroke: "#a855f7", strokeWidth: 2, opacity: highlightedNodes.length > 0 ? 0.1 : 0.6 },
-      labelStyle: { fill: "#a855f7", fontWeight: 700, fontSize: 9, opacity: highlightedNodes.length > 0 ? 0 : 1 },
-      labelBgStyle: { fill: "var(--background)", fillOpacity: 0.9, opacity: highlightedNodes.length > 0 ? 0 : 1 },
-      markerEnd: { type: MarkerType.ArrowClosed, width: 15, height: 15, color: "#a855f7" },
+      style: {
+        stroke: "hsl(var(--muted-foreground) / 0.12)",
+        strokeWidth: 1,
+        opacity: highlightedNodes.length > 0 ? 0.1 : 1
+      },
+      labelStyle: {
+        fill: "hsl(var(--muted-foreground))",
+        fontWeight: 600,
+        fontSize: 8,
+        opacity: highlightedNodes.length > 0 ? 0 : 0.6
+      },
+      labelBgStyle: {
+        fill: "var(--background)",
+        fillOpacity: 0.9,
+        opacity: highlightedNodes.length > 0 ? 0 : 0.6
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        width: 12,
+        height: 12,
+        color: "hsl(var(--muted-foreground) / 0.2)"
+      },
     });
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FlowCanvas } from "@/components/flow-canvas";
+import { ProcessIndicator } from "@/components/process-indicator";
 import { ChatSimulation, SimulationPhase, ConversationTopic } from "@/components/chat-simulation";
 import { useState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -70,11 +70,10 @@ export const HowItWorks = ({
 
             {/* Main Grid */}
             <div className="grid lg:grid-cols-[1fr_380px] min-h-[640px]">
-              {/* Left: Flow Canvas */}
-              <FlowCanvas
-                className="h-full min-h-[640px] border-r border-border/30"
-                simulationPhase={simulationState}
-                currentTopic={currentTopic}
+              {/* Left: Process Indicator */}
+              <ProcessIndicator
+                currentPhase={simulationState}
+                className="h-full min-h-[640px] border-r border-border/30 bg-gradient-to-br from-muted/5 to-muted/10"
               />
 
               {/* Right: Chat Simulation */}

@@ -161,104 +161,123 @@ export const ChatSimulation = ({ onPhaseChange, className }: ChatSimulationProps
     }, [setPhase]);
 
     return (
-        <div className={cn("flex flex-col h-full bg-background/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden font-sans", className)}>
+        <div className={cn("flex flex-col h-full bg-background border border-border shadow-sm rounded-xl overflow-hidden font-sans", className)}>
             {/* Premium Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-gradient-to-r from-white/5 via-white/0 to-white/5 shrink-0">
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <div className="w-10 h-10 rounded-full p-[1px] shadow-lg shadow-primary/20">
-                            <div className="w-full h-full rounded-full bg-black/90 flex items-center justify-center">
-                                <Sparkles size={18} className="text-white" fill="currentColor" fillOpacity={0.2} />
-                            </div>
-                        </div>
-                        <span className={cn(
-                            "absolute bottom-0 right-0 block w-3 h-3 rounded-full ring-2 ring-black transition-all duration-500",
-                            phase === "AI_PROCESSING"
-                                ? "bg-amber-400 shadow-[0_0_8px_2px_rgba(251,191,36,0.5)]"
-                                : "bg-emerald-500 shadow-[0_0_8px_2px_rgba(16,185,129,0.5)]"
-                        )} />
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border/40 bg-background/50 backdrop-blur-sm shrink-0 relative">
+                {/* Empty left side to balance title if needed, or just let title center absolutely */}
+                <div className="w-10" />
+
+                {/* Centered Title */}
+                <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+                    <span className="text-sm font-semibold text-foreground/80 tracking-tight">huzlr AI</span>
+                    <span className="text-[10px] px-1.5 py-px rounded-full bg-primary/10 text-primary font-medium border border-primary/20">BETA</span>
+                </div>
+
+                {/* Status Indicator (Right aligned) */}
+                <div className="flex items-center gap-2">
+                    <div className="text-xs font-medium text-right">
+                        {phase === "AI_PROCESSING" ? (
+                            <span className="text-amber-600 dark:text-amber-500 animate-pulse">Thinking...</span>
+                        ) : phase === "AI_REPLYING" ? (
+                            <span className="text-emerald-600 dark:text-emerald-500">Typing...</span>
+                        ) : (
+                            <span className="text-muted-foreground/60">Online</span>
+                        )}
                     </div>
-                    <div className="flex flex-col">
-                        <div className="text-sm font-bold text-foreground tracking-tight flex items-center gap-2">
-                            huzlr AI
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-muted-foreground font-medium border border-white/5">BETA</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground/80 font-medium">
-                            {phase === "AI_PROCESSING" ? (
-                                <span className="animate-pulse text-amber-500/90">Processing context...</span>
-                            ) : (
-                                <span className="text-emerald-500/90">Active & Ready</span>
-                            )}
-                        </div>
+                    <div className="relative flex h-2.5 w-2.5">
+                        <span className={cn(
+                            "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
+                            phase === "AI_PROCESSING" ? "bg-amber-500" : "bg-emerald-500"
+                        )} />
+                        <span className={cn(
+                            "relative inline-flex rounded-full h-2.5 w-2.5",
+                            phase === "AI_PROCESSING" ? "bg-amber-500" : "bg-emerald-500"
+                        )} />
                     </div>
                 </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 p-6 space-y-6 overflow-y-auto min-h-0 scrollbar-hide">
+            <div className="flex-1 p-5 space-y-6 overflow-y-auto min-h-0 text-sm">
                 <AnimatePresence initial={false}>
                     {messages.map((msg) => (
                         <motion.div
                             key={msg.id}
-                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                            initial={{ opacity: 0, y: 10, scale: 0.98 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.4, type: "spring", stiffness: 100 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
                             className={cn(
                                 "flex w-full",
                                 msg.role === "user" ? "justify-end" : "justify-start"
                             )}
                         >
                             <div className={cn(
-                                "max-w-[85%] rounded-2xl px-5 py-3.5 text-sm leading-relaxed shadow-sm",
+                                "max-w-[85%] px-4 py-3 leading-relaxed shadow-sm",
                                 msg.role === "user"
-                                    ? "bg-primary text-primary-foreground font-medium rounded-tr-sm shadow-lg shadow-primary/10"
-                                    : "bg-muted/50 backdrop-blur-md border border-white/5 text-foreground/90 rounded-tl-sm shadow-sm"
+                                    ? "bg-primary text-primary-foreground font-medium rounded-2xl rounded-tr-sm"
+                                    : "bg-muted text-foreground/90 rounded-2xl rounded-tl-sm border border-border/50"
                             )}>
                                 {msg.text}
                             </div>
                         </motion.div>
                     ))}
 
-                    {/* Sophisticated Typing Indicator */}
+                    {/* Typing Indicator */}
                     {isTyping && (
                         <motion.div
                             key="typing-indicator"
-                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            initial={{ opacity: 0, scale: 0.9, y: 5 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 5 }}
                             className="flex justify-start w-full"
                         >
-                            <div className="flex items-center gap-1.5 bg-muted/30 backdrop-blur-md border border-white/5 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
-                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "0ms" }} />
-                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "200ms" }} />
-                                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "400ms" }} />
+                            <div className="flex items-center gap-1 bg-muted px-3 py-2.5 rounded-2xl rounded-tl-sm border border-border/50">
+                                <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "0ms" }} />
+                                <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "150ms" }} />
+                                <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-[bounce_1.4s_infinite]" style={{ animationDelay: "300ms" }} />
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
 
-            {/* Premium Input Area */}
-            <div className="p-5 bg-gradient-to-t from-background via-background/95 to-transparent shrink-0">
+            {/* Input Area */}
+            <div className="p-4 bg-background border-t border-border/40 shrink-0">
+                {/* Suggested Questions */}
+                {messages.length === 0 && phase === "IDLE" && (
+                    <div className="mb-3 px-1">
+                        <div className="flex flex-wrap gap-2">
+                            {["Sprint capacity?", "Team status?", "Infra health?"].map((question, idx) => (
+                                <button
+                                    key={idx}
+                                    className="text-xs px-3 py-1.5 rounded-full bg-muted/40 hover:bg-muted border border-border/40 hover:border-border/60 text-muted-foreground hover:text-foreground transition-all duration-200 font-medium"
+                                >
+                                    {question}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <div className={cn(
-                    "relative flex items-center gap-3 bg-muted/20 border transition-all duration-300 rounded-2xl px-4 py-3",
+                    "relative flex items-center gap-2 bg-muted/30 border transition-all duration-200 rounded-xl px-3 py-2.5",
                     inputValue
-                        ? "border-primary/30 shadow-[0_0_20px_-5px_hsl(var(--primary)/0.15)] ring-1 ring-primary/20 bg-background/60"
-                        : "border-white/5 hover:border-white/10"
+                        ? "border-primary/20 ring-1 ring-primary/10 bg-background"
+                        : "border-border/40 hover:border-border/60"
                 )}>
                     <input
                         value={inputValue}
                         readOnly
-                        className="bg-transparent border-none outline-none text-sm flex-1 placeholder:text-muted-foreground/40 font-medium tracking-wide"
-                        placeholder="Ask about your project..."
+                        className="bg-transparent border-none outline-none text-sm flex-1 placeholder:text-muted-foreground/50 font-medium"
+                        placeholder="Ask anything..."
                     />
                     <div className={cn(
-                        "p-2 rounded-xl transition-all duration-300",
+                        "p-1.5 rounded-lg transition-all duration-200",
                         inputValue
-                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-100"
-                            : "bg-muted text-muted-foreground/40 scale-90"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground/40"
                     )}>
-                        <Send size={16} />
+                        <Send size={14} />
                     </div>
                 </div>
             </div>
