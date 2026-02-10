@@ -47,8 +47,8 @@ export const ProcessIndicator = ({ currentPhase, className }: ProcessIndicatorPr
     return (
         <div className={cn("flex flex-col h-full", className)}>
             {/* Header Section */}
-            <div className="px-12 pt-12 pb-6 border-b border-border/30">
-                <div className="flex items-start justify-between mb-4">
+            <div className="px-12 pt-12 border-b border-border/30">
+                <div className="flex items-start justify-between">
                     <div>
                         <h3 className="text-xl font-semibold text-foreground mb-1">Behind the Scenes</h3>
                         <p className="text-sm text-muted-foreground">Watch how huzlr processes your questions</p>
@@ -93,7 +93,7 @@ export const ProcessIndicator = ({ currentPhase, className }: ProcessIndicatorPr
             </div>
 
             {/* Process Steps */}
-            <div className="flex-1 px-12 py-10">
+            <div className="px-12 py-12">
                 <div className="space-y-8">
                     {PROCESS_STEPS.map((step, index) => {
                         const isActive = step.phase.includes(currentPhase);
@@ -155,7 +155,7 @@ export const ProcessIndicator = ({ currentPhase, className }: ProcessIndicatorPr
             </div>
 
             {/* Bottom Info Section */}
-            <div className="px-12 pb-12 pt-6 border-t border-border/30">
+            <div className="px-12 py-4 pt-6 border-t border-border/30">
                 <div className="bg-gradient-to-br from-primary/5 to-violet-500/5 rounded-lg p-4 border border-primary/10">
                     <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
