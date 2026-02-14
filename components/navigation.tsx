@@ -83,7 +83,6 @@ function Navbar({ className }: { className?: string }) {
           <div className="hidden lg:flex items-center gap-4">
             <Link href="/signup">
               <Button variant="outline" className="rounded-full cursor-pointer">
-                <Sparkles className="text-yellow-500 fill-yellow-500" />
                 Get started
               </Button>
             </Link>
