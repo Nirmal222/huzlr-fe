@@ -31,6 +31,55 @@ const project: ProjectCreate = {
 
 ---
 
+## CI/CD and Deployment
+
+### Automatic Skip in CI/CD
+
+The type generation script **automatically detects** CI/CD environments and skips generation:
+
+```bash
+# In Vercel, GitHub Actions, or other CI/CD:
+⏭️  Skipping type generation in CI/CD environment
+   Using committed types from lib/types/generated-api.ts
+```
+
+**Detected environments:**
+- ✅ Vercel (`$VERCEL` env var)
+- ✅ GitHub Actions (`$GITHUB_ACTIONS` env var)
+- ✅ Generic CI (`$CI` env var)
+
+### Deployment Workflow
+
+1. **Local development:**
+   ```bash
+   # Make backend changes
+   pnpm generate-types  # Generates new types
+   git add lib/types/generated-api.ts
+   git commit -m "Update types"
+   git push
+   ```
+
+2. **Vercel deployment:**
+   ```bash
+   # Vercel detects push
+   # Runs: pnpm build
+   # Script detects CI/CD → skips generation
+   # Uses committed types → build succeeds ✅
+   ```
+
+### Important: Commit Generated Types
+
+**You MUST commit `lib/types/generated-api.ts` to git** for deployments to work:
+
+```bash
+git add lib/types/generated-api.ts
+git commit -m "Update generated types"
+```
+
+> **Why?** Vercel and other CI/CD platforms don't have access to your backend, so they use the committed types instead of generating new ones.
+
+---
+
 ## How It Works
 
 ### Architecture
