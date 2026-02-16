@@ -339,6 +339,8 @@ export interface components {
         ProjectProperties: {
             /** Project Title */
             project_title: string;
+            /** Project Budget */
+            project_budget: number;
             /** Description */
             description?: string | null;
             /**
