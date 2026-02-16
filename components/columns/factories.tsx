@@ -21,8 +21,8 @@ export function createStatusColumn<TData>(accessorKey: string, header: string = 
     return {
         accessorKey,
         header,
-        cell: ({ row }) => {
-            const status = (row.original as any)[accessorKey] as string
+        cell: ({ getValue }) => {
+            const status = getValue() as string
             return (
                 <Badge variant="outline" className="text-muted-foreground px-1.5">
                     {status === "Done" ? (
@@ -42,8 +42,8 @@ export function createBadgeColumn<TData>(accessorKey: string, header: string): C
     return {
         accessorKey,
         header,
-        cell: ({ row }) => {
-            const value = (row.original as any)[accessorKey] as string
+        cell: ({ getValue }) => {
+            const value = getValue() as string
             return (
                 <div className="w-32">
                     <Badge variant="outline" className="text-muted-foreground px-1.5">
@@ -60,9 +60,9 @@ export function createInputColumn<TData>(accessorKey: string, header: string): C
     return {
         accessorKey,
         header: () => <div className="w-full text-right">{header}</div>,
-        cell: ({ row }) => {
-            const id = (row.original as any).id
-            const value = (row.original as any)[accessorKey]
+        cell: ({ row, getValue }) => {
+            const id = row.id
+            const value = getValue() as string | number
             return (
                 <form
                     onSubmit={(e) => {
@@ -93,10 +93,10 @@ export function createPersonColumn<TData>(accessorKey: string, header: string = 
     return {
         accessorKey,
         header,
-        cell: ({ row }) => {
-            const value = (row.original as any)[accessorKey]
-            const id = (row.original as any).id
-            const isAssigned = value !== "Assign reviewer"
+        cell: ({ row, getValue }) => {
+            const value = getValue() as string
+            const id = row.id
+            const isAssigned = value !== "Assign reviewer" && value
 
             if (isAssigned) {
                 return value

@@ -97,13 +97,13 @@ export function DragHandle({ id }: { id: number | string }) {
   )
 }
 
-function DraggableRow<TData extends { id: number | string }>({
+function DraggableRow<TData>({
   row
 }: {
   row: Row<TData>
 }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
+    id: row.id,
   })
 
   return (
@@ -126,9 +126,10 @@ function DraggableRow<TData extends { id: number | string }>({
   )
 }
 
-export interface DataTableProps<TData extends { id: number | string }> {
+export interface DataTableProps<TData> {
   data: TData[]
   columns: ColumnDef<TData>[]
+  getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string
   enableDragDrop?: boolean
   enableRowSelection?: boolean
   defaultPageSize?: number
@@ -140,9 +141,10 @@ export interface DataTableProps<TData extends { id: number | string }> {
   }[]
 }
 
-export function DataTable<TData extends { id: number | string }>({
+export function DataTable<TData>({
   data: initialData,
   columns,
+  getRowId,
   enableDragDrop = true,
   enableRowSelection = true,
   defaultPageSize = 10,
@@ -168,8 +170,11 @@ export function DataTable<TData extends { id: number | string }>({
   )
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
-    [data]
+    () => {
+      if (!data) return [];
+      return data.map((d, index) => getRowId ? getRowId(d, index) : (d as any).id);
+    },
+    [data, getRowId]
   )
 
   const table = useReactTable({
@@ -182,7 +187,7 @@ export function DataTable<TData extends { id: number | string }>({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: getRowId,
     enableRowSelection: enableRowSelection,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

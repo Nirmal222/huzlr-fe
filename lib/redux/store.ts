@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/authSlice'
 import projectReducer from './slices/projectSlice'
 import jiraReducer from './slices/jiraSlice'
+import metaReducer from './slices/metaSlice'
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         projects: projectReducer,
         jira: jiraReducer,
         auth: authReducer,
+        meta: metaReducer,
     },
 })
 

@@ -13,23 +13,31 @@ import {
 
 import { DataTable } from "@/components/data-table"
 import { SpinnerEmpty } from "@/components/spinner-empty"
-import { projectColumns, type ProjectData } from "./columns"
-import { Badge } from "@/components/ui/badge"
 import { ConnectedIntegrationsSheet } from "@/components/connected-integrations"
 import { JiraImportDialog } from "@/components/jira-import-dialog"
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks"
 import { useEffect, useState } from "react"
 import { fetchProjects } from "@/lib/redux/slices/projectSlice"
+import { fetchPropertyDefinitions } from "@/lib/redux/slices/metaSlice"
+// import { useEntitySchema } from "@/hooks/use-entity-schema"
+import { buildColumnsFromProperties } from "@/components/columns/builder"
+import { useMemo } from "react"
+import { createActionsColumn, createDragColumn, createSelectColumn } from "@/components/columns/shared"
+import { createTitleColumn } from "@/components/columns/factories"
+import { ColumnDef } from "@tanstack/react-table"
 
 export default function Page() {
   const dispatch = useAppDispatch()
-  const { items: data, loading: isLoading, error } = useAppSelector((state) => state.projects) // Assuming state.projects is bound in store
+  const { items: data, loading: isLoading, error } = useAppSelector((state) => state.projects)
+  const properties = useAppSelector((state) => state.meta.propertyDefinitions['project'])
+  const isPropertiesLoading = useAppSelector((state) => state.meta.loading['project'])
   const user = useAppSelector((state) => state.auth.user)
   const [jiraImportOpen, setJiraImportOpen] = useState(false)
 
-  // Fetch projects on mount
+  // Fetch projects and properties on mount
   useEffect(() => {
     dispatch(fetchProjects())
+    dispatch(fetchPropertyDefinitions('project'))
   }, [dispatch])
 
   const hasConnectedIntegrations = user?.integrations?.jira?.connected || false
@@ -41,22 +49,33 @@ export default function Page() {
     { value: "focus-documents", label: "Focus Documents" },
   ]
 
-  // Transform Redux Project[] to DataTable expected format
-  const transformedData = data?.map(project => {
-    const props = project.properties || {};
-    return {
-      id: project.project_id,
-      header: project.project_title,
-      status: project.status || "Not Started",
-      type: props.type || "Focus Documents",
-      target: props.stats?.target || "2000",
-      limit: props.stats?.limit || "5000",
-      reviewer: props.reviewer || "Assign reviewer"
-    }
-  }) || []
+  const columns = useMemo(() => {
+    if (!properties) return [];
+
+    // Default columns that always exist
+    const baseColumns: ColumnDef<any>[] = [
+      createDragColumn(),
+      createSelectColumn(),
+      createTitleColumn("properties.project_title", "Header"), // Always keep header linked to title
+    ];
+
+    // Dynamic columns from properties
+    const dynamicColumns = buildColumnsFromProperties(properties).filter(col =>
+      // Filter out if we have special handling, or just let it be.
+      // Status is standard so builder handles it.
+      // Title/Header is handled manually above, so filter out if schema has "project_title" or "header"
+      !["header", "project_title", "title"].includes((col as any).accessorKey)
+    );
+
+    return [
+      ...baseColumns,
+      ...dynamicColumns,
+      createActionsColumn()
+    ];
+  }, [properties]);
 
   const isError = !!error;
-
+  console.log(columns, data)
   return (
     <SidebarProvider
       style={
@@ -89,10 +108,11 @@ export default function Page() {
                 </div>
               )}
 
-              {transformedData.length > 0 ? (
+              {data && data.length > 0 ? (
                 <DataTable<any>
-                  data={transformedData}
-                  columns={projectColumns}
+                  data={data}
+                  getRowId={(row) => row.project_id.toString()}
+                  columns={columns}
                   tabs={tabs}
                 />
               ) : (

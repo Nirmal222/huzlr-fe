@@ -14,11 +14,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { IconDotsVertical } from "@tabler/icons-react"
 
-export function createDragColumn<TData extends { id: string | number }>(): ColumnDef<TData> {
+export function createDragColumn<TData>(): ColumnDef<TData> {
     return {
         id: "drag",
         header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.id} />,
+        cell: ({ row }) => <DragHandle id={row.id} />,
         enableSorting: false,
         enableHiding: false,
     }

@@ -44,7 +44,6 @@ export interface ProjectStats {
     completed?: number;
     progress?: number;
     target?: string;
-    limit?: string;
 }
 
 // Define the Project interface matching the backend schema
@@ -68,50 +67,91 @@ export interface ProjectProperties {
     priority?: ProjectPriority;
     start_date?: string;
     target_date?: string;
-    labels?: string[];
-    teams?: string[];
-    stats?: ProjectStats;
-
-    // UI Specific
-    type?: string;
-    reviewer?: string;
 }
-
+// Define the Project interface matching the backend unified schema
 export interface Project {
     project_id: number;
     user_id: number;
-    project_title: string;
-    description?: string;
-    status?: ProjectStatus;
-
-    // Integration Fields
-    source?: IntegrationSource;
-    external_id?: string;
-    external_url?: string;
-
-    // Extensible Properties
-    properties?: ProjectProperties;
-
     lead_id?: number;
-
     created_at: string;
     updated_at: string;
+
+    // Unified properties object containing native + dynamic fields
+    properties: {
+        // Native fields (now inside properties)
+        project_title: string;
+        description?: string;
+        status: string;
+        source: 'native' | 'jira' | 'linear' | 'github';
+        external_id?: string;
+        external_url?: string;
+
+        // Dynamic fields (examples, loosely typed as it's extensible)
+        target?: number | string;
+        limit?: number | string;
+        reviewer?: string;
+        priority?: string;
+        health?: string;
+        start_date?: string;
+        target_date?: string;
+        purpose?: string;
+
+        // Existing ProjectProperties fields that are now part of the unified properties
+        objectives?: Objective[];
+        deliverables?: Deliverable[];
+        scope?: any;
+        timeline?: any;
+        budget?: any;
+        stakeholders?: any[];
+        team_members?: any[];
+        resources?: Resource[];
+        milestones?: Milestone[];
+        integration_metadata?: IntegrationMetadata;
+        labels?: string[];
+        teams?: string[];
+        stats?: ProjectStats;
+        type?: string; // UI Specific type
+
+        [key: string]: any;
+    };
 }
 
 export interface ProjectCreate {
-    project_title: string;
-    description?: string;
-    status?: ProjectStatus;
     user_id: number;
-
-    // Optional initial values
-    source?: IntegrationSource;
-    external_id?: string;
-    external_url?: string;
-
-    properties?: ProjectProperties;
-
     lead_id?: number;
+    properties: {
+        project_title: string;
+        description?: string;
+        status?: ProjectStatus;
+        source?: IntegrationSource;
+        external_id?: string;
+        external_url?: string;
+
+        // Other properties that can be set at creation
+        target?: number | string;
+        limit?: number | string;
+        reviewer?: string;
+        priority?: ProjectPriority; // Can still use specific type for input
+        health?: string;
+        start_date?: string;
+        target_date?: string;
+        purpose?: any;
+        objectives?: Objective[];
+        deliverables?: Deliverable[];
+        scope?: any;
+        timeline?: any;
+        budget?: any;
+        stakeholders?: any[];
+        team_members?: any[];
+        resources?: Resource[];
+        milestones?: Milestone[];
+        integration_metadata?: IntegrationMetadata;
+        labels?: string[];
+        teams?: string[];
+        stats?: ProjectStats;
+        type?: string;
+        [key: string]: any;
+    };
 }
 
 interface ProjectState {
@@ -154,6 +194,7 @@ export const fetchProjects = createAsyncThunk(
         }
     }
 );
+
 
 export const createProject = createAsyncThunk(
     'projects/create',
@@ -201,17 +242,17 @@ export const importJiraProjects = createAsyncThunk(
                 }
 
                 const projectCreateData: ProjectCreate = {
-                    project_title: proj.project_title,
-                    description: proj.description,
                     user_id: proj.user_id,
-                    status: proj.status || "planning",
-                    // Map new fields
-                    source: proj.source || "native",
-                    external_id: proj.external_id,
-                    external_url: proj.external_url,
                     lead_id: proj.lead_id,
 
                     properties: {
+                        project_title: proj.project_title,
+                        description: proj.description,
+                        status: proj.status || "planning",
+                        source: proj.source || "native",
+                        external_id: proj.external_id,
+                        external_url: proj.external_url,
+
                         integration_metadata: proj.integration_metadata,
                         stats: proj.stats,
                         milestones: proj.milestones,

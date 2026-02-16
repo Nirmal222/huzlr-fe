@@ -34,7 +34,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { ProjectData } from "@/app/projects/schema"
+import { Project } from "@/lib/redux/slices/projectSlice"
 
 const chartData = [
     { month: "January", desktop: 186, mobile: 80 },
@@ -56,19 +56,19 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function ProjectDetailsDrawer({ item }: { item: ProjectData }) {
+export function ProjectDetailsDrawer({ item }: { item: Project }) {
     const isMobile = useIsMobile()
 
     return (
         <Drawer direction={isMobile ? "bottom" : "right"}>
             <DrawerTrigger asChild>
                 <Button variant="link" className="text-foreground w-fit px-0 text-left">
-                    {item.header}
+                    {item.properties.project_title}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="gap-1">
-                    <DrawerTitle>{item.header}</DrawerTitle>
+                    <DrawerTitle>{item.properties.project_title}</DrawerTitle>
                     <DrawerDescription>
                         Showing total visitors for the last 6 months
                     </DrawerDescription>
@@ -134,12 +134,12 @@ export function ProjectDetailsDrawer({ item }: { item: ProjectData }) {
                     <form className="flex flex-col gap-4">
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="header">Header</Label>
-                            <Input id="header" defaultValue={item.header} />
+                            <Input id="header" defaultValue={item.properties.project_title} />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col gap-3">
                                 <Label htmlFor="type">Type</Label>
-                                <Select defaultValue={item.type}>
+                                <Select defaultValue={item.properties.type}>
                                     <SelectTrigger id="type" className="w-full">
                                         <SelectValue placeholder="Select a type" />
                                     </SelectTrigger>
@@ -165,7 +165,7 @@ export function ProjectDetailsDrawer({ item }: { item: ProjectData }) {
                             </div>
                             <div className="flex flex-col gap-3">
                                 <Label htmlFor="status">Status</Label>
-                                <Select defaultValue={item.status}>
+                                <Select defaultValue={item.properties.status}>
                                     <SelectTrigger id="status" className="w-full">
                                         <SelectValue placeholder="Select a status" />
                                     </SelectTrigger>
@@ -180,16 +180,16 @@ export function ProjectDetailsDrawer({ item }: { item: ProjectData }) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col gap-3">
                                 <Label htmlFor="target">Target</Label>
-                                <Input id="target" defaultValue={item.target} />
+                                <Input id="target" defaultValue={item.properties.target?.toString()} />
                             </div>
                             <div className="flex flex-col gap-3">
                                 <Label htmlFor="limit">Limit</Label>
-                                <Input id="limit" defaultValue={item.limit} />
+                                <Input id="limit" defaultValue={item.properties.limit?.toString()} />
                             </div>
                         </div>
                         <div className="flex flex-col gap-3">
                             <Label htmlFor="reviewer">Reviewer</Label>
-                            <Select defaultValue={item.reviewer}>
+                            <Select defaultValue={item.properties.reviewer}>
                                 <SelectTrigger id="reviewer" className="w-full">
                                     <SelectValue placeholder="Select a reviewer" />
                                 </SelectTrigger>
