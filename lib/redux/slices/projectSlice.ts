@@ -1,158 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import type {
+    ProjectProperties,
+    ProjectCreate,
+    ProjectResponse,
+    Project
+} from '../../types';
 
-// Define the Project interface matching the backend schema
-// Define types for JSON fields
-export type IntegrationSource = 'native' | 'jira' | 'linear' | 'github';
-export type ProjectStatus = 'draft' | 'planning' | 'active' | 'completed' | 'archived' | 'backlog';
-export type ProjectPriority = 'urgent' | 'high' | 'medium' | 'low' | 'none';
-
-export interface IntegrationMetadata {
-    original_id?: string;
-    original_key?: string;
-    original_url?: string;
-    [key: string]: any;
-}
-
-export interface Objective {
-    id: string | number;
-    text: string;
-    status: string;
-}
-
-export interface Deliverable {
-    item: string;
-    due_date?: string;
-    status: string;
-}
-
-export interface Milestone {
-    id: string | number;
-    title: string;
-    date: string;
-    status: string;
-}
-
-export interface Resource {
-    title: string;
-    url: string;
-    type: string;
-    icon?: string;
-}
-
-export interface ProjectStats {
-    scope?: number;
-    completed?: number;
-    progress?: number;
-    target?: string;
-}
-
-// Define the Project interface matching the backend schema
-// Define the Project interface matching the backend schema
-// Consolidated Properties Interface
-export interface ProjectProperties {
-    // Charter & Content
-    purpose?: any;
-    objectives?: Objective[];
-    deliverables?: Deliverable[];
-    scope?: any;
-    timeline?: any;
-    budget?: any;
-    stakeholders?: any[];
-    team_members?: any[];
-    resources?: Resource[];
-    milestones?: Milestone[];
-    integration_metadata?: IntegrationMetadata;
-
-    // Metadata
-    priority?: ProjectPriority;
-    start_date?: string;
-    target_date?: string;
-}
-// Define the Project interface matching the backend unified schema
-export interface Project {
-    project_id: number;
-    user_id: number;
-    lead_id?: number;
-    created_at: string;
-    updated_at: string;
-
-    // Unified properties object containing native + dynamic fields
-    properties: {
-        // Native fields (now inside properties)
-        project_title: string;
-        description?: string;
-        status: string;
-        source: 'native' | 'jira' | 'linear' | 'github';
-        external_id?: string;
-        external_url?: string;
-
-        // Dynamic fields (examples, loosely typed as it's extensible)
-        target?: number | string;
-        limit?: number | string;
-        reviewer?: string;
-        priority?: string;
-        health?: string;
-        start_date?: string;
-        target_date?: string;
-        purpose?: string;
-
-        // Existing ProjectProperties fields that are now part of the unified properties
-        objectives?: Objective[];
-        deliverables?: Deliverable[];
-        scope?: any;
-        timeline?: any;
-        budget?: any;
-        stakeholders?: any[];
-        team_members?: any[];
-        resources?: Resource[];
-        milestones?: Milestone[];
-        integration_metadata?: IntegrationMetadata;
-        labels?: string[];
-        teams?: string[];
-        stats?: ProjectStats;
-        type?: string; // UI Specific type
-
-        [key: string]: any;
-    };
-}
-
-export interface ProjectCreate {
-    user_id: number;
-    lead_id?: number;
-    properties: {
-        project_title: string;
-        description?: string;
-        status?: ProjectStatus;
-        source?: IntegrationSource;
-        external_id?: string;
-        external_url?: string;
-
-        // Other properties that can be set at creation
-        target?: number | string;
-        limit?: number | string;
-        reviewer?: string;
-        priority?: ProjectPriority; // Can still use specific type for input
-        health?: string;
-        start_date?: string;
-        target_date?: string;
-        purpose?: any;
-        objectives?: Objective[];
-        deliverables?: Deliverable[];
-        scope?: any;
-        timeline?: any;
-        budget?: any;
-        stakeholders?: any[];
-        team_members?: any[];
-        resources?: Resource[];
-        milestones?: Milestone[];
-        integration_metadata?: IntegrationMetadata;
-        labels?: string[];
-        teams?: string[];
-        stats?: ProjectStats;
-        type?: string;
-        [key: string]: any;
-    };
-}
+// Re-export for convenience
+export type { ProjectProperties, ProjectCreate, ProjectResponse, Project };
 
 interface ProjectState {
     items: Project[];
@@ -244,21 +99,15 @@ export const importJiraProjects = createAsyncThunk(
                 const projectCreateData: ProjectCreate = {
                     user_id: proj.user_id,
                     lead_id: proj.lead_id,
-
                     properties: {
                         project_title: proj.project_title,
-                        description: proj.description,
-                        status: proj.status || "planning",
+                        description: proj.description || null,
+                        status: proj.status || "Draft",
                         source: proj.source || "native",
-                        external_id: proj.external_id,
-                        external_url: proj.external_url,
-
-                        integration_metadata: proj.integration_metadata,
-                        stats: proj.stats,
-                        milestones: proj.milestones,
-                        resources: proj.resources,
-                        labels: proj.labels,
-                        teams: proj.teams,
+                        external_id: proj.external_id || null,
+                        external_url: proj.external_url || null,
+                        // Spread any additional properties (uses index signature)
+                        ...proj
                     }
                 };
 
