@@ -6,6 +6,7 @@ export interface PropertyDefinition {
     label: string;
     options?: string[];
     default?: any;
+    visible?: boolean;
     required?: boolean;
     storage?: 'native' | 'json';
 }
@@ -27,14 +28,18 @@ export const fetchPropertyDefinitions = createAsyncThunk(
     async (entityType: string, { getState, rejectWithValue }) => {
         try {
             const state = getState() as any;
-
-            // simple cache check: if we already have it, don't fetch? 
-            // For now, let's always fetch to ensure freshness, or maybe we can add a 'force' arg later.
-            // If we wanted to cache: 
-            // if (state.meta.propertyDefinitions[entityType]) return state.meta.propertyDefinitions[entityType];
+            const token = state.auth.token || localStorage.getItem('token');
+            // If no token, maybe we should still try fetching if endpoint allows public access?
+            // But we made it protected, so we need token.
+            const headers: HeadersInit = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
 
             const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1';
-            const response = await fetch(`${baseUrl}/meta/schemas/${entityType}`);
+            const response = await fetch(`${baseUrl}/meta/schemas/${entityType}`, {
+                headers
+            });
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch property definitions: ${response.statusText}`);
@@ -42,6 +47,37 @@ export const fetchPropertyDefinitions = createAsyncThunk(
 
             const data = await response.json();
             return { entityType, definitions: data as PropertyDefinition[] };
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const updatePropertyPreference = createAsyncThunk(
+    'meta/updatePropertyPreference',
+    async ({ entityType, key, visible }: { entityType: string; key: string; visible: boolean }, { getState, rejectWithValue }) => {
+        try {
+            const state = getState() as any;
+            const token = state.auth.token || localStorage.getItem('token');
+
+            if (!token) return rejectWithValue('No token found');
+
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1';
+            const response = await fetch(`${baseUrl}/meta/schemas/${entityType}/properties`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ key, visible }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to update preference: ${response.statusText}`);
+            }
+
+            // Return query args to update state optimistically
+            return { entityType, key, visible };
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -69,6 +105,17 @@ const metaSlice = createSlice({
             .addCase(fetchPropertyDefinitions.rejected, (state, action) => {
                 state.loading[action.meta.arg] = false;
                 state.error = action.payload as string;
+            })
+            // Update Preference
+            .addCase(updatePropertyPreference.fulfilled, (state, action) => {
+                const { entityType, key, visible } = action.payload;
+                const definitions = state.propertyDefinitions[entityType];
+                if (definitions) {
+                    const prop = definitions.find(p => p.key === key);
+                    if (prop) {
+                        prop.visible = visible;
+                    }
+                }
             });
     },
 });

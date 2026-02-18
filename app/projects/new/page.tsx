@@ -1,15 +1,20 @@
+'use client'
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import {
     SidebarInset,
     SidebarProvider,
 } from "@/components/ui/sidebar"
-import { BrainstormInterface } from "@/components/brainstorm-interface"
+import { BrainstormInterface } from "@/components/brainstorm-interface" // Keep this? User wanted a reusable component.
 
 import { Button } from "@/components/ui/button"
-import { MessageSquare, X } from "lucide-react"
+import { MessageSquare, Plus, X } from "lucide-react"
+import { CreateProjectModal } from "@/components/projects/create-project-modal"
+import { useState } from "react"
 
 export default function Page() {
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
     return (
         <SidebarProvider
             style={
@@ -22,14 +27,20 @@ export default function Page() {
             <AppSidebar variant="inset" />
             <SidebarInset>
                 <SiteHeader>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <X className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-2 ml-auto">
+                        <Button onClick={() => setIsCreateModalOpen(true)}>
+                            <Plus className="w-4 h-4 mr-2" />
+                            New Project
+                        </Button>
+                    </div>
                 </SiteHeader>
-                <div className="flex flex-1 flex-col h-full">
-                    <BrainstormInterface />
-                </div>
+                <BrainstormInterface />
             </SidebarInset>
+                <CreateProjectModal
+                    open={isCreateModalOpen}
+                    onOpenChange={setIsCreateModalOpen}
+                />
         </SidebarProvider>
     )
 }
+

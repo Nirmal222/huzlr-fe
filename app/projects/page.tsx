@@ -25,6 +25,7 @@ import { useMemo } from "react"
 import { createActionsColumn, createDragColumn, createSelectColumn } from "@/components/columns/shared"
 import { createTitleColumn } from "@/components/columns/factories"
 import { ColumnDef } from "@tanstack/react-table"
+import { DisplayPropertiesMenu } from "@/components/display-properties-menu"
 
 export default function Page() {
   const dispatch = useAppDispatch()
@@ -88,6 +89,7 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader>
+          {data && data.length > 0 && <DisplayPropertiesMenu entityType="project" />}
           <Link href="/projects/new">
             <Button size="sm" className="gap-2 rounded-full">
               <Plus className="h-4 w-4" />
