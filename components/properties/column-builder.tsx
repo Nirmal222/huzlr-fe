@@ -5,8 +5,9 @@ import {
     createInputColumn,
     createPersonColumn,
     createStatusColumn,
+    createPriorityColumn,
     createTitleColumn
-} from "@/components/columns/factories";
+} from "./column-factories";
 
 // Map property definitions to factory functions
 // We can extend this as needed.
@@ -23,7 +24,13 @@ export function buildColumnsFromProperties<TData>(properties: PropertyDefinition
             switch (type) {
                 case "status":
                     return createStatusColumn<TData>(accessorKey, label);
+                case "priority": // Assuming we have a 'priority' type now or mapping 'select' to it if key matches
+                    return createPriorityColumn<TData>(accessorKey, label);
                 case "select":
+                    // If key is priority, use priority column, else use badge
+                    if (key === "priority") {
+                        return createPriorityColumn<TData>(accessorKey, label);
+                    }
                     // Using Badge column for select types for now, 
                     // but we might want a proper Select column factory later if editable
                     return createBadgeColumn<TData>(accessorKey, label);

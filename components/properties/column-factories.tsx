@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/select"
 import { ProjectDetailsDrawer } from "@/components/project-details-drawer"
 
+import { ProjectStatusSelector, ProjectPrioritySelector } from "./selectors"
+
 // Factory for Status Column
 export function createStatusColumn<TData>(accessorKey: string, header: string = "Status"): ColumnDef<TData> {
     return {
@@ -24,14 +26,33 @@ export function createStatusColumn<TData>(accessorKey: string, header: string = 
         cell: ({ getValue }) => {
             const status = getValue() as string
             return (
-                <Badge variant="outline" className="text-muted-foreground px-1.5">
-                    {status === "Done" ? (
-                        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-                    ) : (
-                        <IconLoader />
-                    )}
-                    {status}
-                </Badge>
+                <ProjectStatusSelector
+                    value={status}
+                    onChange={(val) => {
+                        // TODO: Implement update logic
+                        console.log("Status changed to:", val)
+                    }}
+                />
+            )
+        },
+    }
+}
+
+// Factory for Priority Column
+export function createPriorityColumn<TData>(accessorKey: string, header: string = "Priority"): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const priority = getValue() as string
+            return (
+                <ProjectPrioritySelector
+                    value={priority}
+                    onChange={(val) => {
+                        // TODO: Implement update logic
+                        console.log("Priority changed to:", val)
+                    }}
+                />
             )
         },
     }

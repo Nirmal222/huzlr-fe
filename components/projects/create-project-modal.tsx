@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useAppDispatch } from "@/lib/redux/hooks"
 import { createProject } from "@/lib/redux/slices/projectSlice"
-import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog"
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { TiptapEditor } from "@/components/editor/tiptap-editor"
@@ -20,7 +20,7 @@ import {
     X
 } from "lucide-react"
 import { components } from "@/lib/types/generated-api"
-import { ProjectStatusSelector, ProjectPrioritySelector } from "./project-property-selectors"
+import { ProjectStatusSelector, ProjectPrioritySelector } from "@/components/properties/selectors"
 
 type ProjectCreate = components["schemas"]["ProjectCreate"]
 type ProjectProperties = components["schemas"]["ProjectProperties"]
@@ -87,10 +87,10 @@ export function CreateProjectModal({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-4xl h-[80vh] p-0 overflow-hidden shadow-2xl gap-0 outline-none border-border/80">
+        <Sheet open={open} onOpenChange={onOpenChange}>
+            <SheetContent side="right" className="sm:max-w-2xl w-[90vw] p-0 overflow-hidden shadow-2xl gap-0 outline-none border-l border-border/80">
                 <div className="sr-only">
-                    <DialogTitle>Create Project</DialogTitle>
+                    <SheetTitle>Create Project</SheetTitle>
                 </div>
                 <div className="flex flex-col h-full bg-background relative">
                     {/* Header Controls (Close button is provided by Dialog usually, but we can have custom if needed. 
@@ -160,34 +160,28 @@ export function CreateProjectModal({
                         </div>
                     </div>
 
-                    {/* Footer - Floating or fixed at bottom */}
-                    <div className="p-4 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-between z-10">
-                        <div className="flex items-center gap-2">
-                            {/* Left actions like attachments etc */}
-                            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground text-xs h-8 gap-1.5">
-                                <Plus className="w-3.5 h-3.5" />
-                                <span>Add sub-issue</span>
-                            </Button>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Button
-                                variant="ghost"
-                                className="text-muted-foreground hover:text-foreground text-sm font-medium h-8"
-                                onClick={() => onOpenChange(false)}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleSubmit}
-                                disabled={!title.trim() || isSubmitting}
-                                className="h-8 px-4 text-sm font-medium shadow-sm transition-all hover:shadow-md"
-                            >
-                                {isSubmitting ? "Creating..." : "Create project"}
-                            </Button>
-                        </div>
+                    {/* Footer Actions */}
+                    <div className="p-6 border-t bg-background/50 backdrop-blur-sm sticky bottom-0 flex justify-end gap-3 z-10">
+                        <Button
+                            variant="ghost"
+                            onClick={() => onOpenChange(false)}
+                            disabled={isSubmitting}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleSubmit}
+                            disabled={!title.trim() || isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <>Creating...</>
+                            ) : (
+                                <>Create Project</>
+                            )}
+                        </Button>
                     </div>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </SheetContent>
+        </Sheet>
     )
 }
