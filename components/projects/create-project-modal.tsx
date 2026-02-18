@@ -88,7 +88,7 @@ export function CreateProjectModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] max-w-none  p-0 overflow-hidden shadow-2xl gap-0 outline-none border-border/80">
+            <DialogContent className="sm:max-w-4xl h-[80vh] p-0 overflow-hidden shadow-2xl gap-0 outline-none border-border/80">
                 <div className="sr-only">
                     <DialogTitle>Create Project</DialogTitle>
                 </div>
