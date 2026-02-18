@@ -261,7 +261,7 @@ export interface paths {
         };
         /**
          * Get Schema
-         * @description Returns the property schema for the given entity type.
+         * @description Returns the property schema for the given entity type, personalized with user preferences.
          */
         get: operations["get_schema_api_v1_meta_schemas__entity_type__get"];
         put?: never;
@@ -270,6 +270,26 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/meta/schemas/{entity_type}/properties": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Property Preference
+         * @description Update a user's preference for a specific property.
+         */
+        patch: operations["update_property_preference_api_v1_meta_schemas__entity_type__properties_patch"];
         trace?: never;
     };
 }
@@ -340,7 +360,7 @@ export interface components {
             /** Project Title */
             project_title: string;
             /** Project Budget */
-            project_budget: number;
+            project_budget?: number | null;
             /** Description */
             description?: string | null;
             /**
@@ -1043,6 +1063,43 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_property_preference_api_v1_meta_schemas__entity_type__properties_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                entity_type: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    [key: string]: unknown;
+                };
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

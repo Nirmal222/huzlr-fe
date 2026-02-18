@@ -2,7 +2,11 @@
 
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import TaskList from "@tiptap/extension-task-list"
+import TaskItem from "@tiptap/extension-task-item"
+import Image from "@tiptap/extension-image"
 import { useEffect } from "react"
+import { SlashCommand, getSuggestionItems, renderItems } from "./extensions/slash-command"
 
 interface TiptapEditorProps {
     value?: string
@@ -20,6 +24,17 @@ export function TiptapEditor({
     const editor = useEditor({
         extensions: [
             StarterKit,
+            TaskList,
+            TaskItem.configure({
+                nested: true,
+            }),
+            Image,
+            SlashCommand.configure({
+                suggestion: {
+                    items: getSuggestionItems,
+                    render: renderItems,
+                },
+            }),
         ],
         content: value,
         editorProps: {

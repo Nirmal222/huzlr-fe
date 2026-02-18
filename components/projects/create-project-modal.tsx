@@ -153,7 +153,7 @@ export function CreateProjectModal({
                                 <TiptapEditor
                                     value={description}
                                     onChange={setDescription}
-                                    placeholder="Write a description, project brief, or collect ideas..."
+                                    placeholder="Write a description, project brief, or collect ideas... (Type '/' for commands)"
                                     className="min-h-[300px] prose-lg"
                                 />
                             </div>
