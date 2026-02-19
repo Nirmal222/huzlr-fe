@@ -359,62 +359,48 @@ export interface components {
         ProjectProperties: {
             /** Project Title */
             project_title: string;
-            /** Project Budget */
-            project_budget?: number | null;
-            /** Description */
-            description?: string | null;
-            /**
-             * Source
-             * @default native
-             */
-            source: string | null;
-            /** External Id */
-            external_id?: string | null;
-            /** External Url */
-            external_url?: string | null;
+            /** Short Summary */
+            short_summary?: string | null;
             /**
              * Status
-             * @default Draft
+             * @default Backlog
              */
             status: string | null;
-            /**
-             * Type
-             * @default Focus Documents
-             */
-            type: string | null;
-            /**
-             * Target
-             * @default 2000
-             */
-            target: number | null;
-            /**
-             * Limit
-             * @default 5000
-             */
-            limit: number | null;
-            /**
-             * Reviewer
-             * @default Assign reviewer
-             */
-            reviewer: string | null;
             /**
              * Priority
              * @default None
              */
             priority: string | null;
+            /** Lead */
+            lead?: string | number | null;
             /**
-             * Health
-             * @default On Track
+             * Members
+             * @default []
              */
-            health: string | null;
+            members: (string | number)[] | null;
             /** Start Date */
             start_date?: string | null;
             /** Target Date */
             target_date?: string | null;
-            /** Purpose */
-            purpose?: {
+            /**
+             * Labels
+             * @default []
+             */
+            labels: (string | number)[] | null;
+            /**
+             * Dependencies
+             * @default []
+             */
+            dependencies: (string | number)[] | null;
+            /** Description */
+            description?: string | null;
+            /**
+             * Milestones
+             * @default []
+             */
+            milestones: {
                 [key: string]: unknown;
-            } | unknown[] | string | null;
+            } | unknown[] | null;
         } & {
             [key: string]: unknown;
         };

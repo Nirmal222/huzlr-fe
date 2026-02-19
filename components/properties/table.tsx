@@ -16,7 +16,13 @@ import {
 } from "@/components/ui/select"
 import { ProjectDetailsDrawer } from "@/components/project-details-drawer"
 
-import { ProjectStatusSelector, ProjectPrioritySelector } from "./factory"
+import {
+    ProjectStatusSelector,
+    ProjectPrioritySelector,
+    MemberSelector,
+    DateSelector,
+    LabelSelector
+} from "./factory"
 
 // Factory for Status Column
 export function createStatusColumn<TData>(accessorKey: string, header: string = "Status"): ColumnDef<TData> {
@@ -109,41 +115,94 @@ export function createInputColumn<TData>(accessorKey: string, header: string): C
     }
 }
 
-// Factory for Reviewer/Person Column
-export function createPersonColumn<TData>(accessorKey: string, header: string = "Reviewer"): ColumnDef<TData> {
+// Factory for Member Column (Single)
+export function createMemberColumn<TData>(accessorKey: string, header: string = "Lead"): ColumnDef<TData> {
     return {
         accessorKey,
         header,
-        cell: ({ row, getValue }) => {
-            const value = getValue() as string
-            const id = row.id
-            const isAssigned = value !== "Assign reviewer" && value
-
-            if (isAssigned) {
-                return value
-            }
-
+        cell: ({ getValue }) => {
+            const value = getValue() as string | undefined
             return (
-                <>
-                    <Label htmlFor={`${id}-${accessorKey}`} className="sr-only">
-                        {header}
-                    </Label>
-                    <Select>
-                        <SelectTrigger
-                            className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-                            size="sm"
-                            id={`${id}-${accessorKey}`}
-                        >
-                            <SelectValue placeholder={`Assign ${header.toLowerCase()}`} />
-                        </SelectTrigger>
-                        <SelectContent align="end">
-                            <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                            <SelectItem value="Jamik Tashpulatov">
-                                Jamik Tashpulatov
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </>
+                <MemberSelector
+                    value={value}
+                    onChange={(val) => {
+                        console.log("Member changed:", val)
+                    }}
+                />
+            )
+        },
+    }
+}
+
+// Factory for Members Column (Multi)
+export function createMembersColumn<TData>(accessorKey: string, header: string = "Members"): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const value = getValue() as string[] | undefined
+            return (
+                <MemberSelector
+                    value={value || []}
+                    multiple
+                    onChange={(val) => {
+                        console.log("Members changed:", val)
+                    }}
+                />
+            )
+        },
+    }
+}
+
+// Factory for Date Column
+export function createDateColumn<TData>(accessorKey: string, header: string = "Date"): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const value = getValue() as string | undefined
+            return (
+                <DateSelector
+                    value={value}
+                    onChange={(val) => {
+                        console.log("Date changed:", val)
+                    }}
+                />
+            )
+        },
+    }
+}
+
+// Factory for Labels Column
+export function createLabelsColumn<TData>(accessorKey: string, header: string = "Labels"): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const value = getValue() as string[] | undefined
+            return (
+                <LabelSelector
+                    value={value || []}
+                    onChange={(val) => {
+                        console.log("Labels changed:", val)
+                    }}
+                />
+            )
+        },
+    }
+}
+
+// Factory for Text Column (Summary)
+export function createTextColumn<TData>(accessorKey: string, header: string): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const value = getValue() as string
+            return (
+                <div className="truncate max-w-[200px] text-muted-foreground" title={value}>
+                    {value}
+                </div>
             )
         },
     }
