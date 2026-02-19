@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { ProjectDetailsDrawer } from "@/components/project-details-drawer"
 
-import { ProjectStatusSelector, ProjectPrioritySelector } from "./selectors"
+import { ProjectStatusSelector, ProjectPrioritySelector } from "./factory"
 
 // Factory for Status Column
 export function createStatusColumn<TData>(accessorKey: string, header: string = "Status"): ColumnDef<TData> {

@@ -22,9 +22,14 @@ import {
 export interface SelectorProps {
     value: string
     onChange: (value: string) => void
+    className?: string // Added for table cell styling flexibility
 }
 
-const STATUSES = [
+// ----------------------------------------------------------------------
+// Status Factory
+// ----------------------------------------------------------------------
+
+export const STATUSES = [
     { value: "Draft", label: "Draft", icon: Circle },
     { value: "Planning", label: "Planning", icon: Circle },
     { value: "Active", label: "Active", icon: ArrowUpCircle },
@@ -33,7 +38,7 @@ const STATUSES = [
     { value: "Backlog", label: "Backlog", icon: HelpCircle },
 ]
 
-export function ProjectStatusSelector({ value, onChange }: SelectorProps) {
+export function ProjectStatusSelector({ value, onChange, className }: SelectorProps) {
     const [open, setOpen] = React.useState(false)
 
     const selectedStatus = STATUSES.find((s) => s.value === value) || STATUSES[0]
@@ -41,7 +46,14 @@ export function ProjectStatusSelector({ value, onChange }: SelectorProps) {
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-medium rounded-md text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 gap-1.5 border border-transparent hover:border-border/40 transition-all">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                        "h-7 px-2 text-xs font-medium rounded-md text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 gap-1.5 border border-transparent hover:border-border/40 transition-all",
+                        className
+                    )}
+                >
                     <selectedStatus.icon className={cn("w-3.5 h-3.5", selectedStatus.value === "Active" ? "text-blue-500" : selectedStatus.value === "Completed" ? "text-purple-500" : "text-muted-foreground")} />
                     <span>{selectedStatus.label}</span>
                 </Button>
@@ -74,7 +86,11 @@ export function ProjectStatusSelector({ value, onChange }: SelectorProps) {
     )
 }
 
-const PRIORITIES = [
+// ----------------------------------------------------------------------
+// Priority Factory
+// ----------------------------------------------------------------------
+
+export const PRIORITIES = [
     { value: "Urgent", label: "Urgent", icon: AlertCircle },
     { value: "High", label: "High", icon: ArrowUpCircle },
     { value: "Medium", label: "Medium", icon: Circle },
@@ -82,14 +98,21 @@ const PRIORITIES = [
     { value: "None", label: "No priority", icon: HelpCircle },
 ]
 
-export function ProjectPrioritySelector({ value, onChange }: SelectorProps) {
+export function ProjectPrioritySelector({ value, onChange, className }: SelectorProps) {
     const [open, setOpen] = React.useState(false)
     const selected = PRIORITIES.find((s) => s.value === value) || PRIORITIES.find(s => s.value === "None")!
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-medium rounded-md text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 gap-1.5 border border-transparent hover:border-border/40 transition-all">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                        "h-7 px-2 text-xs font-medium rounded-md text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 gap-1.5 border border-transparent hover:border-border/40 transition-all",
+                        className
+                    )}
+                >
                     <selected.icon className={cn("w-3.5 h-3.5", selected.value === "Urgent" ? "text-red-500" : selected.value === "High" ? "text-orange-500" : "text-muted-foreground")} />
                     <span>{selected.label}</span>
                 </Button>

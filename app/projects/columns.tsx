@@ -8,7 +8,7 @@ import {
     createPersonColumn,
     createStatusColumn,
     createTitleColumn
-} from "@/components/properties/column-factories"
+} from "@/components/properties/table"
 import {
     createActionsColumn,
     createDragColumn,

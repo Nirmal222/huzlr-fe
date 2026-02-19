@@ -20,7 +20,7 @@ import {
     X
 } from "lucide-react"
 import { components } from "@/lib/types/generated-api"
-import { ProjectStatusSelector, ProjectPrioritySelector } from "@/components/properties/selectors"
+import { ProjectStatusSelector, ProjectPrioritySelector } from "@/components/properties/factory"
 
 type ProjectCreate = components["schemas"]["ProjectCreate"]
 type ProjectProperties = components["schemas"]["ProjectProperties"]

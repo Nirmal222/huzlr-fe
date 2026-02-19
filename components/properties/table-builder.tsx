@@ -7,7 +7,7 @@ import {
     createStatusColumn,
     createPriorityColumn,
     createTitleColumn
-} from "./column-factories";
+} from "./table";
 
 // Map property definitions to factory functions
 // We can extend this as needed.
