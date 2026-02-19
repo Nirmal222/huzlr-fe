@@ -365,19 +365,19 @@ export interface components {
              * Status
              * @default Backlog
              */
-            status: string | null;
+            status: string;
             /**
              * Priority
              * @default None
              */
-            priority: string | null;
+            priority: string;
             /** Lead */
             lead?: string | number | null;
             /**
              * Members
              * @default []
              */
-            members: (string | number)[] | null;
+            members: (string | number)[];
             /** Start Date */
             start_date?: string | null;
             /** Target Date */
@@ -386,12 +386,12 @@ export interface components {
              * Labels
              * @default []
              */
-            labels: (string | number)[] | null;
+            labels: (string | number)[];
             /**
              * Dependencies
              * @default []
              */
-            dependencies: (string | number)[] | null;
+            dependencies: (string | number)[];
             /** Description */
             description?: string | null;
             /**
@@ -400,7 +400,7 @@ export interface components {
              */
             milestones: {
                 [key: string]: unknown;
-            } | unknown[] | null;
+            } | unknown[];
         } & {
             [key: string]: unknown;
         };
