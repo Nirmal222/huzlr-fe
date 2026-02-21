@@ -30,7 +30,8 @@ export default function Page() {
   const dispatch = useAppDispatch()
   const { items: data, loading: isLoading, error } = useAppSelector((state) => state.projects)
   const properties = useAppSelector((state) => state.meta.propertyDefinitions['project'])
-  const isPropertiesLoading = useAppSelector((state) => state.meta.loading['project'])
+  const isPropertiesLoading = useAppSelector((state) => state.meta.loading['project'] ?? true)
+  const isPageLoading = isLoading || isPropertiesLoading
   const user = useAppSelector((state) => state.auth.user)
   const [jiraImportOpen, setJiraImportOpen] = useState(false)
 
@@ -91,7 +92,7 @@ export default function Page() {
         <div className="flex flex-1 flex-col gap-4 px-2 py-4">
           <div className="mx-auto w-full max-w-6xl flex flex-1 flex-col gap-2">
             <div className="flex flex-1 flex-col gap-4 md:gap-6">
-              {isLoading && <SpinnerEmpty />}
+              {isPageLoading && <SpinnerEmpty />}
 
               {isError && (
                 <div className="flex items-center justify-center py-8">
@@ -110,7 +111,7 @@ export default function Page() {
                 />
               ) : (
                 // Only show empty state if not loading and no data
-                !isLoading && !isError && (
+                !isPageLoading && !isError && (
                   <div className="flex flex-1 flex-col items-center justify-center">
                     <div className="flex flex-col items-center gap-1 text-center">
 
