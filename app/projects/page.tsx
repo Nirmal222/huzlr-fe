@@ -25,7 +25,6 @@ import { useMemo } from "react"
 import { createActionsColumn, createDragColumn, createSelectColumn } from "@/components/columns/shared"
 import { createTitleColumn } from "@/components/properties/table"
 import { ColumnDef } from "@tanstack/react-table"
-import { DisplayPropertiesMenu } from "@/components/display-properties-menu"
 
 export default function Page() {
   const dispatch = useAppDispatch()
@@ -89,7 +88,6 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader>
-          {data && data.length > 0 && <DisplayPropertiesMenu entityType="project" />}
           <Link href="/projects/new">
             <Button size="sm" className="gap-2 rounded-full">
               <Plus className="h-4 w-4" />
@@ -116,6 +114,7 @@ export default function Page() {
                   getRowId={(row) => row.project_id.toString()}
                   columns={columns}
                   tabs={tabs}
+                  entityType="project"
                 />
               ) : (
                 // Only show empty state if not loading and no data

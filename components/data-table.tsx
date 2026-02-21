@@ -76,6 +76,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { DisplayPropertiesMenu } from "@/components/display-properties-menu"
 
 // Create a separate component for the drag handle
 export function DragHandle({ id }: { id: number | string }) {
@@ -133,6 +134,7 @@ export interface DataTableProps<TData> {
   enableDragDrop?: boolean
   enableRowSelection?: boolean
   defaultPageSize?: number
+  entityType?: string
   tabs?: {
     value: string
     label: string
@@ -148,6 +150,7 @@ export function DataTable<TData>({
   enableDragDrop = true,
   enableRowSelection = true,
   defaultPageSize = 10,
+  entityType,
   tabs,
 }: DataTableProps<TData>) {
   const [data, setData] = React.useState(() => initialData)
@@ -253,39 +256,43 @@ export function DataTable<TData>({
           </>
         )}
         <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="rounded-full">
-                <IconLayoutColumns />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
+          {entityType ? (
+            <DisplayPropertiesMenu entityType={entityType} />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="rounded-full">
+                  <IconLayoutColumns />
+                  <span className="hidden lg:inline">Customize Columns</span>
+                  <span className="lg:hidden">Columns</span>
+                  <IconChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {table
+                  .getAllColumns()
+                  .filter(
+                    (column) =>
+                      typeof column.accessorFn !== "undefined" &&
+                      column.getCanHide()
                   )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <Button variant="outline" size="sm" className="rounded-full">
             <IconPlus />
             <span className="hidden lg:inline">Add Section</span>

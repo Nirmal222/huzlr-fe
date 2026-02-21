@@ -55,9 +55,9 @@ export function DisplayPropertiesMenu({ entityType = "project" }: DisplayPropert
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 h-8">
+                <Button variant="outline" size="sm" className="gap-2 h-8 rounded-full">
                     <SlidersHorizontal className="h-4 w-4" />
-                    Display
+                    <span className="hidden lg:inline">Display</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-56 p-0" align="end">
