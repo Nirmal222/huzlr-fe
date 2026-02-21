@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { ReduxProvider } from "@/lib/redux/provider"
+import { Toaster } from "@/components/ui/sonner"
 
 import "./globals.css"
 
@@ -81,6 +82,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster />
           </ThemeProvider>
         </ReduxProvider>
         <Analytics />

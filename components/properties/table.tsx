@@ -7,6 +7,15 @@ import { IconCircleCheckFilled, IconLoader } from "@tabler/icons-react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Maximize2 } from "lucide-react"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 import {
     Select,
     SelectContent,
@@ -202,6 +211,53 @@ export function createTextColumn<TData>(accessorKey: string, header: string): Co
             return (
                 <div className="truncate max-w-[200px] text-muted-foreground" title={value}>
                     {value}
+                </div>
+            )
+        },
+    }
+}
+
+// Factory for Rich Text Column (Description, etc.)
+export function createRichTextColumn<TData>(accessorKey: string, header: string): ColumnDef<TData> {
+    return {
+        accessorKey,
+        header,
+        cell: ({ getValue }) => {
+            const value = getValue() as string
+            if (!value) return null
+
+            // Strip HTML to show a plain text preview in the cell
+            const tempDiv = document.createElement("div")
+            tempDiv.innerHTML = value
+            const plainTextPreview = tempDiv.textContent || tempDiv.innerText || ""
+
+            return (
+                <div className="flex items-center gap-2">
+                    <div
+                        className="truncate max-w-[200px] text-muted-foreground"
+                        title={plainTextPreview}
+                    >
+                        {plainTextPreview}
+                    </div>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0 opacity-50 hover:opacity-100">
+                                <Maximize2 className="h-3.5 w-3.5" />
+                                <span className="sr-only">Expand content</span>
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto p-6 sm:max-w-[700px]">
+                            <DialogHeader>
+                                <DialogTitle className="text-xl">{header}</DialogTitle>
+                            </DialogHeader>
+                            <div className="mt-4">
+                                <div
+                                    className="prose prose-sm dark:prose-invert whitespace-pre-wrap max-w-none text-muted-foreground"
+                                    dangerouslySetInnerHTML={{ __html: value }}
+                                />
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             )
         },

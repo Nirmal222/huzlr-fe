@@ -10,7 +10,8 @@ import {
     createMembersColumn,
     createDateColumn,
     createLabelsColumn,
-    createTextColumn
+    createTextColumn,
+    createRichTextColumn
 } from "./table";
 
 // Map property definitions to factory functions
@@ -45,8 +46,9 @@ export function buildColumnsFromProperties<TData>(properties: PropertyDefinition
                 case "date":
                     return createDateColumn<TData>(accessorKey, label);
                 case "text":
-                case "rich_text":
                     return createTextColumn<TData>(accessorKey, label);
+                case "rich_text":
+                    return createRichTextColumn<TData>(accessorKey, label);
                 case "number":
                 case "currency":
                     return createInputColumn<TData>(accessorKey, label);

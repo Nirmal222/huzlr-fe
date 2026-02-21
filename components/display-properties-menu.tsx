@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
 import { updatePropertyPreference } from "@/lib/redux/slices/metaSlice"
 import { toast } from "sonner"
 
+
 interface DisplayPropertiesMenuProps {
     entityType?: string
 }
@@ -41,11 +42,16 @@ export function DisplayPropertiesMenu({ entityType = "project" }: DisplayPropert
         const newVisible = currentVisible === false ? true : false
 
         try {
+            console.log("key", key);
             await dispatch(updatePropertyPreference({
                 entityType,
                 key,
                 visible: newVisible
             })).unwrap()
+            console.log("newVisible", entityType,
+                key,
+                newVisible)
+            toast.success(`${newVisible ? "Showing" : "Hidden"} property`)
         } catch (error) {
             toast.error("Failed to update property visibility")
         }
