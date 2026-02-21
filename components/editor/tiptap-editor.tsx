@@ -50,7 +50,7 @@ export function TiptapEditor({
 
     // Update content if value changes externally
     useEffect(() => {
-        if (editor && value !== editor.getHTML()) {
+        if (editor && !editor.isFocused && value !== editor.getHTML()) {
             editor.commands.setContent(value)
         }
     }, [value, editor])

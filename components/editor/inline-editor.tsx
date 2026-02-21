@@ -76,7 +76,7 @@ export function InlineEditor({
 
     // Sync external value changes into the editor
     useEffect(() => {
-        if (editor && value !== editor.getText()) {
+        if (editor && !editor.isFocused && value !== editor.getText()) {
             editor.commands.setContent(value)
         }
     }, [value, editor])
