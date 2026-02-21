@@ -20,6 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
 import { updatePropertyPreference } from "@/lib/redux/slices/metaSlice"
+import { toast } from "sonner"
 
 interface DisplayPropertiesMenuProps {
     entityType?: string
@@ -36,20 +37,18 @@ export function DisplayPropertiesMenu({ entityType = "project" }: DisplayPropert
         return properties.filter(p => p.key !== 'project_title') // Title is always visible
     }, [properties])
 
-    const handleToggle = (key: string, currentVisible: boolean) => {
-        // Optimistic update handled by Redux thunk implicitly if successful, 
-        // but for better UI response we might want local state too. 
-        // However, the thunk updates the store so it should reflect immediately if fast enough.
-        // Or we can rely on the re-render from store update.
-
-        // "visible" property might be undefined which implies true.
+    const handleToggle = async (key: string, currentVisible: boolean) => {
         const newVisible = currentVisible === false ? true : false
 
-        dispatch(updatePropertyPreference({
-            entityType,
-            key,
-            visible: newVisible
-        }))
+        try {
+            await dispatch(updatePropertyPreference({
+                entityType,
+                key,
+                visible: newVisible
+            })).unwrap()
+        } catch (error) {
+            toast.error("Failed to update property visibility")
+        }
     }
 
     return (

@@ -42,13 +42,6 @@ export default function Page() {
 
   const hasConnectedIntegrations = user?.integrations?.jira?.connected || false
 
-  const tabs = [
-    { value: "outline", label: "Outline" },
-    { value: "past-performance", label: "Past Performance", badge: 3 },
-    { value: "key-personnel", label: "Key Personnel", badge: 2 },
-    { value: "focus-documents", label: "Focus Documents" },
-  ]
-
   const columns = useMemo(() => {
     if (!properties) return [];
 
@@ -113,7 +106,6 @@ export default function Page() {
                   data={data}
                   getRowId={(row) => row.project_id.toString()}
                   columns={columns}
-                  tabs={tabs}
                   entityType="project"
                 />
               ) : (

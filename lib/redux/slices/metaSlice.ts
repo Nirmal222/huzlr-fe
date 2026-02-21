@@ -106,8 +106,19 @@ const metaSlice = createSlice({
                 state.loading[action.meta.arg] = false;
                 state.error = action.payload as string;
             })
-            // Update Preference
+            // Update Preference (Optimistic)
+            .addCase(updatePropertyPreference.pending, (state, action) => {
+                const { entityType, key, visible } = action.meta.arg;
+                const definitions = state.propertyDefinitions[entityType];
+                if (definitions) {
+                    const prop = definitions.find(p => p.key === key);
+                    if (prop) {
+                        prop.visible = visible;
+                    }
+                }
+            })
             .addCase(updatePropertyPreference.fulfilled, (state, action) => {
+                // Already updated optimistically in pending, but we can ensure consistency here
                 const { entityType, key, visible } = action.payload;
                 const definitions = state.propertyDefinitions[entityType];
                 if (definitions) {
@@ -116,6 +127,18 @@ const metaSlice = createSlice({
                         prop.visible = visible;
                     }
                 }
+            })
+            .addCase(updatePropertyPreference.rejected, (state, action) => {
+                // Revert optimistic update on failure
+                const { entityType, key, visible } = action.meta.arg;
+                const definitions = state.propertyDefinitions[entityType];
+                if (definitions) {
+                    const prop = definitions.find(p => p.key === key);
+                    if (prop) {
+                        prop.visible = !visible;
+                    }
+                }
+                state.error = action.payload as string;
             });
     },
 });
