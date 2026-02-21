@@ -38,23 +38,17 @@ export function DisplayPropertiesMenu({ entityType = "project" }: DisplayPropert
         return properties.filter(p => p.key !== 'project_title') // Title is always visible
     }, [properties])
 
-    const handleToggle = async (key: string, currentVisible: boolean) => {
-        const newVisible = currentVisible === false ? true : false
+    const handleToggle = (key: string, currentVisible: boolean) => {
+        const newVisible = !currentVisible
 
-        try {
-            console.log("key", key);
-            await dispatch(updatePropertyPreference({
-                entityType,
-                key,
-                visible: newVisible
-            })).unwrap()
-            console.log("newVisible", entityType,
-                key,
-                newVisible)
-            toast.success(`${newVisible ? "Showing" : "Hidden"} property`)
-        } catch (error) {
-            toast.error("Failed to update property visibility")
-        }
+        toast.promise(
+            dispatch(updatePropertyPreference({ entityType, key, visible: newVisible })).unwrap(),
+            {
+                loading: `${newVisible ? "Showing" : "Hiding"} property...`,Can you take a look at the factories where we have the dummy data for members, tags, etc.? I'm facing trouble getting the same key IDs for the children where they are rendering. Can you solve that? 
+                success: `${newVisible ? "Shown" : "Hidden"}`,
+                error: "Failed to update property visibility",
+            }
+        )
     }
 
     return (
