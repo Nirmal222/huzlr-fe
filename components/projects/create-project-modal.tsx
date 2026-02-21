@@ -4,8 +4,8 @@ import { useState } from "react"
 import { useAppDispatch } from "@/lib/redux/hooks"
 import { createProject } from "@/lib/redux/slices/projectSlice"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { InlineEditor } from "@/components/editor/inline-editor"
 import { TiptapEditor } from "@/components/editor/tiptap-editor"
 import {
     Calendar,
@@ -140,18 +140,18 @@ export function CreateProjectModal({
                                     <Box className="w-5 h-5" />
                                 </Button>
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <Input
+                            <div className="flex-1 space-y-3">
+                                <InlineEditor
                                     value={projectTitle}
-                                    onChange={(e) => setProjectTitle(e.target.value)}
+                                    onChange={setProjectTitle}
                                     placeholder="Project name"
-                                    className="text-3xl font-semibold border-none px-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/40 -ml-1 shadoow-none"
+                                    className="text-3xl font-semibold leading-tight"
                                 />
-                                <Input
+                                <InlineEditor
                                     value={shortSummary}
-                                    onChange={(e) => setShortSummary(e.target.value)}
+                                    onChange={setShortSummary}
                                     placeholder="Add a short summary..."
-                                    className="text-lg text-muted-foreground border-none px-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/40 -ml-1 shadow-none"
+                                    className="text-lg text-muted-foreground"
                                 />
                             </div>
                         </div>
