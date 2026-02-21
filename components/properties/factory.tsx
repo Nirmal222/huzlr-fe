@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Circle, HelpCircle, AlertCircle, ArrowUpCircle, XCircle, CalendarIcon, User as UserIcon, Tag, Plus } from "lucide-react"
+import { Check, ChevronsUpDown, Circle, HelpCircle, AlertCircle, ArrowUpCircle, XCircle, PauseCircle, ChevronDown, CalendarIcon, User as UserIcon, Tag, Plus } from "lucide-react"
 import { format } from "date-fns"
 
 import { cn } from "@/lib/utils"
@@ -38,7 +38,7 @@ export const STATUSES = [
     { value: "Backlog", label: "Backlog", icon: HelpCircle },
     { value: "Planning", label: "Planning", icon: Circle },
     { value: "In Progress", label: "In Progress", icon: ArrowUpCircle },
-    { value: "Paused", label: "Paused", icon: XCircle },
+    { value: "Paused", label: "Paused", icon: PauseCircle },
     { value: "Done", label: "Done", icon: Check },
     { value: "Canceled", label: "Canceled", icon: XCircle },
 ]
@@ -47,7 +47,7 @@ export const PRIORITIES = [
     { value: "Urgent", label: "Urgent", icon: AlertCircle },
     { value: "High", label: "High", icon: ArrowUpCircle },
     { value: "Medium", label: "Medium", icon: Circle },
-    { value: "Low", label: "Low", icon: ArrowUpCircle },
+    { value: "Low", label: "Low", icon: ChevronDown },
     { value: "None", label: "No priority", icon: HelpCircle },
 ]
 
@@ -97,7 +97,7 @@ export function ProjectStatusSelector({ value, onChange, className }: SelectorPr
                         <CommandGroup>
                             {STATUSES.map((status) => (
                                 <CommandItem
-                                    key={status.value}
+                                    key={`status-${status.value}`}
                                     value={status.value}
                                     onSelect={() => {
                                         onChange(status.value)
@@ -148,7 +148,7 @@ export function ProjectPrioritySelector({ value, onChange, className }: Selector
                         <CommandGroup>
                             {PRIORITIES.map((priority) => (
                                 <CommandItem
-                                    key={priority.value}
+                                    key={`priority-${priority.value}`}
                                     value={priority.value}
                                     onSelect={() => {
                                         onChange(priority.value)
@@ -180,10 +180,10 @@ interface MemberSelectorProps extends Omit<SelectorProps, 'value'> {
 export function MemberSelector({ value, onChange, className, multiple = false }: MemberSelectorProps) {
     const [open, setOpen] = React.useState(false)
 
-    // Helper to get user objects
+    // Helper to get user objects — deduplicate incoming IDs to prevent duplicate key warnings
     const selectedUsers = React.useMemo(() => {
         if (!value) return []
-        const ids = Array.isArray(value) ? value : [value]
+        const ids = Array.isArray(value) ? [...new Set(value)] : [value]
         return USERS.filter(u => ids.includes(u.id))
     }, [value])
 
@@ -220,7 +220,7 @@ export function MemberSelector({ value, onChange, className, multiple = false }:
                         <div className="flex items-center gap-1">
                             <div className="flex -space-x-1.5">
                                 {selectedUsers.slice(0, 3).map(user => (
-                                    <Avatar key={user.id} className="w-4 h-4 border border-background">
+                                    <Avatar key={`trigger-avatar-${user.id}`} className="w-4 h-4 border border-background">
                                         <AvatarImage src={user.avatar} />
                                         <AvatarFallback className="text-[8px]">{user.name[0]}</AvatarFallback>
                                     </Avatar>
@@ -244,8 +244,8 @@ export function MemberSelector({ value, onChange, className, multiple = false }:
                                 const isSelected = Array.isArray(value) ? value.includes(user.id) : value === user.id
                                 return (
                                     <CommandItem
-                                        key={user.id}
-                                        value={user.name}
+                                        key={`member-cmd-${user.id}`}
+                                        value={`${user.name} ${user.username}`}
                                         onSelect={() => handleSelect(user.id)}
                                     >
                                         <Avatar className="w-6 h-6 mr-2">
@@ -357,7 +357,7 @@ export function LabelSelector({ value = [], onChange, className }: LabelSelector
                                 const isSelected = value.includes(label.value)
                                 return (
                                     <CommandItem
-                                        key={label.value}
+                                        key={`label-cmd-${label.value}`}
                                         value={label.value}
                                         onSelect={() => handleSelect(label.value)}
                                     >
