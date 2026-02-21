@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { IconCircleCheckFilled, IconLoader } from "@tabler/icons-react"
@@ -264,15 +265,21 @@ export function createRichTextColumn<TData>(accessorKey: string, header: string)
     }
 }
 
-// Factory for the Header/Title Column (with Drawer)
+// Factory for the Header/Title Column (with Link to project details)
 export function createTitleColumn<TData>(accessorKey: string, header: string = "Header"): ColumnDef<TData> {
     return {
         accessorKey,
         header,
         cell: ({ row }) => {
-            // We assume TData is compatible with ProjectData for the drawer
-            // In a real generic system, the Drawer would also be generic or passed in
-            return <ProjectDetailsDrawer item={row.original as any} />
+            const item = row.original as any;
+            const projectId = item.project_id || item.id;
+            const title = item.properties?.project_title || "Untitled Project";
+
+            return (
+                <Link href={`/projects/${projectId}`} className="text-foreground font-medium hover:underline">
+                    {title}
+                </Link>
+            )
         },
         enableHiding: false,
     }
