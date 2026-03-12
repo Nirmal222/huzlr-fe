@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose'
 
 // Define paths to protect
-const protectedPaths = ['/dashboard', '/projects', '/boards', '/brainstorms', '/pitch-deck']
+const protectedPaths = ['/dashboard', '/projects', '/boards', '/brainstorms', /**'/pitch-deck'**/]
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
